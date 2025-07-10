@@ -196,8 +196,7 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
       {/* Tank Profile Summary */}
       <div className="bg-slate-700/50 px-4 py-3 border-t border-slate-600">
         <div className="text-xs text-slate-400">
-          <strong>Tank Specifications:</strong> All tanks are {tanks[0]?.profile?.diameter_inches || 96}" diameter × {tanks[0]?.profile?.length_inches || 319.3}" length • 
-          Critical alert at 10" height • Warning alert at 20\" height • 
+          <strong>Tank Specifications:</strong> Critical alert at 10" height • Warning alert at 20\" height • 
           Run rates calculated using business hours only (5 AM - 11 PM) • 
           <strong>90% Ullage:</strong> Displays 90% of actual ullage for conservative capacity planning and safety margins
         </div>

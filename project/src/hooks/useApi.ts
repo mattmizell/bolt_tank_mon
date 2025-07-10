@@ -55,6 +55,7 @@ const processStoreDataFast = async (rawStore: any): Promise<Store> => {
     let status: 'normal' | 'warning' | 'critical' = rawTank.current_status || 'normal';
     // Calculate capacity percentage using server configuration
     const serverConfig = rawTank.configuration;
+    let capacityPercentage = 0;
     if (latestReading && serverConfig?.max_capacity_gallons) {
       capacityPercentage = (latestReading.volume / serverConfig.max_capacity_gallons) * 100;
     } else if (latestLog) {
@@ -253,8 +254,6 @@ const processStoreDataFull = async (rawStore: any, useCache: boolean = true): Pr
           store_name: rawStore.store_name,
           tank_id: rawTank.tank_id,
           tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
-          diameter_inches: 96,
-          length_inches: 319.3,
           max_capacity_gallons: 10000,
           critical_height_inches: 10,
           warning_height_inches: 20,
