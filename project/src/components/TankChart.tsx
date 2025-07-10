@@ -160,7 +160,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
         product: tank.product,
         volume: currentVolume,
         tc_volume: currentVolume,
-        ullage: 8000 - currentVolume,
+        ullage: (tank.profile?.max_capacity_gallons || 10000) - currentVolume,
         height: currentHeight,
         water: tank.latest_log.water || 0,
         temp: tank.latest_log.temp || 70,
@@ -250,7 +250,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
   const maxDiameter = tank.profile?.diameter_inches || 96;
   const criticalHeight = tank.profile?.critical_height_inches || 10;
   const warningHeight = tank.profile?.warning_height_inches || 20;
-  const maxCapacity = tank.profile?.max_capacity_gallons || 8000;
+  const maxCapacity = tank.profile?.max_capacity_gallons || 10000;
 
   const data = {
     labels,

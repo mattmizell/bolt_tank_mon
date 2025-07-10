@@ -32,6 +32,10 @@ export const useSmartCache = () => {
           const currentHeight = Number(latestLog?.height) || 0;
           const currentVolume = Number(latestLog?.tc_volume) || 0;
           
+          // Get tank configuration for actual capacity
+          const tankConfig = ConfigService.getTankConfiguration(rawStore.store_name, rawTank.tank_id);
+          const actualCapacity = tankConfig?.max_capacity_gallons || 10000;
+          
           // Get historical data for this tank (quick fetch for calculations only)
           let historicalLogs: any[] = [];
           try {
@@ -80,18 +84,21 @@ export const useSmartCache = () => {
             profile: {
               store_name: rawStore.store_name,
               tank_id: rawTank.tank_id,
-              tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
-              max_capacity_gallons: 10000, // Default capacity (configurable in admin)
-              critical_height_inches: 10,
-              warning_height_inches: 20,
+              tank_name: tankConfig?.tank_name || rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+              max_capacity_gallons: actualCapacity,
+              critical_height_inches: tankConfig?.critical_height_inches || 10,
+              warning_height_inches: tankConfig?.warning_height_inches || 20,
             },
           });
         } catch (error) {
           console.error(`Error processing tank ${rawTank.tank_id}:`, error);
           // Fallback for errors - simplified
+          const fallbackConfig = ConfigService.getTankConfiguration(rawStore.store_name, rawTank.tank_id);
+          const fallbackCapacity = fallbackConfig?.max_capacity_gallons || 10000;
+          
           processedTanks.push({
             tank_id: rawTank.tank_id,
-            tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+            tank_name: fallbackConfig?.tank_name || rawTank.tank_name || `Tank ${rawTank.tank_id}`,
             product: rawTank.latest_log?.product || 'Unknown',
             latest_log: rawTank.latest_log,
             logs: [],
@@ -102,10 +109,10 @@ export const useSmartCache = () => {
             profile: {
               store_name: rawStore.store_name,
               tank_id: rawTank.tank_id,
-              tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
-              max_capacity_gallons: 10000,
-              critical_height_inches: 10,
-              warning_height_inches: 20,
+              tank_name: fallbackConfig?.tank_name || rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+              max_capacity_gallons: fallbackCapacity,
+              critical_height_inches: fallbackConfig?.critical_height_inches || 10,
+              warning_height_inches: fallbackConfig?.warning_height_inches || 20,
             },
           });
         }

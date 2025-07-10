@@ -33,6 +33,10 @@ export const useApiWithCache = () => {
           const currentHeight = Number(latestLog?.height) || 0;
           const currentVolume = Number(latestLog?.tc_volume) || 0;
           
+          // Get tank configuration for actual capacity
+          const tankConfig = ConfigService.getTankConfiguration(rawStore.store_name, rawTank.tank_id);
+          const actualCapacity = tankConfig?.max_capacity_gallons || 10000;
+          
           let metrics;
           
           // Use pre-calculated data if available (from Supabase)
@@ -90,21 +94,22 @@ export const useApiWithCache = () => {
             profile: {
               store_name: rawStore.store_name,
               tank_id: rawTank.tank_id,
-              tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
-              diameter_inches: 96, // Not used in calculations
-              length_inches: 319.3, // Not used in calculations
-              max_capacity_gallons: 8000, // Typical capacity
-              critical_height_inches: 10,
-              warning_height_inches: 20,
+              tank_name: tankConfig?.tank_name || rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+              max_capacity_gallons: actualCapacity,
+              critical_height_inches: tankConfig?.critical_height_inches || 10,
+              warning_height_inches: tankConfig?.warning_height_inches || 20,
             },
             capacity_percentage: metrics.capacity_percentage,
           });
         } catch (error) {
           console.error(`Error processing tank ${rawTank.tank_id}:`, error);
           // Add tank with safe defaults - simplified
+          const fallbackConfig = ConfigService.getTankConfiguration(rawStore.store_name, rawTank.tank_id);
+          const fallbackCapacity = fallbackConfig?.max_capacity_gallons || 10000;
+          
           processedTanks.push({
             tank_id: rawTank.tank_id,
-            tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+            tank_name: fallbackConfig?.tank_name || rawTank.tank_name || `Tank ${rawTank.tank_id}`,
             product: rawTank.latest_log?.product || 'Unknown',
             latest_log: rawTank.latest_log,
             logs: [],
@@ -114,12 +119,10 @@ export const useApiWithCache = () => {
             profile: {
               store_name: rawStore.store_name,
               tank_id: rawTank.tank_id,
-              tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
-              diameter_inches: 96,
-              length_inches: 319.3,
-              max_capacity_gallons: 8000,
-              critical_height_inches: 10,
-              warning_height_inches: 20,
+              tank_name: fallbackConfig?.tank_name || rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+              max_capacity_gallons: fallbackCapacity,
+              critical_height_inches: fallbackConfig?.critical_height_inches || 10,
+              warning_height_inches: fallbackConfig?.warning_height_inches || 20,
             },
             capacity_percentage: 0,
           });
@@ -159,16 +162,17 @@ export const useApiWithCache = () => {
         hours_to_10_inches: cachedTank.hours_to_10_inches,
         predicted_time: cachedTank.predicted_time,
         status: cachedTank.status,
-        profile: {
-          store_name: cachedStore.store_name,
-          tank_id: cachedTank.tank_id,
-          tank_name: cachedTank.tank_name,
-          diameter_inches: 96,
-          length_inches: 319.3,
-          max_capacity_gallons: 8000,
-          critical_height_inches: 10,
-          warning_height_inches: 20,
-        },
+        profile: (() => {
+          const tankConfig = ConfigService.getTankConfiguration(cachedStore.store_name, cachedTank.tank_id);
+          return {
+            store_name: cachedStore.store_name,
+            tank_id: cachedTank.tank_id,
+            tank_name: tankConfig?.tank_name || cachedTank.tank_name,
+            max_capacity_gallons: tankConfig?.max_capacity_gallons || 10000,
+            critical_height_inches: tankConfig?.critical_height_inches || 10,
+            warning_height_inches: tankConfig?.warning_height_inches || 20,
+          };
+        })(),
         capacity_percentage: cachedTank.capacity_percentage,
       })),
       last_updated: cachedStore.last_updated,

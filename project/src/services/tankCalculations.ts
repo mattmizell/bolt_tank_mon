@@ -341,9 +341,9 @@ function calculateCapacityPercentage(currentVolume: number): number {
     return 0;
   }
 
-  // Use typical tank capacity of 8000 gallons
+  // Use typical tank capacity of 10000 gallons
   // This is simplified - in production you might want to configure this per tank
-  const typicalCapacity = 8000;
+  const typicalCapacity = 10000;
   const percentage = (currentVolume / typicalCapacity) * 100;
   
   return Math.min(100, Math.max(0, percentage));

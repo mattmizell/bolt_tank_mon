@@ -264,7 +264,7 @@ const processStoreDataFull = async (rawStore: any, useCache: boolean = true): Pr
           tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
           diameter_inches: 96,
           length_inches: 319.3,
-          max_capacity_gallons: 8000,
+          max_capacity_gallons: 10000,
           critical_height_inches: 10,
           warning_height_inches: 20,
         },
