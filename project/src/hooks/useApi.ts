@@ -31,73 +31,107 @@ const processStoreDataFast = async (rawStore: any): Promise<Store> => {
   }
 
   // Process tanks with minimal computation for fast display
-  console.log('🔍 DEBUG: rawStore.tanks:', rawStore.tanks);
-  const fastTanks = rawStore.tanks.map((rawTank: any) => {
-    console.log('🔍 DEBUG: rawTank keys:', Object.keys(rawTank));
-    console.log('🔍 DEBUG: rawTank.configuration:', rawTank.configuration);
+  console.log('🚀🔍 MASSIVE DEBUG: Processing', rawStore.tanks.length, 'tanks for store', rawStore.store_name);
+  const fastTanks = rawStore.tanks.map((rawTank: any, index: number) => {
+    console.log(`🔍 DEBUG Tank ${index + 1}/${rawStore.tanks.length} ===================`);
+    console.log(`🔍 DEBUG rawTank[${index}] keys:`, Object.keys(rawTank));
+    console.log(`🔍 DEBUG rawTank[${index}] full object:`, JSON.stringify(rawTank, null, 2));
+    
     // NEW SERVER FORMAT: latest_reading instead of latest_log
     const latestReading = rawTank.latest_reading;
+    console.log(`🔍 DEBUG latestReading for tank ${rawTank.tank_id}:`, JSON.stringify(latestReading, null, 2));
+    
     const latestLog = latestReading ? {
       id: 0,
       store_name: rawStore.store_name,
       tank_id: rawTank.tank_id,
       product: rawTank.tank_name,
       volume: latestReading.volume,
-      tc_volume: latestReading.volume, // Use same value
-      ullage: 0, // Not provided in new format
+      tc_volume: latestReading.volume,
+      ullage: latestReading.ullage,
       height: latestReading.height,
-      water: 0, // Not provided in new format  
-      temp: 70, // Default temp
+      water: latestReading.water,
+      temp: latestReading.temp,
       timestamp: latestReading.timestamp,
     } : undefined;
     
-    // Use server analytics if available
-    const analytics = rawTank.analytics || {};
-    let runRate = analytics.run_rate || 0.5;
-    let hoursTo10 = analytics.hours_to_critical || 0;
-    let status: 'normal' | 'warning' | 'critical' = rawTank.current_status || 'normal';
+    // REMOVED ALL FALLBACK VALUES - NO DEFAULTS ALLOWED
+    const analytics = rawTank.analytics;
+    console.log(`🔍 DEBUG analytics for tank ${rawTank.tank_id}:`, JSON.stringify(analytics, null, 2));
     
-    // Use server configuration first, then create profile with server data
+    if (!analytics) {
+      console.error(`❌ CRITICAL ERROR: No analytics data for tank ${rawTank.tank_id}`);
+      throw new Error(`No analytics data for tank ${rawTank.tank_id}`);
+    }
+    
+    let runRate = analytics.run_rate;
+    let hoursTo10 = analytics.hours_to_critical;
+    let status: 'normal' | 'warning' | 'critical' = rawTank.current_status;
+    
+    console.log(`🔍 DEBUG EXTRACTED VALUES for tank ${rawTank.tank_id}: runRate=${runRate}, hoursTo10=${hoursTo10}, status=${status}`);
+    
+    if (runRate === undefined || runRate === null) {
+      console.error(`❌ CRITICAL ERROR: No run_rate for tank ${rawTank.tank_id}`);
+      throw new Error(`No run_rate for tank ${rawTank.tank_id}`);
+    }
+    
+    if (hoursTo10 === undefined || hoursTo10 === null) {
+      console.error(`❌ CRITICAL ERROR: No hours_to_critical for tank ${rawTank.tank_id}`);
+      throw new Error(`No hours_to_critical for tank ${rawTank.tank_id}`);
+    }
+    
+    if (!status) {
+      console.error(`❌ CRITICAL ERROR: No current_status for tank ${rawTank.tank_id}`);
+      throw new Error(`No current_status for tank ${rawTank.tank_id}`);
+    }
+    
+    // REMOVED FALLBACK - NO DEFAULT PROFILE CREATION
     const serverConfig = rawTank.configuration;
-    const profile = serverConfig ? {
+    console.log(`🔍 DEBUG serverConfig for tank ${rawTank.tank_id}:`, JSON.stringify(serverConfig, null, 2));
+    
+    if (!serverConfig) {
+      console.error(`❌ CRITICAL ERROR: No configuration data for tank ${rawTank.tank_id}`);
+      throw new Error(`No configuration for tank ${rawTank.tank_id}`);
+    }
+    
+    const profile = {
       store_name: rawStore.store_name,
       tank_id: rawTank.tank_id,
       tank_name: rawTank.tank_name,
       max_capacity_gallons: serverConfig.max_capacity_gallons,
       critical_height_inches: serverConfig.critical_height_inches,
       warning_height_inches: serverConfig.warning_height_inches,
-    } : createTankProfile(rawStore.store_name, rawTank.tank_id);
+    };
     
-    // Calculate capacity percentage using server configuration
+    // Calculate capacity percentage using server configuration ONLY
     let capacityPercentage = 0;
-    if (latestReading && serverConfig?.max_capacity_gallons) {
+    if (latestReading && serverConfig.max_capacity_gallons) {
       capacityPercentage = (latestReading.volume / serverConfig.max_capacity_gallons) * 100;
-    } else if (latestLog && profile) {
-      capacityPercentage = getTankCapacityPercentage(Number(latestLog.tc_volume) || 0, profile);
+      console.log(`🔍 DEBUG capacity: ${latestReading.volume} / ${serverConfig.max_capacity_gallons} * 100 = ${capacityPercentage}%`);
+    } else {
+      console.error(`❌ CRITICAL ERROR: Cannot calculate capacity percentage for tank ${rawTank.tank_id}`);
+      throw new Error(`Cannot calculate capacity percentage for tank ${rawTank.tank_id}`);
     }
 
-    return {
+    const tankData = {
       tank_id: rawTank.tank_id,
-      tank_name: rawTank.tank_name, // Use server tank name directly
-      product: rawTank.tank_name, // Keep for backward compatibility but use tank_name
+      tank_name: rawTank.tank_name,
+      product: rawTank.tank_name,
       latest_log: latestLog,
-      logs: rawTank.historical_data || [], // Include historical data for charts
-      run_rate: analytics.run_rate || 0.5,
-      hours_to_10_inches: analytics.hours_to_critical || 0,
+      logs: rawTank.historical_data,
+      run_rate: analytics.run_rate,
+      hours_to_10_inches: analytics.hours_to_critical,
       status: status,
-      profile: {
-        store_name: rawStore.store_name,
-        tank_id: rawTank.tank_id,
-        tank_name: rawTank.tank_name,
-        max_capacity_gallons: serverConfig?.max_capacity_gallons || 10000,
-        critical_height_inches: serverConfig?.critical_height_inches || 10,
-        warning_height_inches: serverConfig?.warning_height_inches || 20,
-      },
-      configuration: serverConfig, // Add server configuration
-      analytics: analytics, // Include full analytics object
+      profile: profile,
+      configuration: serverConfig,
+      analytics: analytics,
       capacity_percentage: Math.round(capacityPercentage),
       predicted_time: analytics.predicted_empty,
     };
+    
+    console.log(`🔍 DEBUG FINAL tankData for tank ${rawTank.tank_id}:`, JSON.stringify(tankData, null, 2));
+    
+    return tankData;
   });
 
   const fastStoreData: Store = {
