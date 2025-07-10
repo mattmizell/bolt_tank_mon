@@ -3,6 +3,7 @@ import { Store } from '../types';
 import { ArrowLeft, RefreshCw, Activity, AlertTriangle, Building2, ExternalLink, Wifi } from 'lucide-react';
 import { TankTable } from './TankTable';
 import { TankChart } from './TankChart';
+import { DebugLogger } from './DebugLogger';
 import { format } from 'date-fns';
 
 interface ViewAllStoresProps {
@@ -278,6 +279,9 @@ export const ViewAllStores: React.FC<ViewAllStoresProps> = ({
           </div>
         </div>
       </div>
+      
+      {/* Debug Logger - Shows all console output in UI */}
+      <DebugLogger />
     </div>
   );
 };

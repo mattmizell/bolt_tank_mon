@@ -1,6 +1,7 @@
 import React, { useState, Suspense } from 'react';
 import { Store } from './types';
 import { StoreSelector } from './components/StoreSelector';
+import { DebugLogger } from './components/DebugLogger';
 import { useSmartCache } from './hooks/useSmartCache';
 
 // Lazy load components for better initial loading performance
@@ -191,6 +192,9 @@ function App() {
           />
         </Suspense>
       )}
+      
+      {/* Global Debug Logger - Shows ALL console output */}
+      <DebugLogger />
     </div>
   );
 }
