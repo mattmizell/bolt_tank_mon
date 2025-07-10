@@ -361,7 +361,7 @@ export function getTankStatus(height: number, hoursTo10Inches: number, profile: 
       return 'critical';
     }
     
-    if (height <= profile.warning_height_inches || (isFinite(hoursTo10Inches) && hoursTo10Inches > 0 && hoursTo10Inches < 48)) {
+    if (height <= profile.warning_height_inches || (isFinite(hoursTo10Inches) && hoursTo10Inches > 0 && hoursTo10Inches <= 40)) {
       return 'warning';
     }
     
