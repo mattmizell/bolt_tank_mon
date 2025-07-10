@@ -6,12 +6,22 @@ import { calculateSimpleTankMetrics } from '../services/tankAnalytics';
 import { ConfigService } from '../services/configService';
 
 export const useSmartCache = () => {
+  console.log('🚀 useSmartCache HOOK INITIALIZING...');
+  
   const [stores, setStores] = useState<Store[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isLiveData, setIsLiveData] = useState(false);
   const [newStoreDetected, setNewStoreDetected] = useState<string | null>(null);
   const [cacheInfo, setCacheInfo] = useState(SmartCache.getCacheInfo());
+  
+  console.log('🚀 useSmartCache initial state:', {
+    storesLength: stores.length,
+    loading,
+    error,
+    isLiveData,
+    cacheInfo
+  });
   
   const refreshInProgress = useRef(false);
   const refreshInterval = useRef<NodeJS.Timeout | null>(null);
@@ -27,14 +37,34 @@ export const useSmartCache = () => {
 
       for (const rawTank of rawStore.tanks) {
         try {
-          // Use simplified analytics - no tank geometry required!
-          const latestLog = rawTank.latest_log;
-          const currentHeight = Number(latestLog?.height) || 0;
-          const currentVolume = Number(latestLog?.tc_volume) || 0;
+          console.log(`🔍 Processing tank ${rawTank.tank_id} in ${rawStore.store_name}`);
+          console.log(`🔍 rawTank keys:`, Object.keys(rawTank));
+          console.log(`🔍 rawTank.analytics:`, rawTank.analytics);
+          console.log(`🔍 rawTank.configuration:`, rawTank.configuration);
+          console.log(`🔍 rawTank.latest_reading:`, rawTank.latest_reading);
           
-          // Get tank configuration for actual capacity
-          const tankConfig = ConfigService.getTankConfiguration(rawStore.store_name, rawTank.tank_id);
-          const actualCapacity = tankConfig?.max_capacity_gallons || 10000;
+          // FIXED: Use server analytics and configuration data directly!
+          if (!rawTank.analytics) {
+            console.error(`❌ No analytics data from server for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
+            throw new Error(`Missing server analytics for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
+          }
+          
+          if (!rawTank.configuration) {
+            console.error(`❌ No configuration data from server for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
+            throw new Error(`Missing server configuration for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
+          }
+          
+          const latestLog = rawTank.latest_log;
+          const latestReading = rawTank.latest_reading;
+          const analytics = rawTank.analytics;
+          const serverConfig = rawTank.configuration;
+          
+          console.log(`🔍 Using server analytics: run_rate=${analytics.run_rate}, hours_to_critical=${analytics.hours_to_critical}`);
+          console.log(`🔍 Using server config: max_capacity=${serverConfig.max_capacity_gallons}`);
+          
+          const currentHeight = Number(latestReading?.height || latestLog?.height) || 0;
+          const currentVolume = Number(latestReading?.volume || latestLog?.tc_volume) || 0;
+          const actualCapacity = serverConfig.max_capacity_gallons;
           
           // Get historical data for this tank (extended fetch for better calculations)
           let historicalLogs: any[] = [];
@@ -47,33 +77,21 @@ export const useSmartCache = () => {
             historicalLogs = [];
           }
 
-          // Use server analytics if available, calculate locally only as fallback
-          console.log(`📊 Processing analytics for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
+          // FIXED: Use ONLY server analytics - no fallback calculation!
+          console.log(`📊 Using server analytics for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
+          console.log(`✅ Server analytics: run_rate=${analytics.run_rate}, hours_to_critical=${analytics.hours_to_critical}`);
           
-          let metrics;
-          if (rawTank.analytics && rawTank.analytics.run_rate) {
-            // Use server-calculated analytics
-            console.log(`✅ Using server analytics: ${rawTank.analytics.run_rate} in/hr`);
-            metrics = {
-              current_height_inches: currentHeight,
-              current_volume_gallons: currentVolume,
-              run_rate_inches_per_hour: rawTank.analytics.run_rate,
-              hours_to_10_inches: rawTank.analytics.hours_to_critical || 0,
-              predicted_time_to_10in: rawTank.analytics.predicted_empty,
-              status: rawTank.current_status || 'normal',
-              capacity_percentage: (currentVolume / actualCapacity) * 100
-            };
-          } else {
-            // Fallback to local calculation if server analytics not available
-            console.log(`⚠️ Server analytics not available, calculating locally`);
-            metrics = calculateSimpleTankMetrics(
-              rawStore.store_name,
-              rawTank.tank_id,
-              historicalLogs,
-              currentHeight,
-              currentVolume
-            );
-          }
+          const metrics = {
+            current_height_inches: currentHeight,
+            current_volume_gallons: currentVolume,
+            run_rate_inches_per_hour: analytics.run_rate,
+            hours_to_10_inches: analytics.hours_to_critical,
+            predicted_time_to_10in: analytics.predicted_empty,
+            status: rawTank.current_status,
+            capacity_percentage: (currentVolume / actualCapacity) * 100
+          };
+          
+          console.log(`📊 Final metrics for tank ${rawTank.tank_id}:`, metrics);
 
           processedTanks.push({
             tank_id: rawTank.tank_id,
@@ -99,41 +117,24 @@ export const useSmartCache = () => {
             predicted_time: metrics.predicted_time_to_10in,
             status: metrics.status,
             capacity_percentage: metrics.capacity_percentage,
-            // Simple profile - no dimensions
+            // FIXED: Use server configuration data
             profile: {
               store_name: rawStore.store_name,
               tank_id: rawTank.tank_id,
-              tank_name: tankConfig?.tank_name || rawTank.tank_name || `Tank ${rawTank.tank_id}`,
-              max_capacity_gallons: actualCapacity,
-              critical_height_inches: tankConfig?.critical_height_inches || 10,
-              warning_height_inches: tankConfig?.warning_height_inches || 20,
+              tank_name: serverConfig.tank_name,
+              max_capacity_gallons: serverConfig.max_capacity_gallons,
+              critical_height_inches: serverConfig.critical_height_inches,
+              warning_height_inches: serverConfig.warning_height_inches,
             },
+            // Add server configuration and analytics to tank object
+            configuration: serverConfig,
+            analytics: analytics,
           });
         } catch (error) {
-          console.error(`Error processing tank ${rawTank.tank_id}:`, error);
-          // Fallback for errors - simplified
-          const fallbackConfig = ConfigService.getTankConfiguration(rawStore.store_name, rawTank.tank_id);
-          const fallbackCapacity = fallbackConfig?.max_capacity_gallons || 10000;
-          
-          processedTanks.push({
-            tank_id: rawTank.tank_id,
-            tank_name: fallbackConfig?.tank_name || rawTank.tank_name || `Tank ${rawTank.tank_id}`,
-            product: rawTank.latest_log?.product || 'Unknown',
-            latest_log: rawTank.latest_log,
-            logs: [],
-            run_rate: 0.1, // Default inches per hour
-            hours_to_10_inches: 0,
-            status: 'normal' as const,
-            capacity_percentage: 0,
-            profile: {
-              store_name: rawStore.store_name,
-              tank_id: rawTank.tank_id,
-              tank_name: fallbackConfig?.tank_name || rawTank.tank_name || `Tank ${rawTank.tank_id}`,
-              max_capacity_gallons: fallbackCapacity,
-              critical_height_inches: fallbackConfig?.critical_height_inches || 10,
-              warning_height_inches: fallbackConfig?.warning_height_inches || 20,
-            },
-          });
+          console.error(`❌ CRITICAL ERROR processing tank ${rawTank.tank_id} in ${rawStore.store_name}:`, error);
+          console.error(`❌ Raw tank data that failed:`, JSON.stringify(rawTank, null, 2));
+          // NO FALLBACK - LET ERROR BUBBLE UP
+          throw new Error(`Tank processing failed for ${rawStore.store_name} Tank ${rawTank.tank_id}: ${error.message}`);
         }
       }
 
@@ -150,7 +151,9 @@ export const useSmartCache = () => {
 
   // Smart load: combine cached data with fresh server data
   const smartLoad = useCallback(async () => {
+    console.log('🚀 smartLoad() FUNCTION STARTING...');
     try {
+      console.log('🚀 Clearing any previous errors');
       setError(null);
       
       // Step 1: Load cached data instantly (if available) - DON'T process it, just convert it
@@ -289,9 +292,20 @@ export const useSmartCache = () => {
 
   // Initial load
   useEffect(() => {
+    console.log('🚀 useSmartCache useEffect TRIGGERED - starting initial load');
     setLoading(true);
+    console.log('🚀 Calling smartLoad()...');
     smartLoad()
-      .finally(() => setLoading(false));
+      .then(() => {
+        console.log('🚀 smartLoad() completed successfully');
+      })
+      .catch((error) => {
+        console.error('❌ smartLoad() failed:', error);
+      })
+      .finally(() => {
+        console.log('🚀 Setting loading to false');
+        setLoading(false);
+      });
   }, [smartLoad]);
 
   // Start background refresh after initial load

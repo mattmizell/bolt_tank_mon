@@ -25,9 +25,25 @@ const ComponentLoader = ({ message = "Loading..." }: { message?: string }) => (
 );
 
 function App() {
+  console.log('🚀 APP STARTING - React App.tsx component initializing');
+  console.log('🚀 Environment:', import.meta.env.MODE);
+  console.log('🚀 API URL:', import.meta.env.VITE_API_URL);
+  
+  console.log('🚀 Calling useSmartCache hook...');
   const { stores, loading, error, isLiveData, refreshData, newStoreDetected, cacheInfo } = useSmartCache();
+  
+  console.log('🚀 useSmartCache results:', {
+    storesCount: stores?.length || 0,
+    loading,
+    error,
+    isLiveData,
+    newStoreDetected
+  });
+  
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>('selector');
+  
+  console.log('🚀 APP STATE: viewMode=', viewMode, 'selectedStore=', selectedStore?.store_name);
 
   // Check if we're in read-only mode (via URL parameter)
   const urlParams = new URLSearchParams(window.location.search);
