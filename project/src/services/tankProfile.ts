@@ -1,553 +1,367 @@
-// Configuration service for managing store hours and tank specifications
-import { StoreHours, TankConfiguration } from '../types';
+import { TankLog } from '../types';
+import { ConfigService } from './configService';
 
-const STORAGE_KEYS = {
-  STORE_HOURS: 'tank_monitor_store_hours',
-  TANK_CONFIGS: 'tank_monitor_tank_configs',
+export interface TankProfile {
+  store_name: string;
+  tank_id: number;
+  tank_name: string;
+  diameter_inches: number;
+  length_inches: number;
+  max_capacity_gallons: number;
+  critical_height_inches: number;
+  warning_height_inches: number;
+}
+
+// Fallback tank dimensions and names
+export const STORE_TANK_NAMES: Record<string, Record<number, string>> = {
+  "Mascoutah": {
+    1: "UNLEADED",
+    2: "PREMIUM",
+    3: "DIESEL"
+  },
+  "North City": {
+    1: "UNL T1",
+    2: "UNL T2",
+    3: "UNL T3",
+    4: "PREM",
+    5: "K1"
+  },
 };
 
-// Default store hours with admin contact information
-const DEFAULT_STORE_HOURS: StoreHours[] = [
-  {
-    store_name: 'Mascoutah',
-    open_hour: 5,
-    close_hour: 23,
-    timezone: 'America/Chicago',
-    admin_name: 'Store Manager',
-    admin_phone: '+1234567890',
-    admin_email: 'manager@mascoutah.betterdayenergy.com',
-    alerts_enabled: true,
+export const STORE_TANK_DIMENSIONS: Record<string, Record<number, [number, number]>> = {
+  "Mascoutah": {
+    1: [96, 319.3],
+    2: [96, 319.3],
+    3: [96, 319.3],
   },
-  {
-    store_name: 'North City',
-    open_hour: 5,
-    close_hour: 23,
-    timezone: 'America/Chicago',
-    admin_name: 'Store Manager',
-    admin_phone: '+1234567891',
-    admin_email: 'manager@northcity.betterdayenergy.com',
-    alerts_enabled: true,
+  "North City": {
+    1: [96, 319.3],
+    2: [96, 319.3],
+    3: [96, 319.3],
+    4: [96, 319.3],
+    5: [96, 319.3],
   },
-];
+};
 
-// Default tank configurations based on your original system
-const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
-  // Mascoutah tanks
-  {
-    store_name: 'Mascoutah',
-    tank_id: 1,
-    tank_name: 'UNLEADED',
-    product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'Mascoutah',
-    tank_id: 2,
-    tank_name: 'PREMIUM',
-    product_type: 'Premium Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'Mascoutah',
-    tank_id: 3,
-    tank_name: 'DIESEL',
-    product_type: 'Diesel',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  // North City tanks
-  {
-    store_name: 'North City',
-    tank_id: 1,
-    tank_name: 'UNL T1',
-    product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'North City',
-    tank_id: 2,
-    tank_name: 'UNL T2',
-    product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'North City',
-    tank_id: 3,
-    tank_name: 'UNL T3',
-    product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'North City',
-    tank_id: 4,
-    tank_name: 'PREM',
-    product_type: 'Premium Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'North City',
-    tank_id: 5,
-    tank_name: 'K1',
-    product_type: 'Kerosene',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-];
+export const DEFAULT_DIAMETER = 96;
+export const DEFAULT_LENGTH = 319.3;
 
-export class ConfigService {
-  // Store Hours Management (now includes admin contact info)
-  static getStoreHours(): StoreHours[] {
+/**
+ * Calculate gallons at a specific depth using cylindrical tank geometry
+ */
+export function gallonsAtDepth(depthInches: number, diameterInches: number, lengthInches: number): number {
+  try {
+    const r = diameterInches / 2;
+    const h = depthInches;
+    const L = lengthInches;
+    
+    if (h <= 0 || h > diameterInches || !isFinite(h) || !isFinite(r) || !isFinite(L)) {
+      return 0;
+    }
+    
+    const theta = Math.acos((r - h) / r);
+    if (!isFinite(theta)) return 0;
+    
+    const segmentArea = (r ** 2) * (theta - Math.sin(2 * theta) / 2);
+    if (!isFinite(segmentArea)) return 0;
+    
+    const volumeCubicInches = segmentArea * L;
+    const gallons = volumeCubicInches / 231;
+    return isFinite(gallons) ? Math.max(0, gallons) : 0;
+  } catch (error) {
+    console.error('Error calculating gallons at depth:', error);
+    return 0;
+  }
+}
+
+/**
+ * Get tank dimensions for a specific store and tank
+ */
+export function getTankDimensions(storeName: string, tankId: number): [number, number] {
+  try {
+    const config = ConfigService.getTankConfiguration(storeName, tankId);
+    if (config) {
+      return [config.diameter_inches, config.length_inches];
+    }
+  } catch (error) {
+    console.warn('Error getting tank configuration:', error);
+  }
+  
+  return STORE_TANK_DIMENSIONS[storeName]?.[tankId] || [DEFAULT_DIAMETER, DEFAULT_LENGTH];
+}
+
+/**
+ * Get tank name for a specific store and tank
+ */
+export function getTankName(storeName: string, tankId: number): string {
+  try {
+    const config = ConfigService.getTankConfiguration(storeName, tankId);
+    if (config) {
+      return config.tank_name;
+    }
+  } catch (error) {
+    console.warn('Error getting tank configuration:', error);
+  }
+  
+  return STORE_TANK_NAMES[storeName]?.[tankId] || `Tank ${tankId}`;
+}
+
+/**
+ * Create a complete tank profile with all specifications
+ */
+export function createTankProfile(storeName: string, tankId: number): TankProfile {
+  try {
+    const config = ConfigService.getTankConfiguration(storeName, tankId);
+    if (config) {
+      return {
+        store_name: config.store_name,
+        tank_id: config.tank_id,
+        tank_name: config.tank_name,
+        diameter_inches: config.diameter_inches,
+        length_inches: config.length_inches,
+        max_capacity_gallons: config.max_capacity_gallons || gallonsAtDepth(config.diameter_inches, config.diameter_inches, config.length_inches),
+        critical_height_inches: config.critical_height_inches,
+        warning_height_inches: config.warning_height_inches,
+      };
+    }
+  } catch (error) {
+    console.warn('Error getting tank configuration, using defaults:', error);
+  }
+  
+  const [diameter, length] = getTankDimensions(storeName, tankId);
+  const tankName = getTankName(storeName, tankId);
+  const maxCapacity = gallonsAtDepth(diameter, diameter, length);
+  
+  return {
+    store_name: storeName,
+    tank_id: tankId,
+    tank_name: tankName,
+    diameter_inches: diameter,
+    length_inches: length,
+    max_capacity_gallons: Math.round(maxCapacity),
+    critical_height_inches: 10,
+    warning_height_inches: 20,
+  };
+}
+
+/**
+ * OPTIMIZED: Fast Run Rate Calculation for Performance
+ * Simplified algorithm that prioritizes speed over precision for initial load
+ */
+export function calculateRunRate(logs: TankLog[], profile: TankProfile): number {
+  try {
+    if (!logs || logs.length < 6) {
+      return 0.5; // Default fallback
+    }
+    
+    // Get store hours from configuration
+    let openHour = 5;
+    let closeHour = 23;
+    
     try {
-      const stored = localStorage.getItem(STORAGE_KEYS.STORE_HOURS);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        // Ensure all stores have admin contact fields (migration for existing data)
-        return parsed.map((hours: StoreHours) => ({
-          ...hours,
-          admin_name: hours.admin_name || 'Store Manager',
-          admin_phone: hours.admin_phone || '+1234567890',
-          admin_email: hours.admin_email || `manager@${hours.store_name.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
-          alerts_enabled: hours.alerts_enabled !== false, // Default to true
-        }));
+      const storeHours = ConfigService.getStoreHoursForStore(profile.store_name);
+      if (storeHours) {
+        openHour = storeHours.open_hour;
+        closeHour = storeHours.close_hour;
       }
     } catch (error) {
-      console.error('Error loading store hours:', error);
+      // Use defaults
     }
-    return DEFAULT_STORE_HOURS;
-  }
-
-  static saveStoreHours(storeHours: StoreHours[]): void {
-    try {
-      localStorage.setItem(STORAGE_KEYS.STORE_HOURS, JSON.stringify(storeHours));
-    } catch (error) {
-      console.error('Error saving store hours:', error);
-    }
-  }
-
-  static getStoreHoursForStore(storeName: string): StoreHours | null {
-    const allHours = this.getStoreHours();
-    return allHours.find(hours => hours.store_name === storeName) || null;
-  }
-
-  static updateStoreHours(
-    storeName: string, 
-    openHour: number, 
-    closeHour: number, 
-    timezone: string = 'America/Chicago',
-    adminName?: string,
-    adminPhone?: string,
-    adminEmail?: string,
-    alertsEnabled: boolean = true
-  ): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
     
-    const updatedHours: StoreHours = {
-      store_name: storeName,
-      open_hour: openHour,
-      close_hour: closeHour,
-      timezone,
-      admin_name: adminName || 'Store Manager',
-      admin_phone: adminPhone || '+1234567890',
-      admin_email: adminEmail || `manager@${storeName.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
-      alerts_enabled: alertsEnabled,
-    };
-
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = updatedHours;
-    } else {
-      allHours.push(updatedHours);
-    }
-
-    this.saveStoreHours(allHours);
-  }
-
-  // Enhanced method to update just admin contact info
-  static updateStoreAdminContact(
-    storeName: string,
-    adminName: string,
-    adminPhone: string,
-    adminEmail?: string,
-    alertsEnabled: boolean = true
-  ): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        admin_name: adminName,
-        admin_phone: adminPhone,
-        admin_email: adminEmail || allHours[existingIndex].admin_email,
-        alerts_enabled: alertsEnabled,
-      };
-    } else {
-      // Create new store hours entry with defaults
-      const newHours: StoreHours = {
-        store_name: storeName,
-        open_hour: 5,
-        close_hour: 23,
-        timezone: 'America/Chicago',
-        admin_name: adminName,
-        admin_phone: adminPhone,
-        admin_email: adminEmail || `manager@${storeName.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
-        alerts_enabled: alertsEnabled,
-      };
-      allHours.push(newHours);
-    }
-
-    this.saveStoreHours(allHours);
-  }
-
-  // Get admin contact for a specific store
-  static getStoreAdminContact(storeName: string): { name: string; phone: string; email?: string; alertsEnabled: boolean } | null {
-    const storeHours = this.getStoreHoursForStore(storeName);
-    if (!storeHours) return null;
-
-    return {
-      name: storeHours.admin_name || 'Store Manager',
-      phone: storeHours.admin_phone || '+1234567890',
-      email: storeHours.admin_email,
-      alertsEnabled: storeHours.alerts_enabled !== false,
-    };
-  }
-
-  // Tank Configuration Management (unchanged)
-  static getTankConfigurations(): TankConfiguration[] {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEYS.TANK_CONFIGS);
-      if (stored) {
-        const configs = JSON.parse(stored);
-        // Calculate max capacity for each tank if not already set
-        return configs.map((config: TankConfiguration) => ({
-          ...config,
-          max_capacity_gallons: config.max_capacity_gallons || this.calculateMaxCapacity(config.diameter_inches, config.length_inches),
-          alerts_enabled: config.alerts_enabled !== false, // Default to true
-        }));
+    // Filter to business hours and validate data
+    const businessHourLogs = logs.filter(log => {
+      try {
+        const logDate = new Date(log.timestamp);
+        const hour = logDate.getHours();
+        const isBusinessHour = hour >= openHour && hour < closeHour;
+        const hasValidData = isFinite(log.tc_volume) && log.tc_volume > 0 && log.tc_volume < 50000;
+        return isBusinessHour && hasValidData;
+      } catch {
+        return false;
       }
-    } catch (error) {
-      console.error('Error loading tank configurations:', error);
+    });
+    
+    if (businessHourLogs.length < 4) {
+      return 0.5; // Default fallback
     }
     
-    // Return default configs with calculated capacities
-    return DEFAULT_TANK_CONFIGS.map(config => ({
-      ...config,
-      max_capacity_gallons: this.calculateMaxCapacity(config.diameter_inches, config.length_inches),
-    }));
-  }
-
-  static saveTankConfigurations(tankConfigs: TankConfiguration[]): void {
-    try {
-      localStorage.setItem(STORAGE_KEYS.TANK_CONFIGS, JSON.stringify(tankConfigs));
-    } catch (error) {
-      console.error('Error saving tank configurations:', error);
-    }
-  }
-
-  static getTankConfiguration(storeName: string, tankId: number): TankConfiguration | null {
-    const allConfigs = this.getTankConfigurations();
-    return allConfigs.find(config => config.store_name === storeName && config.tank_id === tankId) || null;
-  }
-
-  static updateTankConfiguration(config: TankConfiguration): void {
-    const allConfigs = this.getTankConfigurations();
-    const existingIndex = allConfigs.findIndex(
-      c => c.store_name === config.store_name && c.tank_id === config.tank_id
-    );
-
-    // Calculate max capacity
-    const updatedConfig = {
-      ...config,
-      max_capacity_gallons: this.calculateMaxCapacity(config.diameter_inches, config.length_inches),
-      alerts_enabled: config.alerts_enabled !== false, // Default to true
-    };
-
-    if (existingIndex >= 0) {
-      allConfigs[existingIndex] = updatedConfig;
-    } else {
-      allConfigs.push(updatedConfig);
-    }
-
-    this.saveTankConfigurations(allConfigs);
-  }
-
-  static getStoreConfigurations(storeName: string): TankConfiguration[] {
-    const allConfigs = this.getTankConfigurations();
-    return allConfigs.filter(config => config.store_name === storeName);
-  }
-
-  // Auto-configuration helper for new stores (enhanced with admin contact)
-  static autoConfigureNewStore(storeName: string, tankCount: number, tankData?: any[]): void {
-    console.log(`🔧 Auto-configuring new store: ${storeName} with ${tankCount} tanks`);
-    console.log(`📊 Tank data provided:`, tankData);
+    // Simple approach: Use last 20 readings for speed
+    const recentLogs = businessHourLogs.slice(-20);
     
-    // Use Mascoutah as the template for new stores
-    const templateHours = this.getStoreHoursForStore('Mascoutah') || DEFAULT_STORE_HOURS[0];
-
-    // Add store hours with admin contact
-    this.updateStoreHours(
-      storeName, 
-      templateHours.open_hour, 
-      templateHours.close_hour, 
-      templateHours.timezone,
-      'Store Manager', // Default admin name
-      '+1234567890', // Default phone (should be updated by admin)
-      `manager@${storeName.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`, // Auto-generated email
-      true // Enable alerts by default
-    );
-
-    // Auto-configure tanks based on detected data or use defaults
-    for (let i = 1; i <= tankCount; i++) {
-      const existingConfig = this.getTankConfiguration(storeName, i);
-      if (!existingConfig) {
-        let tankName = `TANK ${i}`;
-        let productType = 'Regular Unleaded';
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-
-        // Try to determine tank type from data if available
-        if (tankData && tankData[i - 1]) {
-          const tank = tankData[i - 1];
-          
-          // Use tank name from API if available
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-            if (product.includes('unleaded') || product.includes('unl')) {
-              if (product.includes('premium') || product.includes('prem')) {
-                tankName = 'PREMIUM';
-                productType = 'Premium Unleaded';
-              } else {
-                tankName = 'UNLEADED';
-                productType = 'Regular Unleaded';
-              }
-            } else if (product.includes('diesel')) {
-              tankName = 'DIESEL';
-              productType = 'Diesel';
-            } else if (product.includes('kerosene') || product.includes('k1')) {
-              tankName = 'K1';
-              productType = 'Kerosene';
-            } else {
-              tankName = productSource.toUpperCase();
-              productType = productSource;
-            }
-          }
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-        } else {
-          // Use standard naming pattern
-          if (i === 1) {
-            tankName = 'UNLEADED';
-            productType = 'Regular Unleaded';
-          } else if (i === 2) {
-            tankName = 'PREMIUM';
-            productType = 'Premium Unleaded';
-          } else if (i === 3) {
-            tankName = 'DIESEL';
-            productType = 'Diesel';
-          } else {
-            tankName = `TANK ${i}`;
-            productType = 'Regular Unleaded';
-          }
+    // Remove obvious refills quickly
+    const cleanLogs = [];
+    for (let i = 0; i < recentLogs.length; i++) {
+      if (i === 0) {
+        cleanLogs.push(recentLogs[i]);
+        continue;
+      }
+      
+      const currentLog = recentLogs[i];
+      const prevLog = recentLogs[i - 1];
+      
+      try {
+        const volumeDelta = currentLog.tc_volume - prevLog.tc_volume;
+        const timeDelta = (new Date(currentLog.timestamp).getTime() - new Date(prevLog.timestamp).getTime()) / (1000 * 60 * 60);
+        
+        // Skip obvious refills
+        if (volumeDelta > 1500 && timeDelta < 2) {
+          continue;
         }
-
-        const newConfig: TankConfiguration = {
-          store_name: storeName,
-          tank_id: i,
-          tank_name: tankName,
-          product_type: productType,
-          diameter_inches: diameter,
-          length_inches: length,
-          critical_height_inches: 10,
-          warning_height_inches: 20,
-          alerts_enabled: true, // Enable alerts by default
-        };
-
-        this.updateTankConfiguration(newConfig);
-        console.log(`✅ Auto-configured tank ${i}: ${tankName} (${productType}) - ${diameter}" × ${length}"`);
+        
+        cleanLogs.push(currentLog);
+      } catch {
+        cleanLogs.push(currentLog);
       }
     }
-
-    console.log(`✅ Auto-configured admin contact for ${storeName} (please update phone number)`);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
     
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
+    if (cleanLogs.length < 3) {
+      return 0.5;
     }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
     
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
+    // Simple linear regression for speed
+    const firstTimestamp = new Date(cleanLogs[0].timestamp).getTime();
+    const dataPoints = cleanLogs.map(log => {
+      const timestamp = new Date(log.timestamp).getTime();
+      const hoursFromStart = (timestamp - firstTimestamp) / (1000 * 60 * 60);
+      return {
+        hours: hoursFromStart,
+        volume: log.tc_volume,
       };
-      this.saveStoreHours(allHours);
+    }).filter(point => isFinite(point.hours) && isFinite(point.volume) && point.volume > 0);
+    
+    if (dataPoints.length < 3) {
+      return 0.5;
     }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Helper method to calculate tank capacity using cylindrical geometry
-  private static calculateMaxCapacity(diameterInches: number, lengthInches: number): number {
-    try {
-      const r = diameterInches / 2;
-      const h = diameterInches; // Full height
-      const L = lengthInches;
-      
-      if (h <= 0 || h > diameterInches || !isFinite(h) || !isFinite(r) || !isFinite(L)) {
-        return 8000; // Default capacity
-      }
-      
-      const theta = Math.acos((r - h) / r);
-      if (!isFinite(theta)) return 8000;
-      
-      const segmentArea = (r ** 2) * (theta - Math.sin(2 * theta) / 2);
-      if (!isFinite(segmentArea)) return 8000;
-      
-      const volumeCubicInches = segmentArea * L;
-      const gallons = volumeCubicInches / 231; // Convert to gallons
-      
-      return isFinite(gallons) ? Math.round(Math.max(0, gallons)) : 8000;
-    } catch (error) {
-      console.error('Error calculating tank capacity:', error);
-      return 8000;
+    
+    // Quick linear regression
+    const n = dataPoints.length;
+    const sumX = dataPoints.reduce((sum, point) => sum + point.hours, 0);
+    const sumY = dataPoints.reduce((sum, point) => sum + point.volume, 0);
+    const sumXY = dataPoints.reduce((sum, point) => sum + point.hours * point.volume, 0);
+    const sumXX = dataPoints.reduce((sum, point) => sum + point.hours * point.hours, 0);
+    
+    const denominator = n * sumXX - sumX * sumX;
+    if (Math.abs(denominator) < 1e-10) {
+      return 0.5;
     }
-  }
-
-  // Reset to defaults
-  static resetToDefaults(): void {
-    localStorage.removeItem(STORAGE_KEYS.STORE_HOURS);
-    localStorage.removeItem(STORAGE_KEYS.TANK_CONFIGS);
-  }
-
-  // Export/Import functionality (enhanced to include admin contacts)
-  static exportConfiguration(): string {
-    const config = {
-      storeHours: this.getStoreHours(),
-      tankConfigurations: this.getTankConfigurations(),
-      exportDate: new Date().toISOString(),
-      version: '2.0', // Version with admin contacts
-    };
-    return JSON.stringify(config, null, 2);
-  }
-
-  static importConfiguration(configJson: string): boolean {
-    try {
-      const config = JSON.parse(configJson);
-      
-      if (config.storeHours && Array.isArray(config.storeHours)) {
-        // Migrate old format if needed
-        const migratedHours = config.storeHours.map((hours: any) => ({
-          ...hours,
-          admin_name: hours.admin_name || 'Store Manager',
-          admin_phone: hours.admin_phone || '+1234567890',
-          admin_email: hours.admin_email || `manager@${hours.store_name.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
-          alerts_enabled: hours.alerts_enabled !== false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-        }));
-        this.saveStoreHours(migratedHours);
-      }
-      
-      if (config.tankConfigurations && Array.isArray(config.tankConfigurations)) {
-        this.saveTankConfigurations(config.tankConfigurations);
-      }
-      
-      return true;
-    } catch (error) {
-      console.error('Error importing configuration:', error);
-      return false;
+    
+    const slope = (n * sumXY - sumX * sumY) / denominator;
+    const rateGallonsPerHour = Math.abs(slope);
+    
+    // Validate result
+    if (!isFinite(rateGallonsPerHour) || rateGallonsPerHour < 0.1 || rateGallonsPerHour > 150) {
+      return 0.5;
     }
+    
+    return rateGallonsPerHour;
+    
+  } catch (error) {
+    console.error('Error calculating run rate:', error);
+    return 0.5;
+  }
+}
+
+/**
+ * Calculate hours until tank reaches critical level
+ */
+export function calculateHoursTo10Inches(currentHeight: number, runRate: number, profile: TankProfile): number {
+  try {
+    if (!isFinite(currentHeight) || !isFinite(runRate) || runRate <= 0) {
+      return 0;
+    }
+    
+    if (currentHeight <= profile.critical_height_inches) {
+      return 0;
+    }
+    
+    const currentGallons = gallonsAtDepth(currentHeight, profile.diameter_inches, profile.length_inches);
+    const gallonsAtCritical = gallonsAtDepth(profile.critical_height_inches, profile.diameter_inches, profile.length_inches);
+    
+    const gallonsUntilCritical = currentGallons - gallonsAtCritical;
+    
+    if (gallonsUntilCritical <= 0) {
+      return 0;
+    }
+    
+    const hoursUntilCritical = gallonsUntilCritical / runRate;
+    
+    if (!isFinite(hoursUntilCritical)) {
+      return 0;
+    }
+    
+    return Math.max(0, hoursUntilCritical);
+    
+  } catch (error) {
+    console.error('Error calculating hours to critical level:', error);
+    return 0;
+  }
+}
+
+/**
+ * Predict depletion time accounting for business hours
+ */
+export function predictDepletionTime(startTime: Date, hoursNeeded: number, storeName?: string): Date {
+  try {
+    if (!isFinite(hoursNeeded) || hoursNeeded <= 0) {
+      return startTime;
+    }
+    
+    let openHour = 5;
+    let closeHour = 23;
+    
+    if (storeName) {
+      try {
+        const storeHours = ConfigService.getStoreHoursForStore(storeName);
+        if (storeHours) {
+          openHour = storeHours.open_hour;
+          closeHour = storeHours.close_hour;
+        }
+      } catch (error) {
+        // Use defaults
+      }
+    }
+    
+    let currentTime = new Date(startTime);
+    let hoursRemaining = hoursNeeded;
+    let iterations = 0;
+    const maxIterations = hoursNeeded * 2 + 100;
+    
+    while (hoursRemaining >= 1e-6 && iterations < maxIterations) {
+      const currentHour = currentTime.getHours();
+      
+      if (currentHour >= openHour && currentHour < closeHour) {
+        if (hoursRemaining >= 1) {
+          hoursRemaining -= 1;
+          currentTime = new Date(currentTime.getTime() + 60 * 60 * 1000);
+        } else {
+          currentTime = new Date(currentTime.getTime() + hoursRemaining * 60 * 60 * 1000);
+          hoursRemaining = 0;
+        }
+      } else {
+        currentTime = new Date(currentTime.getTime() + 60 * 60 * 1000);
+      }
+      iterations++;
+    }
+    
+    return currentTime;
+  } catch (error) {
+    console.error('Error predicting depletion time:', error);
+    return startTime;
   }
 }
 
 /**
  * Enhanced tank status determination
  */
-export function getTankStatus(height: number, hoursTo10Inches: number): 'normal' | 'warning' | 'critical' {
+export function getTankStatus(height: number, hoursTo10Inches: number, profile: TankProfile): 'normal' | 'warning' | 'critical' {
   try {
     if (!isFinite(height)) return 'normal';
     
-    // Critical conditions:
-    // 1. Tank height is at or below the critical height threshold (typically 10")
-    if (height <= 10) {
+    if (height <= profile.critical_height_inches || (isFinite(hoursTo10Inches) && hoursTo10Inches > 0 && hoursTo10Inches < 24)) {
       return 'critical';
     }
     
-    // 2. Less than 48 hours to reach critical level
-    if (isFinite(hoursTo10Inches) && hoursTo10Inches > 0 && hoursTo10Inches < 48) {
-      return 'critical';
-    }
-    
-    // Warning conditions:
-    // 1. Tank height is at or below warning level (20")
-    if (height <= 20) {
-      return 'warning';
-    }
-    
-    // 2. Less than 72 hours to reach critical level
-    if (isFinite(hoursTo10Inches) && hoursTo10Inches > 0 && hoursTo10Inches < 72) {
+    if (height <= profile.warning_height_inches || (isFinite(hoursTo10Inches) && hoursTo10Inches > 0 && hoursTo10Inches < 48)) {
       return 'warning';
     }
     
@@ -561,11 +375,10 @@ export function getTankStatus(height: number, hoursTo10Inches: number): 'normal'
 /**
  * Calculate tank capacity percentage
  */
-export function getTankCapacityPercentage(currentVolume: number): number {
+export function getTankCapacityPercentage(currentVolume: number, profile: TankProfile): number {
   try {
-    if (!isFinite(currentVolume) || currentVolume <= 0) return 0;
-    const typicalCapacity = 8000; // Standard tank capacity
-    const percentage = (currentVolume / typicalCapacity) * 100;
+    if (!isFinite(currentVolume) || profile.max_capacity_gallons <= 0) return 0;
+    const percentage = (currentVolume / profile.max_capacity_gallons) * 100;
     return Math.min(100, Math.max(0, isFinite(percentage) ? percentage : 0));
   } catch (error) {
     console.error('Error calculating capacity percentage:', error);
@@ -576,4 +389,25 @@ export function getTankCapacityPercentage(currentVolume: number): number {
 /**
  * Get all tank profiles for a store
  */
-// Removed - no longer needed as we're not using tank profiles for calculations
+export function getStoreTankProfiles(storeName: string): TankProfile[] {
+  try {
+    const configs = ConfigService.getStoreConfigurations(storeName);
+    if (configs.length > 0) {
+      return configs.map(config => ({
+        store_name: config.store_name,
+        tank_id: config.tank_id,
+        tank_name: config.tank_name,
+        diameter_inches: config.diameter_inches,
+        length_inches: config.length_inches,
+        max_capacity_gallons: config.max_capacity_gallons || gallonsAtDepth(config.diameter_inches, config.diameter_inches, config.length_inches),
+        critical_height_inches: config.critical_height_inches,
+        warning_height_inches: config.warning_height_inches,
+      }));
+    }
+  } catch (error) {
+    console.warn('Error getting store configurations, using defaults:', error);
+  }
+  
+  const tankIds = Object.keys(STORE_TANK_DIMENSIONS[storeName] || {}).map(Number);
+  return tankIds.map(tankId => createTankProfile(storeName, tankId));
+}

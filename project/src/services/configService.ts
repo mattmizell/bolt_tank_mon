@@ -309,12 +309,6 @@ export class ConfigService {
   // Auto-configuration helper for new stores (enhanced with admin contact)
   static autoConfigureNewStore(storeName: string, tankCount: number, tankData?: any[]): void {
     console.log(`🔧 Auto-configuring new store: ${storeName} with ${tankCount} tanks`);
-    console.log(`📊 Tank data provided:`, tankData);
-    console.log(`📊 Tank data provided:`, tankData);
-    console.log(`📊 Tank data provided:`, tankData);
-    console.log(`📊 Tank data provided:`, tankData);
-    console.log(`📊 Tank data provided:`, tankData);
-    console.log(`📊 Tank data provided:`, tankData);
     
     // Use Mascoutah as the template for new stores
     const templateHours = this.getStoreHoursForStore('Mascoutah') || DEFAULT_STORE_HOURS[0];
@@ -337,77 +331,12 @@ export class ConfigService {
       if (!existingConfig) {
         let tankName = `TANK ${i}`;
         let productType = 'Regular Unleaded';
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
 
         // Try to determine tank type from data if available
         if (tankData && tankData[i - 1]) {
           const tank = tankData[i - 1];
-          
-          // Use tank name from API if available
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
+          if (tank.latest_log?.product) {
+            const product = tank.latest_log.product.toLowerCase();
             if (product.includes('unleaded') || product.includes('unl')) {
               if (product.includes('premium') || product.includes('prem')) {
                 tankName = 'PREMIUM';
@@ -423,22 +352,10 @@ export class ConfigService {
               tankName = 'K1';
               productType = 'Kerosene';
             } else {
-              tankName = productSource.toUpperCase();
-              productType = productSource;
+              tankName = tank.latest_log.product.toUpperCase();
+              productType = tank.latest_log.product;
             }
           }
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
         } else {
           // Use standard naming pattern
           if (i === 1) {
@@ -461,271 +378,19 @@ export class ConfigService {
           tank_id: i,
           tank_name: tankName,
           product_type: productType,
-          diameter_inches: diameter,
-          length_inches: length,
+          diameter_inches: 96, // Mascoutah default
+          length_inches: 319.3, // Mascoutah default
           critical_height_inches: 10,
           warning_height_inches: 20,
           alerts_enabled: true, // Enable alerts by default
         };
 
         this.updateTankConfiguration(newConfig);
-        console.log(`✅ Auto-configured tank ${i}: ${tankName} (${productType}) - ${diameter}" × ${length}"`);
+        console.log(`✅ Auto-configured tank ${i}: ${tankName} (${productType})`);
       }
     }
 
     console.log(`✅ Auto-configured admin contact for ${storeName} (please update phone number)`);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
   }
 
   // Helper method to calculate tank capacity using cylindrical geometry
@@ -784,18 +449,6 @@ export class ConfigService {
           admin_phone: hours.admin_phone || '+1234567890',
           admin_email: hours.admin_email || `manager@${hours.store_name.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
           alerts_enabled: hours.alerts_enabled !== false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
         }));
         this.saveStoreHours(migratedHours);
       }

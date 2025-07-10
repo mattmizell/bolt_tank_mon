@@ -1,7 +1,7 @@
 import React, { useState, Suspense } from 'react';
 import { Store } from './types';
 import { StoreSelector } from './components/StoreSelector';
-import { useApi } from './hooks/useApi';
+import { useSmartCache } from './hooks/useSmartCache';
 
 // Lazy load components for better initial loading performance
 const StoreReport = React.lazy(() => import('./components/StoreReport').then(module => ({ default: module.StoreReport })));
@@ -10,113 +10,21 @@ const ReadOnlyStoreReport = React.lazy(() => import('./components/ReadOnlyStoreR
 
 type ViewMode = 'selector' | 'single-store' | 'all-stores' | 'readonly-store';
 
-// Enhanced loading component with progress and mobile optimization
-const ComponentLoader = ({ message = "Loading...", progress = 0 }: { message?: string; progress?: number }) => (
-  <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
-    <div className="text-center max-w-sm mx-auto">
+// Loading component with progress indication
+const ComponentLoader = ({ message = "Loading..." }: { message?: string }) => (
+  <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+    <div className="text-center">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4"></div>
-      <p className="text-slate-300 text-lg mb-4">{message}</p>
-      
-      {progress > 0 && (
-        <div className="w-full bg-slate-700 rounded-full h-3 mb-4">
-          <div 
-            className="bg-gradient-to-r from-blue-500 to-blue-400 h-3 rounded-full transition-all duration-500 ease-out"
-            style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
-          ></div>
-        </div>
-      )}
-      
-      <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-4">
-        <p className="text-blue-200 text-sm font-semibold mb-2">🚀 Dashboard API</p>
-        <p className="text-blue-300 text-xs">
-          Loading optimized data for mobile devices
-        </p>
+      <p className="text-slate-300 text-lg">{message}</p>
+      <div className="mt-2 w-48 bg-slate-700 rounded-full h-2 mx-auto">
+        <div className="bg-blue-400 h-2 rounded-full animate-pulse" style={{ width: '60%' }}></div>
       </div>
-    </div>
-  </div>
-);
-
-// Enhanced loading screen with progress tracking
-const LoadingScreen = ({ 
-  progress, 
-  message, 
-  retryCount, 
-  connectionTimeout, 
-  onRetry 
-}: { 
-  progress: number; 
-  message: string; 
-  retryCount: number; 
-  connectionTimeout: boolean;
-  onRetry: () => void;
-}) => (
-  <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
-    <div className="text-center max-w-md mx-auto">
-      <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-400 mx-auto mb-6"></div>
-      <h2 className="text-2xl font-bold text-white mb-4">Loading Tank Data</h2>
-      <p className="text-slate-300 text-lg mb-4">{message}</p>
-      
-      {/* Enhanced progress bar */}
-      <div className="w-full bg-slate-700 rounded-full h-4 mb-4 overflow-hidden">
-        <div 
-          className="bg-gradient-to-r from-blue-500 to-blue-400 h-4 rounded-full transition-all duration-500 ease-out relative"
-          style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
-        >
-          <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
-        </div>
-      </div>
-      
-      <div className="text-sm text-slate-400 mb-4">
-        {progress}% complete
-      </div>
-      
-      {/* Connection status */}
-      <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-4 mb-4">
-        <p className="text-blue-200 text-sm font-semibold mb-2">
-          📱 Mobile-Optimized Loading
-        </p>
-        <p className="text-blue-300 text-xs">
-          Fetching data with extended timeout for mobile connections
-        </p>
-        {retryCount > 0 && (
-          <p className="text-yellow-300 text-xs mt-2">
-            Retry attempt {retryCount}/3
-          </p>
-        )}
-      </div>
-      
-      {/* Retry button for connection issues */}
-      {connectionTimeout && (
-        <div className="bg-yellow-900/30 border border-yellow-500/30 rounded-lg p-4">
-          <p className="text-yellow-200 text-sm mb-3">
-            Connection is taking longer than usual
-          </p>
-          <button
-            onClick={onRetry}
-            className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white text-sm transition-colors"
-          >
-            Retry Connection
-          </button>
-        </div>
-      )}
     </div>
   </div>
 );
 
 function App() {
-  const { 
-    stores, 
-    loading, 
-    loadingProgress, 
-    loadingMessage, 
-    error, 
-    isLiveData, 
-    refreshData, 
-    newStoreDetected,
-    retryCount,
-    connectionTimeout
-  } = useApi();
-  
+  const { stores, loading, error, isLiveData, refreshData, newStoreDetected, cacheInfo } = useSmartCache();
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>('selector');
 
@@ -154,38 +62,58 @@ function App() {
     await refreshData();
   };
 
-  // Show enhanced loading screen during initial load
+  // Show loading screen during initial load
   if (loading) {
     return (
-      <LoadingScreen
-        progress={loadingProgress}
-        message={loadingMessage}
-        retryCount={retryCount}
-        connectionTimeout={connectionTimeout}
-        onRetry={handleRefresh}
-      />
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-6">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-400 mx-auto mb-6"></div>
+          <h2 className="text-2xl font-bold text-white mb-4">
+            {cacheInfo.hasCache ? 'Loading Tank Data' : 'First Time Setup'}
+          </h2>
+          <p className="text-slate-300 text-lg mb-4">
+            {cacheInfo.hasCache 
+              ? 'Loading cached data and checking for updates...' 
+              : 'Fetching and caching data - this will be slow the first time but instant afterwards'
+            }
+          </p>
+          
+          {/* Progress indicator */}
+          <div className="w-full bg-slate-700 rounded-full h-3 mb-4">
+            <div className="bg-gradient-to-r from-blue-500 to-blue-400 h-3 rounded-full animate-pulse" style={{ width: cacheInfo.hasCache ? '85%' : '35%' }}></div>
+          </div>
+          
+          {cacheInfo.hasCache ? (
+            <div className="bg-green-900/30 border border-green-500/30 rounded-lg p-4">
+              <p className="text-green-200 text-sm font-semibold mb-2">⚡ Cached Data Available</p>
+              <p className="text-green-300 text-xs">
+                Cached data loaded instantly, now fetching fresh updates in background
+              </p>
+            </div>
+          ) : (
+            <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-4 mt-4">
+              <p className="text-blue-200 text-sm font-semibold mb-2">💡 First Load Performance Notice</p>
+              <p className="text-blue-300 text-xs">
+                This first load will take 30+ seconds as we fetch and calculate all tank data. 
+                However, we're caching everything locally so your next app load will be under 1 second!
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
     );
   }
 
   // Show error screen if connection failed
   if (error && stores.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
-        <div className="text-center max-w-md mx-auto">
-          <div className="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-6">
+          <div className="bg-red-900/20 border border-red-500/30 rounded-xl p-8">
             <div className="text-red-400 text-6xl mb-4">⚠️</div>
             <h1 className="text-2xl font-bold text-white mb-4">Connection Failed</h1>
-            <p className="text-red-300 mb-6 text-sm">{error}</p>
-            
-            {connectionTimeout && (
-              <div className="bg-yellow-900/30 border border-yellow-500/30 rounded-lg p-4 mb-4">
-                <p className="text-yellow-200 text-sm">
-                  This may be due to a slow mobile connection. Please try again.
-                </p>
-              </div>
-            )}
-            
-            <div className="space-y-3">
+            <p className="text-red-300 mb-6">{error}</p>
+            <div className="space-y-4">
               <button
                 onClick={handleRefresh}
                 className="w-full bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg text-white font-medium transition-colors"
@@ -199,10 +127,9 @@ function App() {
                 Refresh Page
               </button>
             </div>
-            
-            <p className="text-slate-400 text-xs mt-6">
-              The application requires a connection to the Dashboard API. 
-              Please check your internet connection and try again.
+            <p className="text-slate-400 text-sm mt-6">
+              The application requires a connection to load data. 
+              Please check your internet connection and server status.
             </p>
           </div>
         </div>
@@ -230,6 +157,7 @@ function App() {
           onViewAll={handleViewAll}
           loading={loading}
           newStoreDetected={newStoreDetected}
+          cacheInfo={cacheInfo}
         />
       )}
 
