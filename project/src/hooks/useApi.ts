@@ -132,125 +132,83 @@ const processStoreDataFull = async (rawStore: any, useCache: boolean = true): Pr
       const analytics = rawTank.analytics || {};
       const serverConfig = rawTank.configuration;
       
-      // Use server configuration first, then create profile with server data
-      const profile = serverConfig ? {
+      // REMOVED FALLBACK - NO PROFILE CREATION
+      const serverConfig = rawTank.configuration;
+      console.log(`🔍 DEBUG serverConfig for tank ${rawTank.tank_id}:`, JSON.stringify(serverConfig, null, 2));
+      
+      if (!serverConfig) {
+        console.error(`❌ CRITICAL ERROR: No configuration data for tank ${rawTank.tank_id}`);
+        throw new Error(`No configuration for tank ${rawTank.tank_id}`);
+      }
+      
+      const profile = {
         store_name: rawStore.store_name,
         tank_id: rawTank.tank_id,
         tank_name: rawTank.tank_name,
         max_capacity_gallons: serverConfig.max_capacity_gallons,
         critical_height_inches: serverConfig.critical_height_inches,
         warning_height_inches: serverConfig.warning_height_inches,
-      } : createTankProfile(rawStore.store_name, rawTank.tank_id);
+      };
       
       // Get historical data for run rate calculation (only if not already processed)
       let logs: any[] = [];
-      let runRate = analytics.run_rate || 0.5;
-      let hoursTo10 = analytics.hours_to_critical || 0;
-      let status: 'normal' | 'warning' | 'critical' = rawTank.current_status || 'normal';
+      console.log(`🔍 DEBUG analytics for tank ${rawTank.tank_id}:`, JSON.stringify(analytics, null, 2));
+      
+      if (!analytics) {
+        console.error(`❌ CRITICAL ERROR: No analytics data for tank ${rawTank.tank_id}`);
+        throw new Error(`No analytics data for tank ${rawTank.tank_id}`);
+      }
+      
+      let runRate = analytics.run_rate;
+      let hoursTo10 = analytics.hours_to_critical;
+      let status: 'normal' | 'warning' | 'critical' = rawTank.current_status;
+      
+      console.log(`🔍 DEBUG EXTRACTED VALUES for tank ${rawTank.tank_id}:`);
+      console.log(`🔍   runRate:`, runRate);
+      console.log(`🔍   hoursTo10:`, hoursTo10);
+      console.log(`🔍   status:`, status);
+      
+      if (runRate === undefined || runRate === null) {
+        console.error(`❌ CRITICAL ERROR: No run_rate in analytics for tank ${rawTank.tank_id}`);
+        throw new Error(`No run_rate for tank ${rawTank.tank_id}`);
+      }
+      
+      if (hoursTo10 === undefined || hoursTo10 === null) {
+        console.error(`❌ CRITICAL ERROR: No hours_to_critical in analytics for tank ${rawTank.tank_id}`);
+        throw new Error(`No hours_to_critical for tank ${rawTank.tank_id}`);
+      }
+      
+      if (!status) {
+        console.error(`❌ CRITICAL ERROR: No current_status for tank ${rawTank.tank_id}`);
+        throw new Error(`No current_status for tank ${rawTank.tank_id}`);
+      }
       let predictedTime: string | undefined = analytics.predicted_empty;
       let capacityPercentage = 0;
 
-      // Calculate capacity percentage using server configuration 
+      // Calculate capacity percentage using server configuration ONLY
       const latestReading = rawTank.latest_reading;
-      if (latestReading && serverConfig?.max_capacity_gallons) {
+      console.log(`🔍 DEBUG latestReading for tank ${rawTank.tank_id}:`, JSON.stringify(latestReading, null, 2));
+      
+      if (latestReading && serverConfig.max_capacity_gallons) {
         capacityPercentage = (latestReading.volume / serverConfig.max_capacity_gallons) * 100;
+        console.log(`🔍 DEBUG capacity calculation: ${latestReading.volume} / ${serverConfig.max_capacity_gallons} * 100 = ${capacityPercentage}%`);
+      } else {
+        console.error(`❌ CRITICAL ERROR: Cannot calculate capacity percentage`);
+        console.error(`❌   latestReading:`, latestReading);
+        console.error(`❌   serverConfig.max_capacity_gallons:`, serverConfig.max_capacity_gallons);
+        throw new Error(`Cannot calculate capacity percentage for tank ${rawTank.tank_id}`);
       }
 
       // If server analytics are available, use them directly (skip old calculation logic)
       if (analytics.run_rate !== undefined && analytics.hours_to_critical !== undefined) {
         console.log(`📋 Using server analytics for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
       } else {
-        // Fallback: calculate if not pre-processed
-        try {
-          logs = await ApiService.getTankHistoricalLogs(rawStore.store_name, rawTank.tank_id, 2);
-          
-          if (logs.length < 20) {
-            const recentLogs = await ApiService.getTankLogs(rawStore.store_name, rawTank.tank_id, 48);
-            if (recentLogs.length > logs.length) {
-              logs = recentLogs;
-            }
-          }
-        } catch (logError) {
-          console.warn(`Could not fetch logs for tank ${rawTank.tank_id}:`, logError);
-          logs = [];
-        }
-        
-        // Process logs efficiently
-        const processedLogs: TankLog[] = logs
-          .map(log => {
-            try {
-              return {
-                id: log.id || 0,
-                store_name: log.store_name || rawStore.store_name,
-                tank_id: log.tank_id || rawTank.tank_id,
-                product: log.product || rawTank.tank_name || profile.tank_name,
-                volume: Number(log.volume) || 0,
-                tc_volume: Number(log.tc_volume) || 0,
-                ullage: Number(log.ullage) || 0,
-                height: Number(log.height) || 0,
-                water: Number(log.water) || 0,
-                temp: Number(log.temp) || 0,
-                timestamp: log.timestamp || new Date().toISOString(),
-              };
-            } catch (error) {
-              return null;
-            }
-          })
-          .filter((log): log is TankLog => log !== null)
-          .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
-
-        const latestLog = rawTank.latest_log;
-
-        // Prepare input for caching system
-        const cacheInput = {
-          logs: processedLogs,
-          profile: profile,
-          latest_log: latestLog,
-        };
-
-        // Try to get cached run rate data first
-        const cachedData = RunRateCache.getCachedRunRate(rawStore.store_name, rawTank.tank_id, cacheInput);
-        
-        if (cachedData && RunRateCache.isValidRunRate(cachedData.run_rate)) {
-          runRate = cachedData.run_rate;
-          hoursTo10 = cachedData.hours_to_10_inches;
-          status = cachedData.status;
-          predictedTime = cachedData.predicted_time;
-          capacityPercentage = cachedData.capacity_percentage;
-        } else {
-          // Calculate fresh data
-          runRate = calculateRunRate(processedLogs, profile);
-          
-          if (!RunRateCache.isValidRunRate(runRate)) {
-            runRate = 0.5; // Safe fallback
-          }
-          
-          if (latestLog && typeof latestLog.height === 'number' && isFinite(latestLog.height)) {
-            hoursTo10 = calculateHoursTo10Inches(latestLog.height, runRate, profile);
-            status = getTankStatus(latestLog.height, hoursTo10, profile);
-            capacityPercentage = getTankCapacityPercentage(Number(latestLog.tc_volume) || 0, profile);
-            
-            if (hoursTo10 > 0) {
-              try {
-                const predicted = predictDepletionTime(new Date(latestLog.timestamp), hoursTo10, rawStore.store_name);
-                predictedTime = predicted.toISOString();
-              } catch (error) {
-                console.warn('Error predicting depletion time:', error);
-              }
-            }
-          }
-
-          // Cache the calculated data
-          if (RunRateCache.isValidRunRate(runRate)) {
-            RunRateCache.cacheRunRate(rawStore.store_name, rawTank.tank_id, cacheInput, {
-              run_rate: runRate,
-              hours_to_10_inches: hoursTo10,
-              predicted_time: predictedTime,
-              status: status,
-              capacity_percentage: capacityPercentage,
-            });
-          }
-        }
+        // NO FALLBACK CALCULATION - SERVER MUST PROVIDE ANALYTICS
+        console.error(`❌ CRITICAL ERROR: Server analytics missing for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
+        console.error(`❌   analytics object:`, analytics);
+        console.error(`❌   analytics.run_rate:`, analytics.run_rate);
+        console.error(`❌   analytics.hours_to_critical:`, analytics.hours_to_critical);
+        throw new Error(`Server analytics missing for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
       }
 
       return {

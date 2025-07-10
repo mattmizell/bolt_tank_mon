@@ -11,29 +11,55 @@ export class ApiService {
 
   // Initialize API service
   static async initialize(): Promise<void> {
+    console.log(`🚀🔍 MASSIVE DEBUG ApiService.initialize START ===================`);
+    console.log(`🔍 DEBUG this.initialized: ${this.initialized}`);
+    
     if (this.initialized) {
+      console.log(`🔍 DEBUG Already initialized, skipping`);
       return; // Already initialized
     }
 
     console.log('🔄 Initializing Central Tank Server API...');
+    console.log(`🔍 DEBUG Setting initialized to true`);
     this.initialized = true;
+    console.log(`🚀🔍 MASSIVE DEBUG ApiService.initialize END ===================`);
   }
 
   private static async request<T>(endpoint: string, options?: RequestInit & { cacheKey?: string; cacheDuration?: number }): Promise<T> {
+    console.log(`🌐🔍 MASSIVE DEBUG API REQUEST START ===================`);
+    console.log(`🔍 DEBUG endpoint: ${endpoint}`);
+    console.log(`🔍 DEBUG full URL: ${API_BASE_URL}${endpoint}`);
+    console.log(`🔍 DEBUG options:`, JSON.stringify(options, null, 2));
+    
     try {
       const cacheKey = options?.cacheKey || endpoint;
       const cacheDuration = options?.cacheDuration || CACHE_DURATION;
       
+      console.log(`🔍 DEBUG cacheKey: ${cacheKey}`);
+      console.log(`🔍 DEBUG cacheDuration: ${cacheDuration}ms`);
+      
       // Check cache first
       if (requestCache.has(cacheKey)) {
         const cached = requestCache.get(cacheKey)!;
-        if (Date.now() - cached.timestamp < cacheDuration) {
+        const age = Date.now() - cached.timestamp;
+        console.log(`🔍 DEBUG cache found, age: ${age}ms (limit: ${cacheDuration}ms)`);
+        if (age < cacheDuration) {
+          console.log(`🔍 DEBUG using cached data for ${endpoint}`);
           return cached.data;
+        } else {
+          console.log(`🔍 DEBUG cache expired for ${endpoint}`);
         }
+      } else {
+        console.log(`🔍 DEBUG no cache for ${endpoint}`);
       }
       
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000);
+      const timeoutId = setTimeout(() => {
+        console.error(`❌ TIMEOUT: Request to ${endpoint} timed out after 15 seconds`);
+        controller.abort();
+      }, 15000);
+      
+      console.log(`🔍 DEBUG making HTTP request to: ${API_BASE_URL}${endpoint}`);
       
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         ...options,
@@ -42,28 +68,58 @@ export class ApiService {
       
       clearTimeout(timeoutId);
       
+      console.log(`🔍 DEBUG response status: ${response.status}`);
+      console.log(`🔍 DEBUG response statusText: ${response.statusText}`);
+      console.log(`🔍 DEBUG response ok: ${response.ok}`);
+      console.log(`🔍 DEBUG response headers:`, Object.fromEntries(response.headers.entries()));
+      
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        console.error(`❌ HTTP ERROR: ${response.status} ${response.statusText} for ${endpoint}`);
+        const errorText = await response.text();
+        console.error(`❌ Error response body:`, errorText);
+        throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
       }
       
-      const data = await response.json();
+      const responseText = await response.text();
+      console.log(`🔍 DEBUG raw response text length: ${responseText.length}`);
+      console.log(`🔍 DEBUG raw response text (first 500 chars):`, responseText.substring(0, 500));
+      
+      let data: T;
+      try {
+        data = JSON.parse(responseText);
+        console.log(`🔍 DEBUG parsed JSON data:`, JSON.stringify(data, null, 2));
+      } catch (parseError) {
+        console.error(`❌ JSON PARSE ERROR for ${endpoint}:`, parseError);
+        console.error(`❌ Response text that failed to parse:`, responseText);
+        throw new Error(`Invalid JSON response from ${endpoint}: ${parseError}`);
+      }
       
       // Cache the response
       requestCache.set(cacheKey, { data, timestamp: Date.now() });
+      console.log(`🔍 DEBUG cached response for ${cacheKey}`);
       
       // Clean old cache entries periodically
       if (requestCache.size > 50) {
         const now = Date.now();
+        let cleanedCount = 0;
         for (const [key, value] of requestCache.entries()) {
           if (now - value.timestamp > cacheDuration * 2) {
             requestCache.delete(key);
+            cleanedCount++;
           }
         }
+        console.log(`🔍 DEBUG cleaned ${cleanedCount} old cache entries`);
       }
       
+      console.log(`🌐🔍 MASSIVE DEBUG API REQUEST SUCCESS END ===================`);
       return data;
     } catch (error) {
-      console.error('API request failed:', error);
+      console.error(`❌ CRITICAL API REQUEST ERROR for ${endpoint}:`, error);
+      console.error(`❌ Error type:`, typeof error);
+      console.error(`❌ Error name:`, error instanceof Error ? error.name : 'Unknown');
+      console.error(`❌ Error message:`, error instanceof Error ? error.message : error);
+      console.error(`❌ Error stack:`, error instanceof Error ? error.stack : 'No stack');
+      console.log(`🌐🔍 MASSIVE DEBUG API REQUEST ERROR END ===================`);
       throw error;
     }
   }
@@ -91,30 +147,71 @@ export class ApiService {
     // Ensure initialization
     await this.initialize();
     
-    console.log('📊 Fetching stores with analytics from Central Tank Server...');
-    console.log('🔍 DEBUG: API_BASE_URL:', 'https://central-tank-server.onrender.com');
+    console.log('🚀🔍 MASSIVE DEBUG getAllStoresData START ===================');
+    console.log('🔍 DEBUG: API_BASE_URL:', API_BASE_URL);
     
     try {
+      console.log('🔍 DEBUG: Attempting /dashboard/stores endpoint...');
+      
       // Use dashboard API for better performance and analytics
       const stores = await this.request('/dashboard/stores', {
         cacheKey: 'dashboard-stores',
         cacheDuration: 2 * 60 * 1000, // 2 minutes
       });
       
+      console.log('🔍 DEBUG: /dashboard/stores response:', JSON.stringify(stores, null, 2));
+      console.log('🔍 DEBUG: stores array length:', stores?.length);
+      
+      if (!stores || !Array.isArray(stores)) {
+        console.error('❌ CRITICAL: /dashboard/stores did not return an array');
+        console.error('❌ Response type:', typeof stores);
+        console.error('❌ Response value:', stores);
+        throw new Error('Invalid response from /dashboard/stores - not an array');
+      }
+      
       // Get detailed data for each store with server-calculated analytics
       const detailedStores = [];
-      for (const store of stores) {
-        const storeData = await this.request(`/dashboard/stores/${store.store_name}`, {
+      for (let i = 0; i < stores.length; i++) {
+        const store = stores[i];
+        console.log(`🔍 DEBUG: Processing store ${i + 1}/${stores.length}: ${store.store_name}`);
+        
+        const storeDetailUrl = `/dashboard/stores/${store.store_name}`;
+        console.log(`🔍 DEBUG: Fetching store details from: ${storeDetailUrl}`);
+        
+        const storeData = await this.request(storeDetailUrl, {
           cacheKey: `store-${store.store_name}`,
           cacheDuration: 2 * 60 * 1000,
         });
+        
+        console.log(`🔍 DEBUG: Store ${store.store_name} response:`, JSON.stringify(storeData, null, 2));
+        console.log(`🔍 DEBUG: Store ${store.store_name} tanks count:`, storeData?.tanks?.length);
+        
+        if (storeData?.tanks) {
+          storeData.tanks.forEach((tank: any, tankIndex: number) => {
+            console.log(`🔍 DEBUG: Tank ${tankIndex + 1} in ${store.store_name}:`);
+            console.log(`🔍 DEBUG:   tank_id: ${tank.tank_id}`);
+            console.log(`🔍 DEBUG:   tank_name: ${tank.tank_name}`);
+            console.log(`🔍 DEBUG:   configuration: ${JSON.stringify(tank.configuration)}`);
+            console.log(`🔍 DEBUG:   analytics: ${JSON.stringify(tank.analytics)}`);
+            console.log(`🔍 DEBUG:   latest_reading: ${JSON.stringify(tank.latest_reading)}`);
+            console.log(`🔍 DEBUG:   current_status: ${tank.current_status}`);
+          });
+        }
+        
         detailedStores.push(storeData);
       }
       
+      console.log(`🔍 DEBUG: Final detailedStores array:`, JSON.stringify(detailedStores, null, 2));
       console.log(`✅ Fetched ${detailedStores.length} stores with server analytics`);
+      console.log('🚀🔍 MASSIVE DEBUG getAllStoresData END ===================');
       return detailedStores;
     } catch (error) {
-      console.error('❌ Dashboard endpoint failed:', error);
+      console.error('❌ CRITICAL API ERROR in getAllStoresData:', error);
+      console.error('❌ Error type:', typeof error);
+      console.error('❌ Error message:', error instanceof Error ? error.message : 'Unknown error');
+      console.error('❌ Error stack:', error instanceof Error ? error.stack : 'No stack');
+      
+      // NO FALLBACK - LET ERROR BUBBLE UP
       throw new Error(`Dashboard API failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
