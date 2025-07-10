@@ -22,6 +22,16 @@ export interface TankLog {
   timestamp: string;
 }
 
+export interface TankConfiguration {
+  tank_id: number;
+  tank_name: string;
+  store_name: string;
+  product_type: string;
+  max_capacity_gallons: number;
+  critical_height_inches: number;
+  warning_height_inches: number;
+}
+
 export interface Tank {
   tank_id: number;
   tank_name: string;
@@ -33,6 +43,7 @@ export interface Tank {
   predicted_time?: string;
   status?: 'normal' | 'warning' | 'critical';
   profile?: TankProfile;
+  configuration?: TankConfiguration; // Server-provided tank configuration
   capacity_percentage?: number;
 }
 

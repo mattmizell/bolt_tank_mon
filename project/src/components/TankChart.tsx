@@ -181,7 +181,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
         product: tank.product,
         volume: currentVolume,
         tc_volume: currentVolume,
-        ullage: (tank.profile?.max_capacity_gallons || 10000) - currentVolume,
+        ullage: (tank.configuration?.max_capacity_gallons || tank.profile?.max_capacity_gallons || 10000) - currentVolume,
         height: currentHeight,
         water: tank.latest_log.water || 0,
         temp: tank.latest_log.temp || 70,
@@ -267,10 +267,9 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
     }
   });
 
-  // Calculate tank dimensions and levels
-  const maxDiameter = tank.profile?.diameter_inches || 96;
-  const criticalHeight = tank.profile?.critical_height_inches || 10;
-  const maxCapacity = tank.profile?.max_capacity_gallons || 10000;
+  // Get tank configuration from server (has actual capacity set in admin UI)
+  const criticalHeight = tank.configuration?.critical_height_inches || tank.profile?.critical_height_inches || 10;
+  const maxCapacity = tank.configuration?.max_capacity_gallons || tank.profile?.max_capacity_gallons || 10000;
   
   // Get 48-hour prediction from server analytics
   const predicted48hHeight = tank.analytics?.predicted_height_48h;
@@ -433,7 +432,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
           }
         },
         min: 0,
-        max: maxDiameter,
+        max: 100, // Max height in inches - no need for diameter calculations
       },
       y1: {
         type: 'linear' as const,
@@ -488,8 +487,8 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
       <div className="mt-3 grid grid-cols-2 gap-4 text-xs">
         <div className="text-slate-400">
           <div className="flex justify-between">
-            <span>Tank Diameter:</span>
-            <span className="text-white">{maxDiameter}"</span>
+            <span>Tank Capacity:</span>
+            <span className="text-white">{maxCapacity.toLocaleString()} gal</span>
           </div>
           <div className="flex justify-between">
             <span>Current Height:</span>
@@ -518,7 +517,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
         </div>
       </div>
       <div className="mt-2 text-xs text-slate-400 text-center">
-        Showing {getDataPeriod()} of data ({chartLogs.length} readings) • Tank Profile: {tank.profile?.diameter_inches}"Ø × {tank.profile?.length_inches}"L
+        Showing {getDataPeriod()} of data ({chartLogs.length} readings) • Capacity: {maxCapacity.toLocaleString()} gal
         {readOnly && <span className="text-yellow-400 ml-2">• READ ONLY VIEW</span>}
         {error && <span className="text-yellow-400 ml-2">• Using fallback data</span>}
       </div>
