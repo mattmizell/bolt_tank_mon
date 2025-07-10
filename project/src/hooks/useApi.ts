@@ -31,7 +31,6 @@ const processStoreDataFast = async (rawStore: any): Promise<Store> => {
 
   // Process tanks with minimal computation for fast display
   const fastTanks = rawStore.tanks.map((rawTank: any) => {
-    const profile = createTankProfile(rawStore.store_name, rawTank.tank_id);
     // NEW SERVER FORMAT: latest_reading instead of latest_log
     const latestReading = rawTank.latest_reading;
     const latestLog = latestReading ? {
@@ -53,12 +52,23 @@ const processStoreDataFast = async (rawStore: any): Promise<Store> => {
     let runRate = analytics.run_rate || 0.5;
     let hoursTo10 = analytics.hours_to_critical || 0;
     let status: 'normal' | 'warning' | 'critical' = rawTank.current_status || 'normal';
-    // Calculate capacity percentage using server configuration
+    
+    // Use server configuration first, then create profile with server data
     const serverConfig = rawTank.configuration;
+    const profile = serverConfig ? {
+      store_name: rawStore.store_name,
+      tank_id: rawTank.tank_id,
+      tank_name: rawTank.tank_name,
+      max_capacity_gallons: serverConfig.max_capacity_gallons,
+      critical_height_inches: serverConfig.critical_height_inches,
+      warning_height_inches: serverConfig.warning_height_inches,
+    } : createTankProfile(rawStore.store_name, rawTank.tank_id);
+    
+    // Calculate capacity percentage using server configuration
     let capacityPercentage = 0;
     if (latestReading && serverConfig?.max_capacity_gallons) {
       capacityPercentage = (latestReading.volume / serverConfig.max_capacity_gallons) * 100;
-    } else if (latestLog) {
+    } else if (latestLog && profile) {
       capacityPercentage = getTankCapacityPercentage(Number(latestLog.tc_volume) || 0, profile);
     }
 
