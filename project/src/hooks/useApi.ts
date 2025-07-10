@@ -19,7 +19,8 @@ const FAST_LOAD_CACHE_DURATION = 15 * 60 * 1000; // 15 minutes for fast load dat
 
 // Fast processing for initial load - minimal data processing
 const processStoreDataFast = async (rawStore: any): Promise<Store> => {
-  const fastCacheKey = `fast-${rawStore.store_name}-${rawStore.last_updated || Date.now()}`;
+  // Add version to cache key to invalidate old cached data after fixes
+  const fastCacheKey = `fast-v2-${rawStore.store_name}-${rawStore.last_updated || Date.now()}`;
   
   // Check fast cache first
   if (storeDataCache.has(fastCacheKey)) {
@@ -103,7 +104,8 @@ const processStoreDataFast = async (rawStore: any): Promise<Store> => {
 
 // Full processing for background updates
 const processStoreDataFull = async (rawStore: any, useCache: boolean = true): Promise<Store> => {
-  const cacheKey = `full-${rawStore.store_name}-${rawStore.last_updated || Date.now()}`;
+  // Add version to cache key to invalidate old cached data after fixes
+  const cacheKey = `full-v2-${rawStore.store_name}-${rawStore.last_updated || Date.now()}`;
   
   // Check cache first
   if (useCache && storeDataCache.has(cacheKey)) {
