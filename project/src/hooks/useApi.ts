@@ -32,58 +32,48 @@ const processStoreDataFast = async (rawStore: any): Promise<Store> => {
   // Process tanks with minimal computation for fast display
   const fastTanks = rawStore.tanks.map((rawTank: any) => {
     const profile = createTankProfile(rawStore.store_name, rawTank.tank_id);
-    const latestLog = rawTank.latest_log;
+    // NEW SERVER FORMAT: latest_reading instead of latest_log
+    const latestReading = rawTank.latest_reading;
+    const latestLog = latestReading ? {
+      id: 0,
+      store_name: rawStore.store_name,
+      tank_id: rawTank.tank_id,
+      product: rawTank.tank_name,
+      volume: latestReading.volume,
+      tc_volume: latestReading.volume, // Use same value
+      ullage: 0, // Not provided in new format
+      height: latestReading.height,
+      water: 0, // Not provided in new format  
+      temp: 70, // Default temp
+      timestamp: latestReading.timestamp,
+    } : undefined;
     
-    // Use cached run rate if available, otherwise use default
-    let runRate = rawTank.run_rate || 0.5;
-    let hoursTo10 = rawTank.hours_to_10_inches || 0;
-    let status: 'normal' | 'warning' | 'critical' = rawTank.status || 'normal';
-    let capacityPercentage = rawTank.capacity_percentage || 0;
-    
-    // Quick cache lookup without full processing
-    const cachedData = RunRateCache.getCachedData().find(
-      item => item.store_name === rawStore.store_name && item.tank_id === rawTank.tank_id
-    );
-    
-    if (cachedData && RunRateCache.isValidRunRate(cachedData.run_rate)) {
-      runRate = cachedData.run_rate;
-      hoursTo10 = cachedData.hours_to_10_inches;
-      status = cachedData.status;
-      capacityPercentage = cachedData.capacity_percentage;
-    } else if (latestLog && typeof latestLog.height === 'number') {
-      // Quick status determination based on height only
-      if (latestLog.height <= 10) {
-        status = 'critical';
-      } else if (latestLog.height <= 20) {
-        status = 'warning';
-      }
+    // Use server analytics if available
+    const analytics = rawTank.analytics || {};
+    let runRate = analytics.run_rate || 0.5;
+    let hoursTo10 = analytics.hours_to_critical || 0;
+    let status: 'normal' | 'warning' | 'critical' = rawTank.current_status || 'normal';
+    // Calculate capacity percentage using server configuration
+    const serverConfig = rawTank.configuration;
+    if (latestReading && serverConfig?.max_capacity_gallons) {
+      capacityPercentage = (latestReading.volume / serverConfig.max_capacity_gallons) * 100;
+    } else if (latestLog) {
       capacityPercentage = getTankCapacityPercentage(Number(latestLog.tc_volume) || 0, profile);
     }
 
     return {
       tank_id: rawTank.tank_id,
-      tank_name: profile.tank_name,
-      product: rawTank.product || rawTank.latest_log?.product || profile.tank_name,
-      latest_log: latestLog ? {
-        id: latestLog.id || 0,
-        store_name: latestLog.store_name || rawStore.store_name,
-        tank_id: latestLog.tank_id || rawTank.tank_id,
-        product: latestLog.product || profile.tank_name,
-        volume: Number(latestLog.volume) || 0,
-        tc_volume: Number(latestLog.tc_volume) || 0,
-        ullage: Number(latestLog.ullage) || 0,
-        height: Number(latestLog.height) || 0,
-        water: Number(latestLog.water) || 0,
-        temp: Number(latestLog.temp) || 0,
-        timestamp: latestLog.timestamp || new Date().toISOString(),
-      } : undefined,
+      tank_name: rawTank.tank_name, // Use server tank name directly
+      product: rawTank.tank_name, // Keep for backward compatibility but use tank_name
+      latest_log: latestLog,
       logs: [], // No logs for fast load
       run_rate: runRate,
       hours_to_10_inches: hoursTo10,
       status: status,
       profile: profile,
-      capacity_percentage: capacityPercentage,
-      predicted_time: rawTank.predicted_time,
+      configuration: serverConfig, // Add server configuration
+      capacity_percentage: Math.round(capacityPercentage),
+      predicted_time: analytics.predicted_empty,
     };
   });
 

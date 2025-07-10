@@ -80,7 +80,6 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
             <tr className="bg-slate-700">
               <th className="px-4 py-3 text-left text-sm font-semibold text-slate-200">Status</th>
               <th className="px-4 py-3 text-left text-sm font-semibold text-slate-200">Tank</th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-slate-200">Product</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">TC Volume</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Capacity Used</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">90% Ullage</th>
@@ -106,11 +105,8 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
                 <td className="px-4 py-3">
                   <div className="font-medium text-white">{tank.tank_name}</div>
                   <div className="text-sm text-slate-400">
-                    Tank {tank.tank_id} • {tank.profile?.max_capacity_gallons?.toLocaleString() || 'N/A'} gal
+                    Tank {tank.tank_id} • {tank.configuration?.max_capacity_gallons?.toLocaleString() || tank.profile?.max_capacity_gallons?.toLocaleString() || 'N/A'} gal
                   </div>
-                </td>
-                <td className="px-4 py-3">
-                  <span className="text-slate-300">{tank.product}</span>
                 </td>
                 <td className="px-4 py-3 text-right">
                   <span className="text-white font-mono">
