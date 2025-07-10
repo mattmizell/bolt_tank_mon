@@ -363,51 +363,6 @@ export class ConfigService {
           const productSource = tank.tank_name || tank.latest_log?.product || '';
           if (productSource) {
             const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
             if (product.includes('unleaded') || product.includes('unl')) {
               if (product.includes('premium') || product.includes('prem')) {
                 tankName = 'PREMIUM';
