@@ -1,4 +1,12 @@
-import { TankProfile } from '../services/tankProfile';
+// Simple tank profile interface - no dimensions needed
+export interface TankProfile {
+  store_name: string;
+  tank_id: number;
+  tank_name: string;
+  critical_height_inches: number;
+  warning_height_inches: number;
+  max_capacity_gallons: number;
+}
 
 export interface TankLog {
   id?: number;
@@ -64,11 +72,9 @@ export interface TankConfiguration {
   tank_id: number;
   tank_name: string;
   product_type: string;
-  diameter_inches: number;
-  length_inches: number;
   critical_height_inches: number;
   warning_height_inches: number;
-  max_capacity_gallons?: number;
+  max_capacity_gallons: number;
   // Alert Configuration (kept for configuration purposes)
   alerts_enabled?: boolean;
   alert_phone_number?: string; // Override for specific tank

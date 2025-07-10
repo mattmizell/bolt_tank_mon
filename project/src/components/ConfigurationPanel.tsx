@@ -293,53 +293,128 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
                     <h4 className="text-white font-medium mb-4">{store.store_name}</h4>
                     
                     <div className="space-y-4">
-                      {storeConfigs.map((config) => (
-                        <div key={`${config.store_name}-${config.tank_id}`} className="bg-slate-600 rounded p-3">
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                              <label className="block text-slate-300 text-sm mb-1">Tank Name</label>
-                              <input
-                                type="text"
-                                value={config.tank_name}
-                                onChange={(e) => handleTankConfigUpdate(config.store_name, config.tank_id, 'tank_name', e.target.value)}
-                                className="w-full bg-slate-500 text-white rounded px-3 py-2 text-sm"
-                              />
+                      {storeConfigs.map((config) => {
+                        // Check if this is a central server store (has live tank data)
+                        const relatedTank = store.tanks?.find(tank => tank.tank_id === config.tank_id);
+                        const isFromCentralServer = relatedTank?.latest_log?.timestamp;
+                        
+                        return (
+                          <div key={`${config.store_name}-${config.tank_id}`} className="bg-slate-600 rounded p-3">
+                            {isFromCentralServer && (
+                              <div className="mb-3 flex items-center space-x-2 text-green-400 text-xs">
+                                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span>Live data from Central Tank Server</span>
+                              </div>
+                            )}
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                              <div>
+                                <label className="block text-slate-300 text-sm mb-1">Tank Name</label>
+                                <input
+                                  type="text"
+                                  value={config.tank_name}
+                                  onChange={(e) => handleTankConfigUpdate(config.store_name, config.tank_id, 'tank_name', e.target.value)}
+                                  className="w-full bg-slate-500 text-white rounded px-3 py-2 text-sm"
+                                  disabled={isFromCentralServer}
+                                  title={isFromCentralServer ? "Tank name is managed by Central Tank Server" : ""}
+                                />
+                              </div>
+                              
+                              <div>
+                                <label className="block text-slate-300 text-sm mb-1">Product Type</label>
+                                <input
+                                  type="text"
+                                  value={config.product_type}
+                                  onChange={(e) => handleTankConfigUpdate(config.store_name, config.tank_id, 'product_type', e.target.value)}
+                                  className="w-full bg-slate-500 text-white rounded px-3 py-2 text-sm"
+                                />
+                              </div>
+                              
+                              <div>
+                                <label className="block text-slate-300 text-sm mb-1">
+                                  Tank Capacity (gallons)
+                                  <span className="text-slate-400 ml-1 text-xs">• Actual tank volume</span>
+                                </label>
+                                <input
+                                  type="number"
+                                  value={config.max_capacity_gallons || 10000}
+                                  onChange={(e) => handleTankConfigUpdate(config.store_name, config.tank_id, 'max_capacity_gallons', parseFloat(e.target.value))}
+                                  className="w-full bg-slate-500 text-white rounded px-3 py-2 text-sm"
+                                  min="1000"
+                                  max="25000"
+                                  step="100"
+                                />
+                              </div>
+                              
+                              <div>
+                                <label className="block text-slate-300 text-sm mb-1">
+                                  Critical Level (inches)
+                                  <span className="text-slate-400 ml-1 text-xs">• Industry standard: 10"</span>
+                                </label>
+                                <input
+                                  type="number"
+                                  value={config.critical_height_inches}
+                                  onChange={(e) => handleTankConfigUpdate(config.store_name, config.tank_id, 'critical_height_inches', parseFloat(e.target.value))}
+                                  className="w-full bg-slate-500 text-white rounded px-3 py-2 text-sm"
+                                  min="1"
+                                  max="50"
+                                />
+                              </div>
                             </div>
                             
-                            <div>
-                              <label className="block text-slate-300 text-sm mb-1">Product Type</label>
-                              <input
-                                type="text"
-                                value={config.product_type}
-                                onChange={(e) => handleTankConfigUpdate(config.store_name, config.tank_id, 'product_type', e.target.value)}
-                                className="w-full bg-slate-500 text-white rounded px-3 py-2 text-sm"
-                              />
+                            <div className="mt-3 flex items-center justify-between">
+                              <div className="flex items-center space-x-4">
+                                <label className="flex items-center space-x-2">
+                                  <input
+                                    type="checkbox"
+                                    checked={config.alerts_enabled !== false}
+                                    onChange={(e) => handleTankConfigUpdate(config.store_name, config.tank_id, 'alerts_enabled', e.target.checked)}
+                                    className="rounded"
+                                  />
+                                  <span className="text-slate-300 text-sm">Enable Alerts</span>
+                                </label>
+                                
+                                {!isFromCentralServer && (
+                                  <label className="flex items-center space-x-2">
+                                    <input
+                                      type="checkbox"
+                                      checked={config.is_manual_data || false}
+                                      onChange={(e) => handleTankConfigUpdate(config.store_name, config.tank_id, 'is_manual_data', e.target.checked)}
+                                      className="rounded"
+                                    />
+                                    <span className="text-slate-300 text-sm">Manual Data Entry</span>
+                                  </label>
+                                )}
+                              </div>
+                              
+                              {!isFromCentralServer && (
+                                <button
+                                  onClick={() => {
+                                    if (confirm(`Are you sure you want to delete tank "${config.tank_name}"? This cannot be undone.`)) {
+                                      const updated = tankConfigs.filter(c => 
+                                        !(c.store_name === config.store_name && c.tank_id === config.tank_id)
+                                      );
+                                      setTankConfigs(updated);
+                                      ConfigService.saveTankConfigurations(updated);
+                                    }
+                                  }}
+                                  className="text-red-400 hover:text-red-300 text-sm px-2 py-1 rounded hover:bg-red-900/30 transition-colors"
+                                  title="Delete tank configuration"
+                                >
+                                  Delete Tank
+                                </button>
+                              )}
                             </div>
                             
-                            <div>
-                              <label className="block text-slate-300 text-sm mb-1">Critical Level (inches)</label>
-                              <input
-                                type="number"
-                                value={config.critical_height_inches}
-                                onChange={(e) => handleTankConfigUpdate(config.store_name, config.tank_id, 'critical_height_inches', parseFloat(e.target.value))}
-                                className="w-full bg-slate-500 text-white rounded px-3 py-2 text-sm"
-                              />
-                            </div>
+                            {isFromCentralServer && (
+                              <div className="mt-2 text-xs text-slate-400 bg-slate-700 rounded p-2">
+                                ⚠️ This tank receives live data from the Central Tank Server. 
+                                Tank name and some settings are managed centrally and cannot be deleted from here.
+                              </div>
+                            )}
                           </div>
-                          
-                          <div className="mt-3 flex items-center space-x-4">
-                            <label className="flex items-center space-x-2">
-                              <input
-                                type="checkbox"
-                                checked={config.alerts_enabled !== false}
-                                onChange={(e) => handleTankConfigUpdate(config.store_name, config.tank_id, 'alerts_enabled', e.target.checked)}
-                                className="rounded"
-                              />
-                              <span className="text-slate-300 text-sm">Enable Alerts</span>
-                            </label>
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 );

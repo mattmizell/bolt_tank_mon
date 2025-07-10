@@ -2,14 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { Store } from '../types';
 import { ApiService } from '../services/api';
 import { SmartCache } from '../services/smartCache';
-import { 
-  createTankProfile, 
-  calculateRunRate, 
-  calculateHoursTo10Inches, 
-  getTankStatus, 
-  predictDepletionTime,
-  getTankCapacityPercentage
-} from '../services/tankProfile';
+import { calculateSimpleTankMetrics } from '../services/tankAnalytics';
 import { ConfigService } from '../services/configService';
 
 export const useSmartCache = () => {
@@ -34,57 +27,40 @@ export const useSmartCache = () => {
 
       for (const rawTank of rawStore.tanks) {
         try {
-          const profile = createTankProfile(rawStore.store_name, rawTank.tank_id);
+          // Use simplified analytics - no tank geometry required!
+          const latestLog = rawTank.latest_log;
+          const currentHeight = Number(latestLog?.height) || 0;
+          const currentVolume = Number(latestLog?.tc_volume) || 0;
           
-          let runRate = rawTank.run_rate || 0.5;
-          let hoursTo10 = rawTank.hours_to_10_inches || 0;
-          let status: 'normal' | 'warning' | 'critical' = rawTank.status || 'normal';
-          let predictedTime: string | undefined = rawTank.predicted_time;
-          let capacityPercentage = rawTank.capacity_percentage || 0;
+          // Get historical data for this tank (quick fetch for calculations only)
           let historicalLogs: any[] = [];
-
-          // Skip historical data fetch during initial load - charts will load their own data
-          // This prevents the app from hanging on initial load
           try {
-            console.log(`📈 Skipping historical data fetch for initial load - charts will load independently`);
-            historicalLogs = []; // Charts will fetch their own data when needed
-            console.log(`✅ Deferred historical data loading for performance`);
+            // Try to get some recent history for calculations (not for charts)
+            historicalLogs = await ApiService.getTankLogs(rawStore.store_name, rawTank.tank_id, 72); // 3 days
+            console.log(`📊 Retrieved ${historicalLogs.length} logs for analytics calculation`);
           } catch (logError) {
             console.warn(`⚠️ Could not fetch historical logs for ${rawStore.store_name} Tank ${rawTank.tank_id}:`, logError);
             historicalLogs = [];
           }
 
-          // If no pre-calculated data, calculate it from the historical logs we just fetched
-          if (!rawTank.run_rate && historicalLogs.length >= 5) {
-            console.log(`🔢 Calculating run rate from ${historicalLogs.length} historical logs...`);
-            runRate = calculateRunRate(historicalLogs, profile);
-          }
-
-          const latestLog = rawTank.latest_log;
-          if (typeof latestLog?.height === 'number' && isFinite(latestLog.height)) {
-            hoursTo10 = calculateHoursTo10Inches(latestLog.height, runRate, profile);
-            status = getTankStatus(latestLog.height, hoursTo10, profile);
-            capacityPercentage = getTankCapacityPercentage(Number(latestLog.tc_volume) || 0, profile);
-            
-            if (hoursTo10 > 0) {
-              try {
-                const predicted = predictDepletionTime(new Date(latestLog.timestamp), hoursTo10, rawStore.store_name);
-                predictedTime = predicted.toISOString();
-              } catch (error) {
-                console.warn('Error predicting depletion time:', error);
-              }
-            }
-          }
+          // Calculate ALL metrics using the simplified approach
+          const metrics = calculateSimpleTankMetrics(
+            rawStore.store_name,
+            rawTank.tank_id,
+            historicalLogs,
+            currentHeight,
+            currentVolume
+          );
 
           processedTanks.push({
             tank_id: rawTank.tank_id,
-            tank_name: profile.tank_name,
-            product: rawTank.product || rawTank.latest_log?.product || profile.tank_name,
+            tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+            product: rawTank.product || rawTank.latest_log?.product || 'Unknown',
             latest_log: rawTank.latest_log ? {
               id: rawTank.latest_log.id || 0,
               store_name: rawTank.latest_log.store_name || rawStore.store_name,
               tank_id: rawTank.latest_log.tank_id || rawTank.tank_id,
-              product: rawTank.latest_log.product || profile.tank_name,
+              product: rawTank.latest_log.product || 'Unknown',
               volume: Number(rawTank.latest_log.volume) || 0,
               tc_volume: Number(rawTank.latest_log.tc_volume) || 0,
               ullage: Number(rawTank.latest_log.ullage) || 0,
@@ -93,28 +69,44 @@ export const useSmartCache = () => {
               temp: Number(rawTank.latest_log.temp) || 0,
               timestamp: rawTank.latest_log.timestamp || new Date().toISOString(),
             } : undefined,
-            logs: historicalLogs, // Include the 10 days of real historical data
-            run_rate: runRate,
-            hours_to_10_inches: hoursTo10,
-            predicted_time: predictedTime,
-            status: status,
-            profile: profile,
-            capacity_percentage: capacityPercentage,
+            logs: [], // Charts will load their own data independently
+            // Use simplified analytics results
+            run_rate: metrics.run_rate_inches_per_hour,
+            hours_to_10_inches: metrics.hours_to_10_inches,
+            predicted_time: metrics.predicted_time_to_10in,
+            status: metrics.status,
+            capacity_percentage: metrics.capacity_percentage,
+            // Simple profile - no dimensions
+            profile: {
+              store_name: rawStore.store_name,
+              tank_id: rawTank.tank_id,
+              tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+              max_capacity_gallons: 10000, // Default capacity (configurable in admin)
+              critical_height_inches: 10,
+              warning_height_inches: 20,
+            },
           });
         } catch (error) {
           console.error(`Error processing tank ${rawTank.tank_id}:`, error);
-          const profile = createTankProfile(rawStore.store_name, rawTank.tank_id);
+          // Fallback for errors - simplified
           processedTanks.push({
             tank_id: rawTank.tank_id,
-            tank_name: profile.tank_name,
-            product: rawTank.latest_log?.product || profile.tank_name,
+            tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+            product: rawTank.latest_log?.product || 'Unknown',
             latest_log: rawTank.latest_log,
             logs: [],
-            run_rate: 0.5,
+            run_rate: 0.1, // Default inches per hour
             hours_to_10_inches: 0,
             status: 'normal' as const,
-            profile: profile,
             capacity_percentage: 0,
+            profile: {
+              store_name: rawStore.store_name,
+              tank_id: rawTank.tank_id,
+              tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+              max_capacity_gallons: 10000,
+              critical_height_inches: 10,
+              warning_height_inches: 20,
+            },
           });
         }
       }

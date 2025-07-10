@@ -249,17 +249,25 @@ const processStoreDataFull = async (rawStore: any, useCache: boolean = true): Pr
     } catch (error) {
       console.error(`Error processing tank ${rawTank.tank_id} for store ${rawStore.store_name}:`, error);
       
-      const profile = createTankProfile(rawStore.store_name, rawTank.tank_id);
       return {
         tank_id: rawTank.tank_id,
-        tank_name: profile.tank_name,
-        product: rawTank.latest_log?.product || profile.tank_name,
+        tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+        product: rawTank.latest_log?.product || 'Unknown',
         latest_log: rawTank.latest_log,
         logs: [],
-        run_rate: 0.5,
+        run_rate: 0.1, // Default inches per hour
         hours_to_10_inches: 0,
         status: 'normal' as const,
-        profile: profile,
+        profile: {
+          store_name: rawStore.store_name,
+          tank_id: rawTank.tank_id,
+          tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+          diameter_inches: 96,
+          length_inches: 319.3,
+          max_capacity_gallons: 8000,
+          critical_height_inches: 10,
+          warning_height_inches: 20,
+        },
         capacity_percentage: 0,
       };
     }

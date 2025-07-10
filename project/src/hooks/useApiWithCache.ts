@@ -2,14 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { Store } from '../types';
 import { ApiService } from '../services/api';
 import { LocalCache } from '../services/localCache';
-import { 
-  createTankProfile, 
-  calculateRunRate, 
-  calculateHoursTo10Inches, 
-  getTankStatus, 
-  predictDepletionTime,
-  getTankCapacityPercentage
-} from '../services/tankProfile';
+import { calculateSimpleTankMetrics } from '../services/tankAnalytics';
 import { ConfigService } from '../services/configService';
 
 export const useApiWithCache = () => {
@@ -35,61 +28,52 @@ export const useApiWithCache = () => {
 
       for (const rawTank of rawStore.tanks) {
         try {
-          const profile = createTankProfile(rawStore.store_name, rawTank.tank_id);
+          // Use simplified analytics - no tank geometry required!
+          const latestLog = rawTank.latest_log;
+          const currentHeight = Number(latestLog?.height) || 0;
+          const currentVolume = Number(latestLog?.tc_volume) || 0;
           
-          // Always do full calculations for caching
-          let runRate = 0.5;
-          let hoursTo10 = 0;
-          let status: 'normal' | 'warning' | 'critical' = 'normal';
-          let predictedTime: string | undefined;
-          let capacityPercentage = 0;
-
+          let metrics;
+          
           // Use pre-calculated data if available (from Supabase)
           if (rawTank.run_rate && rawTank.hours_to_10_inches !== undefined) {
-            runRate = rawTank.run_rate;
-            hoursTo10 = rawTank.hours_to_10_inches;
-            status = rawTank.status || 'normal';
-            predictedTime = rawTank.predicted_time;
-            capacityPercentage = rawTank.capacity_percentage || 0;
-          } else if (rawTank.latest_log) {
-            // Calculate if not pre-calculated
-            const latestLog = rawTank.latest_log;
-            
-            // Get historical data for run rate calculation
+            metrics = {
+              current_height_inches: currentHeight,
+              current_volume_gallons: currentVolume,
+              run_rate_inches_per_hour: rawTank.run_rate,
+              hours_to_10_inches: rawTank.hours_to_10_inches,
+              predicted_time_to_10in: rawTank.predicted_time,
+              status: rawTank.status || 'normal',
+              capacity_percentage: rawTank.capacity_percentage || 0
+            };
+          } else {
+            // Get historical data for calculation (quick fetch)
+            let historicalLogs: any[] = [];
             try {
-              const logs = await ApiService.getTankLogs(rawStore.store_name, rawTank.tank_id, 48);
-              if (logs.length >= 5) {
-                runRate = calculateRunRate(logs, profile);
-              }
+              historicalLogs = await ApiService.getTankLogs(rawStore.store_name, rawTank.tank_id, 72); // 3 days
             } catch (logError) {
               console.warn(`Could not fetch logs for ${rawStore.store_name} Tank ${rawTank.tank_id}:`, logError);
             }
-
-            if (typeof latestLog.height === 'number' && isFinite(latestLog.height)) {
-              hoursTo10 = calculateHoursTo10Inches(latestLog.height, runRate, profile);
-              status = getTankStatus(latestLog.height, hoursTo10, profile);
-              capacityPercentage = getTankCapacityPercentage(Number(latestLog.tc_volume) || 0, profile);
-              
-              if (hoursTo10 > 0) {
-                try {
-                  const predicted = predictDepletionTime(new Date(latestLog.timestamp), hoursTo10, rawStore.store_name);
-                  predictedTime = predicted.toISOString();
-                } catch (error) {
-                  console.warn('Error predicting depletion time:', error);
-                }
-              }
-            }
+            
+            // Calculate using simplified approach
+            metrics = calculateSimpleTankMetrics(
+              rawStore.store_name,
+              rawTank.tank_id,
+              historicalLogs,
+              currentHeight,
+              currentVolume
+            );
           }
 
           processedTanks.push({
             tank_id: rawTank.tank_id,
-            tank_name: profile.tank_name,
-            product: rawTank.product || rawTank.latest_log?.product || profile.tank_name,
+            tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+            product: rawTank.product || rawTank.latest_log?.product || 'Unknown',
             latest_log: rawTank.latest_log ? {
               id: rawTank.latest_log.id || 0,
               store_name: rawTank.latest_log.store_name || rawStore.store_name,
               tank_id: rawTank.latest_log.tank_id || rawTank.tank_id,
-              product: rawTank.latest_log.product || profile.tank_name,
+              product: rawTank.latest_log.product || 'Unknown',
               volume: Number(rawTank.latest_log.volume) || 0,
               tc_volume: Number(rawTank.latest_log.tc_volume) || 0,
               ullage: Number(rawTank.latest_log.ullage) || 0,
@@ -99,27 +83,44 @@ export const useApiWithCache = () => {
               timestamp: rawTank.latest_log.timestamp || new Date().toISOString(),
             } : undefined,
             logs: rawTank.logs || [],
-            run_rate: runRate,
-            hours_to_10_inches: hoursTo10,
-            predicted_time: predictedTime,
-            status: status,
-            profile: profile,
-            capacity_percentage: capacityPercentage,
+            run_rate: metrics.run_rate_inches_per_hour,
+            hours_to_10_inches: metrics.hours_to_10_inches,
+            predicted_time: metrics.predicted_time_to_10in,
+            status: metrics.status,
+            profile: {
+              store_name: rawStore.store_name,
+              tank_id: rawTank.tank_id,
+              tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+              diameter_inches: 96, // Not used in calculations
+              length_inches: 319.3, // Not used in calculations
+              max_capacity_gallons: 8000, // Typical capacity
+              critical_height_inches: 10,
+              warning_height_inches: 20,
+            },
+            capacity_percentage: metrics.capacity_percentage,
           });
         } catch (error) {
           console.error(`Error processing tank ${rawTank.tank_id}:`, error);
-          // Add tank with safe defaults
-          const profile = createTankProfile(rawStore.store_name, rawTank.tank_id);
+          // Add tank with safe defaults - simplified
           processedTanks.push({
             tank_id: rawTank.tank_id,
-            tank_name: profile.tank_name,
-            product: rawTank.latest_log?.product || profile.tank_name,
+            tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+            product: rawTank.latest_log?.product || 'Unknown',
             latest_log: rawTank.latest_log,
             logs: [],
-            run_rate: 0.5,
+            run_rate: 0.1, // Default inches per hour
             hours_to_10_inches: 0,
             status: 'normal' as const,
-            profile: profile,
+            profile: {
+              store_name: rawStore.store_name,
+              tank_id: rawTank.tank_id,
+              tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+              diameter_inches: 96,
+              length_inches: 319.3,
+              max_capacity_gallons: 8000,
+              critical_height_inches: 10,
+              warning_height_inches: 20,
+            },
             capacity_percentage: 0,
           });
         }
@@ -158,7 +159,16 @@ export const useApiWithCache = () => {
         hours_to_10_inches: cachedTank.hours_to_10_inches,
         predicted_time: cachedTank.predicted_time,
         status: cachedTank.status,
-        profile: createTankProfile(cachedStore.store_name, cachedTank.tank_id),
+        profile: {
+          store_name: cachedStore.store_name,
+          tank_id: cachedTank.tank_id,
+          tank_name: cachedTank.tank_name,
+          diameter_inches: 96,
+          length_inches: 319.3,
+          max_capacity_gallons: 8000,
+          critical_height_inches: 10,
+          warning_height_inches: 20,
+        },
         capacity_percentage: cachedTank.capacity_percentage,
       })),
       last_updated: cachedStore.last_updated,

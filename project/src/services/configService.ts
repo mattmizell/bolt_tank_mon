@@ -30,7 +30,7 @@ const DEFAULT_STORE_HOURS: StoreHours[] = [
   },
 ];
 
-// Default tank configurations based on your original system
+// Default tank configurations - NO DIMENSIONS, only capacity and critical levels
 const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
   // Mascoutah tanks
   {
@@ -38,10 +38,9 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 1,
     tank_name: 'UNLEADED',
     product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
     critical_height_inches: 10,
     warning_height_inches: 20,
+    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
   {
@@ -49,10 +48,9 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 2,
     tank_name: 'PREMIUM',
     product_type: 'Premium Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
     critical_height_inches: 10,
     warning_height_inches: 20,
+    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
   {
@@ -60,10 +58,9 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 3,
     tank_name: 'DIESEL',
     product_type: 'Diesel',
-    diameter_inches: 96,
-    length_inches: 319.3,
     critical_height_inches: 10,
     warning_height_inches: 20,
+    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
   // North City tanks
@@ -72,10 +69,9 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 1,
     tank_name: 'UNL T1',
     product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
     critical_height_inches: 10,
     warning_height_inches: 20,
+    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
   {
@@ -83,10 +79,9 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 2,
     tank_name: 'UNL T2',
     product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
     critical_height_inches: 10,
     warning_height_inches: 20,
+    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
   {
@@ -94,10 +89,9 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 3,
     tank_name: 'UNL T3',
     product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
     critical_height_inches: 10,
     warning_height_inches: 20,
+    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
   {
@@ -105,10 +99,9 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 4,
     tank_name: 'PREM',
     product_type: 'Premium Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
     critical_height_inches: 10,
     warning_height_inches: 20,
+    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
   {
@@ -116,10 +109,9 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 5,
     tank_name: 'K1',
     product_type: 'Kerosene',
-    diameter_inches: 96,
-    length_inches: 319.3,
     critical_height_inches: 10,
     warning_height_inches: 20,
+    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
 ];
@@ -242,16 +234,16 @@ export class ConfigService {
     };
   }
 
-  // Tank Configuration Management (unchanged)
+  // Tank Configuration Management (uses manual capacity input)
   static getTankConfigurations(): TankConfiguration[] {
     try {
       const stored = localStorage.getItem(STORAGE_KEYS.TANK_CONFIGS);
       if (stored) {
         const configs = JSON.parse(stored);
-        // Calculate max capacity for each tank if not already set
+        // Use manual capacity or default to 10,000 gallons
         return configs.map((config: TankConfiguration) => ({
           ...config,
-          max_capacity_gallons: config.max_capacity_gallons || this.calculateMaxCapacity(config.diameter_inches, config.length_inches),
+          max_capacity_gallons: config.max_capacity_gallons || 10000, // Default capacity if not set
           alerts_enabled: config.alerts_enabled !== false, // Default to true
         }));
       }
@@ -259,10 +251,10 @@ export class ConfigService {
       console.error('Error loading tank configurations:', error);
     }
     
-    // Return default configs with calculated capacities
+    // Return default configs with their configured capacity
     return DEFAULT_TANK_CONFIGS.map(config => ({
       ...config,
-      max_capacity_gallons: this.calculateMaxCapacity(config.diameter_inches, config.length_inches),
+      max_capacity_gallons: config.max_capacity_gallons || 10000, // Use configured capacity or default
     }));
   }
 
@@ -285,10 +277,10 @@ export class ConfigService {
       c => c.store_name === config.store_name && c.tank_id === config.tank_id
     );
 
-    // Calculate max capacity
+    // Use the manually configured capacity
     const updatedConfig = {
       ...config,
-      max_capacity_gallons: this.calculateMaxCapacity(config.diameter_inches, config.length_inches),
+      max_capacity_gallons: config.max_capacity_gallons || 10000, // Use configured capacity or default
       alerts_enabled: config.alerts_enabled !== false, // Default to true
     };
 
@@ -378,10 +370,9 @@ export class ConfigService {
           tank_id: i,
           tank_name: tankName,
           product_type: productType,
-          diameter_inches: 96, // Mascoutah default
-          length_inches: 319.3, // Mascoutah default
           critical_height_inches: 10,
           warning_height_inches: 20,
+          max_capacity_gallons: 10000, // Default 10,000 gallon capacity
           alerts_enabled: true, // Enable alerts by default
         };
 
@@ -393,32 +384,6 @@ export class ConfigService {
     console.log(`✅ Auto-configured admin contact for ${storeName} (please update phone number)`);
   }
 
-  // Helper method to calculate tank capacity using cylindrical geometry
-  private static calculateMaxCapacity(diameterInches: number, lengthInches: number): number {
-    try {
-      const r = diameterInches / 2;
-      const h = diameterInches; // Full height
-      const L = lengthInches;
-      
-      if (h <= 0 || h > diameterInches || !isFinite(h) || !isFinite(r) || !isFinite(L)) {
-        return 8000; // Default capacity
-      }
-      
-      const theta = Math.acos((r - h) / r);
-      if (!isFinite(theta)) return 8000;
-      
-      const segmentArea = (r ** 2) * (theta - Math.sin(2 * theta) / 2);
-      if (!isFinite(segmentArea)) return 8000;
-      
-      const volumeCubicInches = segmentArea * L;
-      const gallons = volumeCubicInches / 231; // Convert to gallons
-      
-      return isFinite(gallons) ? Math.round(Math.max(0, gallons)) : 8000;
-    } catch (error) {
-      console.error('Error calculating tank capacity:', error);
-      return 8000;
-    }
-  }
 
   // Reset to defaults
   static resetToDefaults(): void {
