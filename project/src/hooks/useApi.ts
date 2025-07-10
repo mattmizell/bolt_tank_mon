@@ -116,19 +116,37 @@ const processStoreDataFull = async (rawStore: any, useCache: boolean = true): Pr
   // Process tanks with full computation
   const tankPromises = rawStore.tanks.map(async (rawTank: any) => {
     try {
-      const profile = createTankProfile(rawStore.store_name, rawTank.tank_id);
+      // Use server analytics and configuration (same as fast processing)
+      const analytics = rawTank.analytics || {};
+      const serverConfig = rawTank.configuration;
+      
+      // Use server configuration first, then create profile with server data
+      const profile = serverConfig ? {
+        store_name: rawStore.store_name,
+        tank_id: rawTank.tank_id,
+        tank_name: rawTank.tank_name,
+        max_capacity_gallons: serverConfig.max_capacity_gallons,
+        critical_height_inches: serverConfig.critical_height_inches,
+        warning_height_inches: serverConfig.warning_height_inches,
+      } : createTankProfile(rawStore.store_name, rawTank.tank_id);
       
       // Get historical data for run rate calculation (only if not already processed)
       let logs: any[] = [];
-      let runRate = rawTank.run_rate || 0;
-      let hoursTo10 = rawTank.hours_to_10_inches || 0;
-      let status: 'normal' | 'warning' | 'critical' = rawTank.status || 'normal';
-      let predictedTime: string | undefined = rawTank.predicted_time;
-      let capacityPercentage = rawTank.capacity_percentage || 0;
+      let runRate = analytics.run_rate || 0.5;
+      let hoursTo10 = analytics.hours_to_critical || 0;
+      let status: 'normal' | 'warning' | 'critical' = rawTank.current_status || 'normal';
+      let predictedTime: string | undefined = analytics.predicted_empty;
+      let capacityPercentage = 0;
 
-      // If data is already processed (from Supabase), use it directly
-      if (rawTank.run_rate && rawTank.hours_to_10_inches !== undefined) {
-        console.log(`📋 Using pre-processed data for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
+      // Calculate capacity percentage using server configuration 
+      const latestReading = rawTank.latest_reading;
+      if (latestReading && serverConfig?.max_capacity_gallons) {
+        capacityPercentage = (latestReading.volume / serverConfig.max_capacity_gallons) * 100;
+      }
+
+      // If server analytics are available, use them directly (skip old calculation logic)
+      if (analytics.run_rate !== undefined && analytics.hours_to_critical !== undefined) {
+        console.log(`📋 Using server analytics for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
       } else {
         // Fallback: calculate if not pre-processed
         try {
