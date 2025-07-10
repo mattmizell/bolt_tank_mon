@@ -1,813 +1,225 @@
-// Configuration service for managing store hours and tank specifications
-import { StoreHours, TankConfiguration } from '../types';
+import React, { useState } from 'react';
+import { Store } from '../types';
+import { ArrowLeft, RefreshCw, Download, Filter, Activity, AlertTriangle, Wifi, WifiOff, ExternalLink } from 'lucide-react';
+import { TankTable } from './TankTable';
+import { TankChart } from './TankChart';
+import { format } from 'date-fns';
 
-const STORAGE_KEYS = {
-  STORE_HOURS: 'tank_monitor_store_hours',
-  TANK_CONFIGS: 'tank_monitor_tank_configs',
-};
-
-// Default store hours with admin contact information
-const DEFAULT_STORE_HOURS: StoreHours[] = [
-  {
-    store_name: 'Mascoutah',
-    open_hour: 5,
-    close_hour: 23,
-    timezone: 'America/Chicago',
-    admin_name: 'Store Manager',
-    admin_phone: '+1234567890',
-    admin_email: 'manager@mascoutah.betterdayenergy.com',
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'North City',
-    open_hour: 5,
-    close_hour: 23,
-    timezone: 'America/Chicago',
-    admin_name: 'Store Manager',
-    admin_phone: '+1234567891',
-    admin_email: 'manager@northcity.betterdayenergy.com',
-    alerts_enabled: true,
-  },
-];
-
-// Default tank configurations based on your original system
-const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
-  // Mascoutah tanks
-  {
-    store_name: 'Mascoutah',
-    tank_id: 1,
-    tank_name: 'UNLEADED',
-    product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'Mascoutah',
-    tank_id: 2,
-    tank_name: 'PREMIUM',
-    product_type: 'Premium Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'Mascoutah',
-    tank_id: 3,
-    tank_name: 'DIESEL',
-    product_type: 'Diesel',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  // North City tanks
-  {
-    store_name: 'North City',
-    tank_id: 1,
-    tank_name: 'UNL T1',
-    product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'North City',
-    tank_id: 2,
-    tank_name: 'UNL T2',
-    product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'North City',
-    tank_id: 3,
-    tank_name: 'UNL T3',
-    product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'North City',
-    tank_id: 4,
-    tank_name: 'PREM',
-    product_type: 'Premium Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'North City',
-    tank_id: 5,
-    tank_name: 'K1',
-    product_type: 'Kerosene',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-];
-
-export class ConfigService {
-  // Store Hours Management (now includes admin contact info)
-  static getStoreHours(): StoreHours[] {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEYS.STORE_HOURS);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        // Ensure all stores have admin contact fields (migration for existing data)
-        return parsed.map((hours: StoreHours) => ({
-          ...hours,
-          admin_name: hours.admin_name || 'Store Manager',
-          admin_phone: hours.admin_phone || '+1234567890',
-          admin_email: hours.admin_email || `manager@${hours.store_name.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
-          alerts_enabled: hours.alerts_enabled !== false, // Default to true
-        }));
-      }
-    } catch (error) {
-      console.error('Error loading store hours:', error);
-    }
-    return DEFAULT_STORE_HOURS;
-  }
-
-  static saveStoreHours(storeHours: StoreHours[]): void {
-    try {
-      localStorage.setItem(STORAGE_KEYS.STORE_HOURS, JSON.stringify(storeHours));
-    } catch (error) {
-      console.error('Error saving store hours:', error);
-    }
-  }
-
-  static getStoreHoursForStore(storeName: string): StoreHours | null {
-    const allHours = this.getStoreHours();
-    return allHours.find(hours => hours.store_name === storeName) || null;
-  }
-
-  static updateStoreHours(
-    storeName: string, 
-    openHour: number, 
-    closeHour: number, 
-    timezone: string = 'America/Chicago',
-    adminName?: string,
-    adminPhone?: string,
-    adminEmail?: string,
-    alertsEnabled: boolean = true
-  ): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    const updatedHours: StoreHours = {
-      store_name: storeName,
-      open_hour: openHour,
-      close_hour: closeHour,
-      timezone,
-      admin_name: adminName || 'Store Manager',
-      admin_phone: adminPhone || '+1234567890',
-      admin_email: adminEmail || `manager@${storeName.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
-      alerts_enabled: alertsEnabled,
-    };
-
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = updatedHours;
-    } else {
-      allHours.push(updatedHours);
-    }
-
-    this.saveStoreHours(allHours);
-  }
-
-  // Enhanced method to update just admin contact info
-  static updateStoreAdminContact(
-    storeName: string,
-    adminName: string,
-    adminPhone: string,
-    adminEmail?: string,
-    alertsEnabled: boolean = true
-  ): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        admin_name: adminName,
-        admin_phone: adminPhone,
-        admin_email: adminEmail || allHours[existingIndex].admin_email,
-        alerts_enabled: alertsEnabled,
-      };
-    } else {
-      // Create new store hours entry with defaults
-      const newHours: StoreHours = {
-        store_name: storeName,
-        open_hour: 5,
-        close_hour: 23,
-        timezone: 'America/Chicago',
-        admin_name: adminName,
-        admin_phone: adminPhone,
-        admin_email: adminEmail || `manager@${storeName.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
-        alerts_enabled: alertsEnabled,
-      };
-      allHours.push(newHours);
-    }
-
-    this.saveStoreHours(allHours);
-  }
-
-  // Get admin contact for a specific store
-  static getStoreAdminContact(storeName: string): { name: string; phone: string; email?: string; alertsEnabled: boolean } | null {
-    const storeHours = this.getStoreHoursForStore(storeName);
-    if (!storeHours) return null;
-
-    return {
-      name: storeHours.admin_name || 'Store Manager',
-      phone: storeHours.admin_phone || '+1234567890',
-      email: storeHours.admin_email,
-      alertsEnabled: storeHours.alerts_enabled !== false,
-    };
-  }
-
-  // Tank Configuration Management (unchanged)
-  static getTankConfigurations(): TankConfiguration[] {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEYS.TANK_CONFIGS);
-      if (stored) {
-        const configs = JSON.parse(stored);
-        // Calculate max capacity for each tank if not already set
-        return configs.map((config: TankConfiguration) => ({
-          ...config,
-          max_capacity_gallons: config.max_capacity_gallons || this.calculateMaxCapacity(config.diameter_inches, config.length_inches),
-          alerts_enabled: config.alerts_enabled !== false, // Default to true
-        }));
-      }
-    } catch (error) {
-      console.error('Error loading tank configurations:', error);
-    }
-    
-    // Return default configs with calculated capacities
-    return DEFAULT_TANK_CONFIGS.map(config => ({
-      ...config,
-      max_capacity_gallons: this.calculateMaxCapacity(config.diameter_inches, config.length_inches),
-    }));
-  }
-
-  static saveTankConfigurations(tankConfigs: TankConfiguration[]): void {
-    try {
-      localStorage.setItem(STORAGE_KEYS.TANK_CONFIGS, JSON.stringify(tankConfigs));
-    } catch (error) {
-      console.error('Error saving tank configurations:', error);
-    }
-  }
-
-  static getTankConfiguration(storeName: string, tankId: number): TankConfiguration | null {
-    const allConfigs = this.getTankConfigurations();
-    return allConfigs.find(config => config.store_name === storeName && config.tank_id === tankId) || null;
-  }
-
-  static updateTankConfiguration(config: TankConfiguration): void {
-    const allConfigs = this.getTankConfigurations();
-    const existingIndex = allConfigs.findIndex(
-      c => c.store_name === config.store_name && c.tank_id === config.tank_id
-    );
-
-    // Calculate max capacity
-    const updatedConfig = {
-      ...config,
-      max_capacity_gallons: this.calculateMaxCapacity(config.diameter_inches, config.length_inches),
-      alerts_enabled: config.alerts_enabled !== false, // Default to true
-    };
-
-    if (existingIndex >= 0) {
-      allConfigs[existingIndex] = updatedConfig;
-    } else {
-      allConfigs.push(updatedConfig);
-    }
-
-    this.saveTankConfigurations(allConfigs);
-  }
-
-  static getStoreConfigurations(storeName: string): TankConfiguration[] {
-    const allConfigs = this.getTankConfigurations();
-    return allConfigs.filter(config => config.store_name === storeName);
-  }
-
-  // Auto-configuration helper for new stores (enhanced with admin contact)
-  static autoConfigureNewStore(storeName: string, tankCount: number, tankData?: any[]): void {
-    console.log(`🔧 Auto-configuring new store: ${storeName} with ${tankCount} tanks`);
-    console.log(`📊 Tank data provided:`, tankData);
-    console.log(`📊 Tank data provided:`, tankData);
-    console.log(`📊 Tank data provided:`, tankData);
-    console.log(`📊 Tank data provided:`, tankData);
-    console.log(`📊 Tank data provided:`, tankData);
-    console.log(`📊 Tank data provided:`, tankData);
-    
-    // Use Mascoutah as the template for new stores
-    const templateHours = this.getStoreHoursForStore('Mascoutah') || DEFAULT_STORE_HOURS[0];
-
-    // Add store hours with admin contact
-    this.updateStoreHours(
-      storeName, 
-      templateHours.open_hour, 
-      templateHours.close_hour, 
-      templateHours.timezone,
-      'Store Manager', // Default admin name
-      '+1234567890', // Default phone (should be updated by admin)
-      `manager@${storeName.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`, // Auto-generated email
-      true // Enable alerts by default
-    );
-
-    // Auto-configure tanks based on detected data or use defaults
-    for (let i = 1; i <= tankCount; i++) {
-      const existingConfig = this.getTankConfiguration(storeName, i);
-      if (!existingConfig) {
-        let tankName = `TANK ${i}`;
-        let productType = 'Regular Unleaded';
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-
-        // Try to determine tank type from data if available
-        if (tankData && tankData[i - 1]) {
-          const tank = tankData[i - 1];
-          
-          // Use tank name from API if available
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-            if (product.includes('unleaded') || product.includes('unl')) {
-              if (product.includes('premium') || product.includes('prem')) {
-                tankName = 'PREMIUM';
-                productType = 'Premium Unleaded';
-              } else {
-                tankName = 'UNLEADED';
-                productType = 'Regular Unleaded';
-              }
-            } else if (product.includes('diesel')) {
-              tankName = 'DIESEL';
-              productType = 'Diesel';
-            } else if (product.includes('kerosene') || product.includes('k1')) {
-              tankName = 'K1';
-              productType = 'Kerosene';
-            } else {
-              tankName = productSource.toUpperCase();
-              productType = productSource;
-            }
-          }
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-        } else {
-          // Use standard naming pattern
-          if (i === 1) {
-            tankName = 'UNLEADED';
-            productType = 'Regular Unleaded';
-          } else if (i === 2) {
-            tankName = 'PREMIUM';
-            productType = 'Premium Unleaded';
-          } else if (i === 3) {
-            tankName = 'DIESEL';
-            productType = 'Diesel';
-          } else {
-            tankName = `TANK ${i}`;
-            productType = 'Regular Unleaded';
-          }
-        }
-
-        const newConfig: TankConfiguration = {
-          store_name: storeName,
-          tank_id: i,
-          tank_name: tankName,
-          product_type: productType,
-          diameter_inches: diameter,
-          length_inches: length,
-          critical_height_inches: 10,
-          warning_height_inches: 20,
-          alerts_enabled: true, // Enable alerts by default
-        };
-
-        this.updateTankConfiguration(newConfig);
-        console.log(`✅ Auto-configured tank ${i}: ${tankName} (${productType}) - ${diameter}" × ${length}"`);
-      }
-    }
-
-    console.log(`✅ Auto-configured admin contact for ${storeName} (please update phone number)`);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Helper method to calculate tank capacity using cylindrical geometry
-  private static calculateMaxCapacity(diameterInches: number, lengthInches: number): number {
-    try {
-      const r = diameterInches / 2;
-      const h = diameterInches; // Full height
-      const L = lengthInches;
-      
-      if (h <= 0 || h > diameterInches || !isFinite(h) || !isFinite(r) || !isFinite(L)) {
-        return 8000; // Default capacity
-      }
-      
-      const theta = Math.acos((r - h) / r);
-      if (!isFinite(theta)) return 8000;
-      
-      const segmentArea = (r ** 2) * (theta - Math.sin(2 * theta) / 2);
-      if (!isFinite(segmentArea)) return 8000;
-      
-      const volumeCubicInches = segmentArea * L;
-      const gallons = volumeCubicInches / 231; // Convert to gallons
-      
-      return isFinite(gallons) ? Math.round(Math.max(0, gallons)) : 8000;
-    } catch (error) {
-      console.error('Error calculating tank capacity:', error);
-      return 8000;
-    }
-  }
-
-  // Reset to defaults
-  static resetToDefaults(): void {
-    localStorage.removeItem(STORAGE_KEYS.STORE_HOURS);
-    localStorage.removeItem(STORAGE_KEYS.TANK_CONFIGS);
-  }
-
-  // Export/Import functionality (enhanced to include admin contacts)
-  static exportConfiguration(): string {
-    const config = {
-      storeHours: this.getStoreHours(),
-      tankConfigurations: this.getTankConfigurations(),
-      exportDate: new Date().toISOString(),
-      version: '2.0', // Version with admin contacts
-    };
-    return JSON.stringify(config, null, 2);
-  }
-
-  static importConfiguration(configJson: string): boolean {
-    try {
-      const config = JSON.parse(configJson);
-      
-      if (config.storeHours && Array.isArray(config.storeHours)) {
-        // Migrate old format if needed
-        const migratedHours = config.storeHours.map((hours: any) => ({
-          ...hours,
-          admin_name: hours.admin_name || 'Store Manager',
-          admin_phone: hours.admin_phone || '+1234567890',
-          admin_email: hours.admin_email || `manager@${hours.store_name.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
-          alerts_enabled: hours.alerts_enabled !== false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-        }));
-        this.saveStoreHours(migratedHours);
-      }
-      
-      if (config.tankConfigurations && Array.isArray(config.tankConfigurations)) {
-        this.saveTankConfigurations(config.tankConfigurations);
-      }
-      
-      return true;
-    } catch (error) {
-      console.error('Error importing configuration:', error);
-      return false;
-    }
-  }
+interface StoreReportProps {
+  store: Store;
+  onBack: () => void;
+  isLiveData?: boolean;
 }
+
+export const StoreReport: React.FC<StoreReportProps> = ({ store, onBack, isLiveData = false }) => {
+  const [refreshing, setRefreshing] = useState(false);
+  const [showCharts, setShowCharts] = useState(true);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    // Simulate API call - in real implementation, this would refresh the store data
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setRefreshing(false);
+  };
+
+  const criticalTanks = store.tanks.filter(tank => tank.status === 'critical').length;
+  const warningTanks = store.tanks.filter(tank => tank.status === 'warning').length;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      <div className="container mx-auto px-4 py-6">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={onBack}
+              className="flex items-center space-x-2 text-slate-400 hover:text-white transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              <span>Back to Stores</span>
+            </button>
+            <div>
+              <div className="flex items-center space-x-3">
+                {/* Better Day Energy Logo */}
+                <img 
+                  src="/betterday-energy-logo_trans.png" 
+                  alt="Better Day Energy" 
+                  className="h-8 w-auto"
+                />
+                <h1 className="text-3xl font-bold text-white">{store.store_name}</h1>
+                <div className="flex items-center space-x-1">
+                  {isLiveData ? (
+                    <Wifi className="w-5 h-5 text-green-400" />
+                  ) : (
+                    <WifiOff className="w-5 h-5 text-yellow-400" />
+                  )}
+                  <span className={`text-sm ${isLiveData ? 'text-green-400' : 'text-yellow-400'}`}>
+                    {isLiveData ? 'Live Data' : 'Demo Data'}
+                  </span>
+                </div>
+                {isLiveData && (
+                  <a
+                    href="https://central-tank-server.onrender.com/stores/full"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-1 text-blue-400 hover:text-blue-300 text-sm transition-colors"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    <span>API</span>
+                  </a>
+                )}
+              </div>
+              <p className="text-slate-400">
+                Tank Monitoring Dashboard • Last updated: {
+                  store.last_updated 
+                    ? format(new Date(store.last_updated), 'PPpp')
+                    : 'Unknown'
+                }
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 px-4 py-2 rounded-lg text-white transition-colors"
+            >
+              <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+              <span>Refresh</span>
+            </button>
+            <button className="flex items-center space-x-2 bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-white transition-colors">
+              <Download className="w-4 h-4" />
+              <span>Export</span>
+            </button>
+            <button className="flex items-center space-x-2 bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-white transition-colors">
+              <Filter className="w-4 h-4" />
+              <span>Filter</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Live Data Banner */}
+        {isLiveData && (
+          <div className="bg-green-900/30 border border-green-500/30 rounded-lg px-4 py-3 mb-6">
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <p className="text-green-200 text-sm">
+                🔴 Live data from Central Tank Server • Auto-updating in background every 30 seconds
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Status Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-slate-400 text-sm">Total Tanks</p>
+                <p className="text-2xl font-bold text-white">{store.tanks.length}</p>
+              </div>
+              <Activity className="w-8 h-8 text-blue-400" />
+            </div>
+          </div>
+          
+          <div className="bg-slate-800 rounded-xl p-6 border border-red-500/30">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-slate-400 text-sm">Critical Alerts</p>
+                <p className="text-2xl font-bold text-red-400">{criticalTanks}</p>
+              </div>
+              <AlertTriangle className="w-8 h-8 text-red-400" />
+            </div>
+          </div>
+
+          <div className="bg-slate-800 rounded-xl p-6 border border-yellow-500/30">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-slate-400 text-sm">Warnings</p>
+                <p className="text-2xl font-bold text-yellow-400">{warningTanks}</p>
+              </div>
+              <AlertTriangle className="w-8 h-8 text-yellow-400" />
+            </div>
+          </div>
+        </div>
+
+        {/* Tank Data Table */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-white">Tank Status</h2>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 text-sm text-slate-400">
+                <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                <span>Normal</span>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-slate-400">
+                <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                <span>Warning</span>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-slate-400">
+                <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+                <span>Critical</span>
+              </div>
+            </div>
+          </div>
+          <TankTable tanks={store.tanks} />
+        </div>
+
+        {/* Charts Toggle */}
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-white">Volume Trends (Live Data)</h2>
+          <button
+            onClick={() => setShowCharts(!showCharts)}
+            className="text-blue-400 hover:text-blue-300 transition-colors"
+          >
+            {showCharts ? 'Hide Charts' : 'Show Charts'}
+          </button>
+        </div>
+
+        {/* Tank Charts */}
+        {showCharts && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {store.tanks.map((tank) => (
+              <TankChart key={tank.tank_id} tank={tank} />
+            ))}
+          </div>
+        )}
+
+        {/* Legend */}
+        <div className="mt-12 bg-slate-800 rounded-xl p-6">
+          <h3 className="text-lg font-semibold text-white mb-4">Legend</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+            <div>
+              <strong className="text-white">TC Volume:</strong>
+              <span className="text-slate-300 ml-2">Temperature-compensated fuel volume (gallons)</span>
+            </div>
+            <div>
+              <strong className="text-white">Capacity Used:</strong>
+              <span className="text-slate-300 ml-2">Percentage of tank's maximum capacity currently used</span>
+            </div>
+            <div>
+              <strong className="text-white">90% Ullage:</strong>
+              <span className="text-slate-300 ml-2">90% of empty space in tank (conservative planning)</span>
+            </div>
+            <div>
+              <strong className="text-white">Height:</strong>
+              <span className="text-slate-300 ml-2">Current product height (inches)</span>
+            </div>
+            <div>
+              <strong className="text-white">Run Rate:</strong>
+              <span className="text-slate-300 ml-2">Consumption rate during business hours (gal/hr)</span>
+            </div>
+            <div>
+              <strong className="text-white">Hours to 10":</strong>
+              <span className="text-slate-300 ml-2">Estimated hours until fuel drops to 10 inches</span>
+            </div>
+            <div>
+              <strong className="text-white">Predicted Time:</strong>
+              <span className="text-slate-300 ml-2">Estimated timestamp for reaching 10 inches</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
