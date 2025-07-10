@@ -47,15 +47,33 @@ export const useSmartCache = () => {
             historicalLogs = [];
           }
 
-          // ALWAYS calculate fresh using our new simplified approach - ignore any pre-calculated server data
-          console.log(`🔬 FORCING fresh calculation for ${rawStore.store_name} Tank ${rawTank.tank_id} (ignoring server pre-calc)`);
-          const metrics = calculateSimpleTankMetrics(
-            rawStore.store_name,
-            rawTank.tank_id,
-            historicalLogs,
-            currentHeight,
-            currentVolume
-          );
+          // Use server analytics if available, calculate locally only as fallback
+          console.log(`📊 Processing analytics for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
+          
+          let metrics;
+          if (rawTank.analytics && rawTank.analytics.run_rate) {
+            // Use server-calculated analytics
+            console.log(`✅ Using server analytics: ${rawTank.analytics.run_rate} in/hr`);
+            metrics = {
+              current_height_inches: currentHeight,
+              current_volume_gallons: currentVolume,
+              run_rate_inches_per_hour: rawTank.analytics.run_rate,
+              hours_to_10_inches: rawTank.analytics.hours_to_critical || 0,
+              predicted_time_to_10in: rawTank.analytics.predicted_empty,
+              status: rawTank.current_status || 'normal',
+              capacity_percentage: (currentVolume / actualCapacity) * 100
+            };
+          } else {
+            // Fallback to local calculation if server analytics not available
+            console.log(`⚠️ Server analytics not available, calculating locally`);
+            metrics = calculateSimpleTankMetrics(
+              rawStore.store_name,
+              rawTank.tank_id,
+              historicalLogs,
+              currentHeight,
+              currentVolume
+            );
+          }
 
           processedTanks.push({
             tank_id: rawTank.tank_id,

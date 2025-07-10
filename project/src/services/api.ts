@@ -91,15 +91,39 @@ export class ApiService {
     // Ensure initialization
     await this.initialize();
     
-    console.log('📊 Fetching from Central Tank Server...');
-    return this.request('/stores/full', {
-      headers: {
-        'Accept': 'application/json',
-        'Accept-Encoding': 'gzip, deflate, br',
-      },
-      cacheKey: 'stores-full',
-      cacheDuration: 60 * 1000,
-    });
+    console.log('📊 Fetching stores with analytics from Central Tank Server...');
+    
+    try {
+      // Use dashboard API for better performance and analytics
+      const stores = await this.request('/dashboard/stores', {
+        cacheKey: 'dashboard-stores',
+        cacheDuration: 2 * 60 * 1000, // 2 minutes
+      });
+      
+      // Get detailed data for each store with server-calculated analytics
+      const detailedStores = [];
+      for (const store of stores) {
+        const storeData = await this.request(`/dashboard/stores/${store.store_name}`, {
+          cacheKey: `store-${store.store_name}`,
+          cacheDuration: 2 * 60 * 1000,
+        });
+        detailedStores.push(storeData);
+      }
+      
+      console.log(`✅ Fetched ${detailedStores.length} stores with server analytics`);
+      return detailedStores;
+    } catch (error) {
+      console.warn('⚠️ Dashboard endpoint failed, falling back to /stores/full');
+      // Fallback to the old endpoint if dashboard API fails
+      return this.request('/stores/full', {
+        headers: {
+          'Accept': 'application/json',
+          'Accept-Encoding': 'gzip, deflate, br',
+        },
+        cacheKey: 'stores-full',
+        cacheDuration: 60 * 1000,
+      });
+    }
   }
 
   // Enhanced tank logs method - CRITICAL for charts

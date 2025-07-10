@@ -153,7 +153,7 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
                   <span className="text-slate-300 font-mono">
                     {formatRunRate(tank.run_rate)}
                   </span>
-                  <span className="text-slate-400 text-sm ml-1">gal/hr</span>
+                  <span className="text-slate-400 text-sm ml-1">in/hr</span>
                   <div className="text-xs text-slate-500 mt-1">
                     Business hrs only
                   </div>
