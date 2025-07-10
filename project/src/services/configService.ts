@@ -1,10 +1,14 @@
 // Configuration service for managing store hours and tank specifications
+// Now syncs with Central Tank Server database as single source of truth
 import { StoreHours, TankConfiguration } from '../types';
 
 const STORAGE_KEYS = {
   STORE_HOURS: 'tank_monitor_store_hours',
   TANK_CONFIGS: 'tank_monitor_tank_configs',
 };
+
+// Central server API configuration
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://central-tank-server.onrender.com';
 
 // Default store hours with admin contact information
 const DEFAULT_STORE_HOURS: StoreHours[] = [
@@ -427,5 +431,139 @@ export class ConfigService {
       console.error('Error importing configuration:', error);
       return false;
     }
+  }
+
+  // ===== CENTRAL SERVER DATABASE SYNC METHODS =====
+  // These methods sync configuration with the central server database
+  
+  /**
+   * Fetch tank configurations from central server database
+   */
+  static async fetchTankConfigurationsFromServer(): Promise<TankConfiguration[]> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/tank-config`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Server responded with ${response.status}`);
+      }
+      
+      const serverConfigs = await response.json();
+      const configurations: TankConfiguration[] = [];
+      
+      // Convert server format to dashboard format
+      for (const storeName in serverConfigs) {
+        for (const tankId in serverConfigs[storeName]) {
+          const config = serverConfigs[storeName][tankId];
+          configurations.push({
+            store_name: config.store_name,
+            tank_id: config.tank_id,
+            tank_name: config.tank_name,
+            product_type: config.product,
+            max_capacity_gallons: config.max_capacity_gallons,
+            critical_height_inches: config.critical_height_inches,
+            warning_height_inches: config.warning_height_inches,
+            alerts_enabled: config.enabled
+          });
+        }
+      }
+      
+      console.log(`✅ Fetched ${configurations.length} tank configurations from central server`);
+      return configurations;
+    } catch (error) {
+      console.error('❌ Failed to fetch tank configurations from server:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Push tank configuration to central server database
+   */
+  static async pushTankConfigurationToServer(config: TankConfiguration): Promise<void> {
+    try {
+      const serverConfig = {
+        product: config.product_type,
+        max_capacity_gallons: config.max_capacity_gallons,
+        custom_critical_height: config.critical_height_inches,
+        custom_warning_height: config.warning_height_inches,
+        enabled: config.alerts_enabled
+      };
+
+      const response = await fetch(`${API_BASE_URL}/tank-config/${config.store_name}/${config.tank_id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(serverConfig)
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Server responded with ${response.status}: ${errorText}`);
+      }
+      
+      console.log(`✅ Synced tank ${config.store_name} Tank ${config.tank_id} to central server`);
+    } catch (error) {
+      console.error(`❌ Failed to sync tank configuration to server:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Enhanced updateTankConfiguration that syncs with central server
+   */
+  static async updateTankConfigurationWithSync(config: TankConfiguration): Promise<void> {
+    try {
+      // Update local storage first (for fallback)
+      this.updateTankConfiguration(config);
+      
+      // Sync to central server database
+      await this.pushTankConfigurationToServer(config);
+      
+      console.log(`✅ Tank configuration updated locally and synced to central server`);
+    } catch (error) {
+      console.error('❌ Failed to sync tank configuration. Local changes saved, server sync failed:', error);
+      // Local changes are still saved, server sync failed
+      throw error;
+    }
+  }
+
+  /**
+   * Load tank configurations from central server and cache locally
+   */
+  static async syncTankConfigurationsFromServer(): Promise<TankConfiguration[]> {
+    try {
+      const serverConfigs = await this.fetchTankConfigurationsFromServer();
+      
+      // Save to local storage as cache
+      this.saveTankConfigurations(serverConfigs);
+      
+      console.log(`✅ Synced ${serverConfigs.length} tank configurations from central server`);
+      return serverConfigs;
+    } catch (error) {
+      console.warn('⚠️ Failed to sync from server, using local cache');
+      // Fall back to local storage if server is unavailable
+      return this.getTankConfigurations();
+    }
+  }
+
+  /**
+   * Get tank configuration with automatic server sync fallback
+   */
+  static async getTankConfigurationWithSync(storeName: string, tankId: number): Promise<TankConfiguration | null> {
+    // Try local first
+    let config = this.getTankConfiguration(storeName, tankId);
+    
+    if (!config) {
+      try {
+        // If not found locally, try syncing from server
+        const synced = await this.syncTankConfigurationsFromServer();
+        config = synced.find(c => c.store_name === storeName && c.tank_id === tankId) || null;
+      } catch (error) {
+        console.warn('Failed to sync from server for tank lookup');
+      }
+    }
+    
+    return config;
   }
 }

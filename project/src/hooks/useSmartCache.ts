@@ -36,18 +36,19 @@ export const useSmartCache = () => {
           const tankConfig = ConfigService.getTankConfiguration(rawStore.store_name, rawTank.tank_id);
           const actualCapacity = tankConfig?.max_capacity_gallons || 10000;
           
-          // Get historical data for this tank (quick fetch for calculations only)
+          // Get historical data for this tank (extended fetch for better calculations)
           let historicalLogs: any[] = [];
           try {
-            // Try to get some recent history for calculations (not for charts)
-            historicalLogs = await ApiService.getTankLogs(rawStore.store_name, rawTank.tank_id, 72); // 3 days
-            console.log(`📊 Retrieved ${historicalLogs.length} logs for analytics calculation`);
+            // Get 4 weeks of data for proper historical analysis
+            historicalLogs = await ApiService.getTankLogs(rawStore.store_name, rawTank.tank_id, 672); // 4 weeks = 28 days
+            console.log(`📊 Retrieved ${historicalLogs.length} logs for analytics calculation (4 weeks)`);
           } catch (logError) {
             console.warn(`⚠️ Could not fetch historical logs for ${rawStore.store_name} Tank ${rawTank.tank_id}:`, logError);
             historicalLogs = [];
           }
 
-          // Calculate ALL metrics using the simplified approach
+          // ALWAYS calculate fresh using our new simplified approach - ignore any pre-calculated server data
+          console.log(`🔬 FORCING fresh calculation for ${rawStore.store_name} Tank ${rawTank.tank_id} (ignoring server pre-calc)`);
           const metrics = calculateSimpleTankMetrics(
             rawStore.store_name,
             rawTank.tank_id,

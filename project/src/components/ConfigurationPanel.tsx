@@ -40,14 +40,28 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
     ConfigService.saveStoreHours(updated);
   };
 
-  const handleTankConfigUpdate = (storeName: string, tankId: number, field: string, value: any) => {
+  const handleTankConfigUpdate = async (storeName: string, tankId: number, field: string, value: any) => {
     const updated = tankConfigs.map(config => 
       config.store_name === storeName && config.tank_id === tankId
         ? { ...config, [field]: value }
         : config
     );
     setTankConfigs(updated);
-    ConfigService.saveTankConfigurations(updated);
+    
+    // Find the updated config and sync to central server
+    const updatedConfig = updated.find(config => 
+      config.store_name === storeName && config.tank_id === tankId
+    );
+    
+    if (updatedConfig) {
+      try {
+        await ConfigService.updateTankConfigurationWithSync(updatedConfig);
+        console.log(`✅ Tank configuration synced to central server`);
+      } catch (error) {
+        console.error('❌ Failed to sync to central server:', error);
+        // Configuration is still saved locally
+      }
+    }
   };
 
   const exportConfig = () => {
@@ -283,7 +297,24 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
 
           {activeTab === 'tanks' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-white">Tank Configurations</h3>
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold text-white">Tank Configurations</h3>
+                <button
+                  onClick={async () => {
+                    try {
+                      const synced = await ConfigService.syncTankConfigurationsFromServer();
+                      setTankConfigs(synced);
+                      console.log('✅ Synced tank configurations from central server');
+                    } catch (error) {
+                      console.error('❌ Failed to sync from central server:', error);
+                    }
+                  }}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm flex items-center gap-2"
+                >
+                  <RotateCcw size={16} />
+                  Sync from Server
+                </button>
+              </div>
               
               {stores.map((store) => {
                 const storeConfigs = tankConfigs.filter(config => config.store_name === store.store_name);
@@ -358,6 +389,21 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
                                   className="w-full bg-slate-500 text-white rounded px-3 py-2 text-sm"
                                   min="1"
                                   max="50"
+                                />
+                              </div>
+                              
+                              <div>
+                                <label className="block text-slate-300 text-sm mb-1">
+                                  Warning Level (inches)
+                                  <span className="text-slate-400 ml-1 text-xs">• Early warning threshold</span>
+                                </label>
+                                <input
+                                  type="number"
+                                  value={config.warning_height_inches || 20}
+                                  onChange={(e) => handleTankConfigUpdate(config.store_name, config.tank_id, 'warning_height_inches', parseFloat(e.target.value))}
+                                  className="w-full bg-slate-500 text-white rounded px-3 py-2 text-sm"
+                                  min="5"
+                                  max="100"
                                 />
                               </div>
                             </div>
