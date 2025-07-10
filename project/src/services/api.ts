@@ -113,16 +113,8 @@ export class ApiService {
       console.log(`✅ Fetched ${detailedStores.length} stores with server analytics`);
       return detailedStores;
     } catch (error) {
-      console.warn('⚠️ Dashboard endpoint failed, falling back to /stores/full');
-      // Fallback to the old endpoint if dashboard API fails
-      return this.request('/stores/full', {
-        headers: {
-          'Accept': 'application/json',
-          'Accept-Encoding': 'gzip, deflate, br',
-        },
-        cacheKey: 'stores-full',
-        cacheDuration: 60 * 1000,
-      });
+      console.error('❌ Dashboard endpoint failed:', error);
+      throw new Error(`Dashboard API failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
