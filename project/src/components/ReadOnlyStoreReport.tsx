@@ -337,18 +337,6 @@ export class ConfigService {
       if (!existingConfig) {
         let tankName = `TANK ${i}`;
         let productType = 'Regular Unleaded';
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
 
         // Try to determine tank type from data if available
         if (tankData && tankData[i - 1]) {
@@ -416,15 +404,15 @@ export class ConfigService {
           tank_id: i,
           tank_name: tankName,
           product_type: productType,
-          diameter_inches: diameter,
-          length_inches: length,
+          diameter_inches: 96, // Default diameter
+          length_inches: 319.3, // Default length
           critical_height_inches: 10,
           warning_height_inches: 20,
           alerts_enabled: true, // Enable alerts by default
         };
 
         this.updateTankConfiguration(newConfig);
-        console.log(`✅ Auto-configured tank ${i}: ${tankName} (${productType}) - ${diameter}" × ${length}"`);
+        console.log(`✅ Auto-configured tank ${i}: ${tankName} (${productType})`);
       }
     }
 
