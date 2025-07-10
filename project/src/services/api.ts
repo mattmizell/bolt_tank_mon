@@ -92,6 +92,7 @@ export class ApiService {
     await this.initialize();
     
     console.log('📊 Fetching stores with analytics from Central Tank Server...');
+    console.log('🔍 DEBUG: API_BASE_URL:', 'https://central-tank-server.onrender.com');
     
     try {
       // Use dashboard API for better performance and analytics

@@ -255,8 +255,8 @@ const processStoreDataFull = async (rawStore: any, useCache: boolean = true): Pr
 
       return {
         tank_id: rawTank.tank_id,
-        tank_name: profile.tank_name,
-        product: rawTank.product || rawTank.latest_log?.product || profile.tank_name,
+        tank_name: rawTank.tank_name, // Use server tank name directly
+        product: rawTank.tank_name, // Keep for backward compatibility but use tank_name
         latest_log: rawTank.latest_log ? {
           id: rawTank.latest_log.id || 0,
           store_name: rawTank.latest_log.store_name || rawStore.store_name,
