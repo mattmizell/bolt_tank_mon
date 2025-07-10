@@ -1,0 +1,27 @@
+# Dockerfile for Background Processor
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Copy processor code
+COPY background-processor-example.js ./processor.js
+COPY src/services/ ./src/services/
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S processor -u 1001
+
+# Change ownership
+RUN chown -R processor:nodejs /app
+USER processor
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node -e "require('redis').createClient(process.env.REDIS_URL).ping().then(() => process.exit(0)).catch(() => process.exit(1))"
+
+# Start the processor
+CMD ["node", "processor.js"]
