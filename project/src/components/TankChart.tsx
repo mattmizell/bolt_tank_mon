@@ -37,7 +37,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  // Fetch 5 days of data for charts when component mounts
+  // OPTIMIZED: Fetch hourly-sampled data for fast chart loading (5 days = ~120 points max)
   useEffect(() => {
     const fetchChartData = async () => {
       if (!tank.latest_log?.store_name) {
@@ -53,27 +53,27 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
         
         let logs: any[] = [];
         
-        // Try multiple approaches to get chart data
+        // OPTIMIZED: Use fast sampled endpoint for much faster loading
         try {
-          // First try: 5 days (120 hours) of data
-          logs = await ApiService.getTankLogs(tank.latest_log.store_name, tank.tank_id, 120);
-          console.log(`📈 Retrieved ${logs.length} logs from 5-day fetch`);
+          // First try: Fast sampled data (5 days, hourly averages = ~120 points max)
+          logs = await ApiService.getSampledTankData(tank.latest_log.store_name, tank.tank_id, 5, 'hourly');
+          console.log(`📈 Retrieved ${logs.length} sampled points from fast endpoint (5d hourly)`);
         } catch (error) {
-          console.warn('5-day fetch failed, trying 3 days:', error);
+          console.warn('Fast sampled fetch failed, trying 3 days 2-hourly:', error);
           
           try {
-            // Second try: 3 days (72 hours) of data
-            logs = await ApiService.getTankLogs(tank.latest_log.store_name, tank.tank_id, 72);
-            console.log(`📈 Retrieved ${logs.length} logs from 3-day fetch`);
+            // Second try: 3 days with 2-hourly sampling (fewer points)
+            logs = await ApiService.getSampledTankData(tank.latest_log.store_name, tank.tank_id, 3, '2hourly');
+            console.log(`📈 Retrieved ${logs.length} sampled points from 3-day 2-hourly fetch`);
           } catch (error) {
-            console.warn('3-day fetch failed, trying 1 day:', error);
+            console.warn('Sampled endpoints failed, falling back to raw logs:', error);
             
             try {
-              // Third try: 1 day (24 hours) of data
+              // Third try: Raw logs (24 hours only for speed)
               logs = await ApiService.getTankLogs(tank.latest_log.store_name, tank.tank_id, 24);
-              console.log(`📈 Retrieved ${logs.length} logs from 1-day fetch`);
+              console.log(`📈 Retrieved ${logs.length} raw logs from 1-day fallback`);
             } catch (error) {
-              console.warn('All fetches failed, using tank logs if available:', error);
+              console.warn('All API calls failed, using tank logs if available:', error);
               
               // Final fallback: use any logs attached to the tank
               if (tank.logs && tank.logs.length > 0) {
@@ -88,29 +88,50 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
           }
         }
         
-        // Process and validate logs
+        // Process and validate logs - handle both raw logs and sampled data formats
         const processedLogs = logs
           .map(log => {
             try {
-              return {
-                id: log.id || 0,
-                store_name: log.store_name || tank.latest_log?.store_name || '',
-                tank_id: log.tank_id || tank.tank_id,
-                product: log.product || tank.product || tank.tank_name || '',
-                volume: Number(log.volume) || 0,
-                tc_volume: Number(log.tc_volume) || 0,
-                ullage: Number(log.ullage) || 0,
-                height: Number(log.height) || 0,
-                water: Number(log.water) || 0,
-                temp: Number(log.temp) || 70,
-                timestamp: log.timestamp || log.recorded_at || new Date().toISOString(),
-              };
+              // Handle sampled data format (from /sampled endpoint) vs raw log format
+              const isSampledData = 'hour_timestamp' in log || (!log.id && log.timestamp && log.volume && log.height);
+              
+              if (isSampledData) {
+                // Sampled data format: {timestamp, volume, height}
+                return {
+                  id: 0,
+                  store_name: tank.latest_log?.store_name || '',
+                  tank_id: tank.tank_id,
+                  product: tank.product || tank.tank_name || '',
+                  volume: Number(log.volume) || 0,
+                  tc_volume: Number(log.volume) || 0, // Use volume for sampled data
+                  ullage: 0, // Not available in sampled data
+                  height: Number(log.height) || 0,
+                  water: 0, // Not available in sampled data
+                  temp: 70, // Default temp for sampled data
+                  timestamp: log.timestamp || log.hour_timestamp || new Date().toISOString(),
+                };
+              } else {
+                // Raw log format: full log data
+                return {
+                  id: log.id || 0,
+                  store_name: log.store_name || tank.latest_log?.store_name || '',
+                  tank_id: log.tank_id || tank.tank_id,
+                  product: log.product || tank.product || tank.tank_name || '',
+                  volume: Number(log.volume) || 0,
+                  tc_volume: Number(log.tc_volume) || 0,
+                  ullage: Number(log.ullage) || 0,
+                  height: Number(log.height) || 0,
+                  water: Number(log.water) || 0,
+                  temp: Number(log.temp) || 70,
+                  timestamp: log.timestamp || log.recorded_at || new Date().toISOString(),
+                };
+              }
             } catch (error) {
               console.warn('Error processing log entry:', error);
               return null;
             }
           })
-          .filter((log): log is any => log !== null && log.tc_volume > 0 && log.height > 0)
+          .filter((log): log is any => log !== null && (log.tc_volume > 0 || log.volume > 0) && log.height > 0)
           .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
 
         if (processedLogs.length === 0) {
@@ -249,8 +270,10 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
   // Calculate tank dimensions and levels
   const maxDiameter = tank.profile?.diameter_inches || 96;
   const criticalHeight = tank.profile?.critical_height_inches || 10;
-  const warningHeight = tank.profile?.warning_height_inches || 20;
   const maxCapacity = tank.profile?.max_capacity_gallons || 10000;
+  
+  // Get 48-hour prediction from server analytics
+  const predicted48hHeight = tank.analytics?.predicted_height_48h;
 
   const data = {
     labels,
@@ -279,20 +302,20 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
         borderWidth: 2,
         yAxisID: 'y1',
       },
-      // Warning Level Line at 20"
-      {
-        label: 'Warning Level (20")',
-        data: new Array(chartLogs.length).fill(warningHeight),
-        borderColor: 'rgb(234, 179, 8)',
-        backgroundColor: 'rgba(234, 179, 8, 0.1)',
+      // 48-Hour Prediction Line (only show if valid prediction exists)
+      ...(predicted48hHeight !== null && predicted48hHeight !== undefined && predicted48hHeight > 0 ? [{
+        label: '48h Prediction',
+        data: new Array(chartLogs.length).fill(predicted48hHeight),
+        borderColor: 'rgb(251, 146, 60)', // Orange color
+        backgroundColor: 'rgba(251, 146, 60, 0.1)',
         fill: false,
         tension: 0,
         pointRadius: 0,
         pointHoverRadius: 0,
         borderWidth: 2,
-        borderDash: [8, 4],
+        borderDash: [12, 6],
         yAxisID: 'y',
-      },
+      }] : []),
       // Critical Level Line at 10"
       {
         label: 'Critical Level (10")',
@@ -431,7 +454,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
           }
         },
         min: 0,
-        max: maxCapacity * 1.1,
+        max: maxCapacity,
       },
     },
   };
@@ -482,10 +505,6 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
           )}
         </div>
         <div className="text-slate-400">
-          <div className="flex justify-between">
-            <span>Warning Level:</span>
-            <span className="text-yellow-400">{warningHeight}" (Yellow Line)</span>
-          </div>
           <div className="flex justify-between">
             <span>Critical Level:</span>
             <span className="text-red-400">{criticalHeight}" (Red Line)</span>

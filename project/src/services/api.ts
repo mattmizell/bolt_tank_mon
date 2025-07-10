@@ -297,6 +297,39 @@ export class ApiService {
       dataSource: 'Central Tank Server',
     };
   }
+
+  // OPTIMIZED: Get sampled tank data for charts - much faster than raw logs
+  static async getSampledTankData(storeName: string, tankId: number, days: number = 5, sampleRate: 'hourly' | '2hourly' | '4hourly' = 'hourly'): Promise<any[]> {
+    // Ensure initialization
+    await this.initialize();
+    
+    const cacheKey = `sampled-${storeName}-${tankId}-${days}d-${sampleRate}`;
+    
+    try {
+      console.log(`📊 Fetching ${days}d sampled data (${sampleRate}) for ${storeName} Tank ${tankId} - FAST endpoint`);
+      
+      const endpoint = `/dashboard/stores/${encodeURIComponent(storeName)}/tanks/${tankId}/sampled?days=${days}&sample_rate=${sampleRate}`;
+      
+      const sampledData = await this.request(endpoint, {
+        headers: {
+          'Accept': 'application/json',
+          'Accept-Encoding': 'gzip, deflate, br',
+        },
+        cacheKey,
+        cacheDuration: 5 * 60 * 1000, // 5 minutes cache for sampled data
+      });
+      
+      console.log(`✅ Fast sampled data: ${sampledData.length} hourly points (${sampleRate})`);
+      return sampledData;
+      
+    } catch (error) {
+      console.error(`❌ Failed to fetch sampled data for ${storeName} Tank ${tankId}:`, error);
+      
+      // Fallback to regular logs method if sampled endpoint fails
+      console.log('🔄 Falling back to regular getTankLogs...');
+      return this.getTankLogs(storeName, tankId, days * 24);
+    }
+  }
 }
 
 // Tank dimension and name mappings (unchanged)
