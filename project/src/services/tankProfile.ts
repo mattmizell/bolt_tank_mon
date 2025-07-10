@@ -76,16 +76,8 @@ export function gallonsAtDepth(depthInches: number, diameterInches: number, leng
  * Get tank dimensions for a specific store and tank
  */
 export function getTankDimensions(storeName: string, tankId: number): [number, number] {
-  try {
-    const config = ConfigService.getTankConfiguration(storeName, tankId);
-    if (config) {
-      return [config.diameter_inches, config.length_inches];
-    }
-  } catch (error) {
-    console.warn('Error getting tank configuration:', error);
-  }
-  
-  return STORE_TANK_DIMENSIONS[storeName]?.[tankId] || [DEFAULT_DIAMETER, DEFAULT_LENGTH];
+  // Always return default dimensions since we don't track diameter/length
+  return [DEFAULT_DIAMETER, DEFAULT_LENGTH];
 }
 
 /**
@@ -266,8 +258,10 @@ export function calculateHoursTo10Inches(currentHeight: number, runRate: number,
       return 0;
     }
     
-    const currentGallons = gallonsAtDepth(currentHeight, profile.diameter_inches, profile.length_inches);
-    const gallonsAtCritical = gallonsAtDepth(profile.critical_height_inches, profile.diameter_inches, profile.length_inches);
+    // Use tank capacity from profile instead of calculating from dimensions
+    const percentFull = currentHeight / 100; // Assume 100 inches max height
+    const currentGallons = profile.max_capacity_gallons * percentFull;
+    const gallonsAtCritical = profile.max_capacity_gallons * (profile.critical_height_inches / 100);
     
     const gallonsUntilCritical = currentGallons - gallonsAtCritical;
     
@@ -389,9 +383,7 @@ export function getStoreTankProfiles(storeName: string): TankProfile[] {
         store_name: config.store_name,
         tank_id: config.tank_id,
         tank_name: config.tank_name,
-        diameter_inches: config.diameter_inches,
-        length_inches: config.length_inches,
-        max_capacity_gallons: config.max_capacity_gallons || gallonsAtDepth(config.diameter_inches, config.diameter_inches, config.length_inches),
+        max_capacity_gallons: config.max_capacity_gallons || 10000,
         critical_height_inches: config.critical_height_inches,
         warning_height_inches: config.warning_height_inches,
       }));

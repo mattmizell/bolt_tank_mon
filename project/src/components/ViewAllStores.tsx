@@ -273,7 +273,7 @@ export const ViewAllStores: React.FC<ViewAllStoresProps> = ({
             </div>
             <div>
               <strong className="text-white">Tank Specs:</strong>
-              <span className="text-slate-300 ml-2">96" diameter × 319.3" length cylindrical tanks</span>
+              <span className="text-slate-300 ml-2">Standard 10,000 gallon tanks</span>
             </div>
           </div>
         </div>

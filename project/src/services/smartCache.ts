@@ -220,8 +220,6 @@ export class SmartCache {
             store_name: cachedStore.store_name,
             tank_id: cachedTank.tank_id,
             tank_name: cachedTank.tank_name,
-            diameter_inches: 96,
-            length_inches: 319.3,
             max_capacity_gallons: 10000,
             critical_height_inches: 10,
             warning_height_inches: 20,

@@ -84,8 +84,7 @@ export class RunRateCache {
           timestamp: log.timestamp,
         })),
         profile: {
-          diameter: input.profile.diameter_inches,
-          length: input.profile.length_inches,
+          capacity: input.profile.max_capacity_gallons,
           critical_height: input.profile.critical_height_inches,
         },
         latest_volume: input.latest_log?.tc_volume ? Math.round(input.latest_log.tc_volume * 10) / 10 : 0,

@@ -356,8 +356,6 @@ const autoConfigureNewStore = (storeName: string, tanks: any[]) => {
         tank_id: tank.tank_id,
         tank_name: tankName,
         product_type: productType,
-        diameter_inches: 96,
-        length_inches: 319.3,
         critical_height_inches: 10,
         warning_height_inches: 20,
         alerts_enabled: true,
