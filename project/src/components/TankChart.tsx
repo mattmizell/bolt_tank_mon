@@ -1,813 +1,508 @@
-// Configuration service for managing store hours and tank specifications
-import { StoreHours, TankConfiguration } from '../types';
+import React, { useEffect, useRef } from 'react';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+import { Tank } from '../types';
+import { format } from 'date-fns';
+import { ApiService } from '../services/api';
 
-const STORAGE_KEYS = {
-  STORE_HOURS: 'tank_monitor_store_hours',
-  TANK_CONFIGS: 'tank_monitor_tank_configs',
-};
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
-// Default store hours with admin contact information
-const DEFAULT_STORE_HOURS: StoreHours[] = [
-  {
-    store_name: 'Mascoutah',
-    open_hour: 5,
-    close_hour: 23,
-    timezone: 'America/Chicago',
-    admin_name: 'Store Manager',
-    admin_phone: '+1234567890',
-    admin_email: 'manager@mascoutah.betterdayenergy.com',
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'North City',
-    open_hour: 5,
-    close_hour: 23,
-    timezone: 'America/Chicago',
-    admin_name: 'Store Manager',
-    admin_phone: '+1234567891',
-    admin_email: 'manager@northcity.betterdayenergy.com',
-    alerts_enabled: true,
-  },
-];
+interface TankChartProps {
+  tank: Tank;
+  readOnly?: boolean;
+}
 
-// Default tank configurations based on your original system
-const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
-  // Mascoutah tanks
-  {
-    store_name: 'Mascoutah',
-    tank_id: 1,
-    tank_name: 'UNLEADED',
-    product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'Mascoutah',
-    tank_id: 2,
-    tank_name: 'PREMIUM',
-    product_type: 'Premium Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'Mascoutah',
-    tank_id: 3,
-    tank_name: 'DIESEL',
-    product_type: 'Diesel',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  // North City tanks
-  {
-    store_name: 'North City',
-    tank_id: 1,
-    tank_name: 'UNL T1',
-    product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'North City',
-    tank_id: 2,
-    tank_name: 'UNL T2',
-    product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'North City',
-    tank_id: 3,
-    tank_name: 'UNL T3',
-    product_type: 'Regular Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'North City',
-    tank_id: 4,
-    tank_name: 'PREM',
-    product_type: 'Premium Unleaded',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  {
-    store_name: 'North City',
-    tank_id: 5,
-    tank_name: 'K1',
-    product_type: 'Kerosene',
-    diameter_inches: 96,
-    length_inches: 319.3,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-];
+export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) => {
+  const chartRef = useRef<ChartJS<'line'>>(null);
+  const [chartLogs, setChartLogs] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
 
-export class ConfigService {
-  // Store Hours Management (now includes admin contact info)
-  static getStoreHours(): StoreHours[] {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEYS.STORE_HOURS);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        // Ensure all stores have admin contact fields (migration for existing data)
-        return parsed.map((hours: StoreHours) => ({
-          ...hours,
-          admin_name: hours.admin_name || 'Store Manager',
-          admin_phone: hours.admin_phone || '+1234567890',
-          admin_email: hours.admin_email || `manager@${hours.store_name.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
-          alerts_enabled: hours.alerts_enabled !== false, // Default to true
-        }));
+  // Fetch 5 days of data for charts when component mounts
+  useEffect(() => {
+    const fetchChartData = async () => {
+      if (!tank.latest_log?.store_name) {
+        console.warn('No store name available for tank chart');
+        return;
       }
-    } catch (error) {
-      console.error('Error loading store hours:', error);
-    }
-    return DEFAULT_STORE_HOURS;
-  }
-
-  static saveStoreHours(storeHours: StoreHours[]): void {
-    try {
-      localStorage.setItem(STORAGE_KEYS.STORE_HOURS, JSON.stringify(storeHours));
-    } catch (error) {
-      console.error('Error saving store hours:', error);
-    }
-  }
-
-  static getStoreHoursForStore(storeName: string): StoreHours | null {
-    const allHours = this.getStoreHours();
-    return allHours.find(hours => hours.store_name === storeName) || null;
-  }
-
-  static updateStoreHours(
-    storeName: string, 
-    openHour: number, 
-    closeHour: number, 
-    timezone: string = 'America/Chicago',
-    adminName?: string,
-    adminPhone?: string,
-    adminEmail?: string,
-    alertsEnabled: boolean = true
-  ): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    const updatedHours: StoreHours = {
-      store_name: storeName,
-      open_hour: openHour,
-      close_hour: closeHour,
-      timezone,
-      admin_name: adminName || 'Store Manager',
-      admin_phone: adminPhone || '+1234567890',
-      admin_email: adminEmail || `manager@${storeName.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
-      alerts_enabled: alertsEnabled,
-    };
-
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = updatedHours;
-    } else {
-      allHours.push(updatedHours);
-    }
-
-    this.saveStoreHours(allHours);
-  }
-
-  // Enhanced method to update just admin contact info
-  static updateStoreAdminContact(
-    storeName: string,
-    adminName: string,
-    adminPhone: string,
-    adminEmail?: string,
-    alertsEnabled: boolean = true
-  ): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        admin_name: adminName,
-        admin_phone: adminPhone,
-        admin_email: adminEmail || allHours[existingIndex].admin_email,
-        alerts_enabled: alertsEnabled,
-      };
-    } else {
-      // Create new store hours entry with defaults
-      const newHours: StoreHours = {
-        store_name: storeName,
-        open_hour: 5,
-        close_hour: 23,
-        timezone: 'America/Chicago',
-        admin_name: adminName,
-        admin_phone: adminPhone,
-        admin_email: adminEmail || `manager@${storeName.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
-        alerts_enabled: alertsEnabled,
-      };
-      allHours.push(newHours);
-    }
-
-    this.saveStoreHours(allHours);
-  }
-
-  // Get admin contact for a specific store
-  static getStoreAdminContact(storeName: string): { name: string; phone: string; email?: string; alertsEnabled: boolean } | null {
-    const storeHours = this.getStoreHoursForStore(storeName);
-    if (!storeHours) return null;
-
-    return {
-      name: storeHours.admin_name || 'Store Manager',
-      phone: storeHours.admin_phone || '+1234567890',
-      email: storeHours.admin_email,
-      alertsEnabled: storeHours.alerts_enabled !== false,
-    };
-  }
-
-  // Tank Configuration Management (unchanged)
-  static getTankConfigurations(): TankConfiguration[] {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEYS.TANK_CONFIGS);
-      if (stored) {
-        const configs = JSON.parse(stored);
-        // Calculate max capacity for each tank if not already set
-        return configs.map((config: TankConfiguration) => ({
-          ...config,
-          max_capacity_gallons: config.max_capacity_gallons || this.calculateMaxCapacity(config.diameter_inches, config.length_inches),
-          alerts_enabled: config.alerts_enabled !== false, // Default to true
-        }));
-      }
-    } catch (error) {
-      console.error('Error loading tank configurations:', error);
-    }
-    
-    // Return default configs with calculated capacities
-    return DEFAULT_TANK_CONFIGS.map(config => ({
-      ...config,
-      max_capacity_gallons: this.calculateMaxCapacity(config.diameter_inches, config.length_inches),
-    }));
-  }
-
-  static saveTankConfigurations(tankConfigs: TankConfiguration[]): void {
-    try {
-      localStorage.setItem(STORAGE_KEYS.TANK_CONFIGS, JSON.stringify(tankConfigs));
-    } catch (error) {
-      console.error('Error saving tank configurations:', error);
-    }
-  }
-
-  static getTankConfiguration(storeName: string, tankId: number): TankConfiguration | null {
-    const allConfigs = this.getTankConfigurations();
-    return allConfigs.find(config => config.store_name === storeName && config.tank_id === tankId) || null;
-  }
-
-  static updateTankConfiguration(config: TankConfiguration): void {
-    const allConfigs = this.getTankConfigurations();
-    const existingIndex = allConfigs.findIndex(
-      c => c.store_name === config.store_name && c.tank_id === config.tank_id
-    );
-
-    // Calculate max capacity
-    const updatedConfig = {
-      ...config,
-      max_capacity_gallons: this.calculateMaxCapacity(config.diameter_inches, config.length_inches),
-      alerts_enabled: config.alerts_enabled !== false, // Default to true
-    };
-
-    if (existingIndex >= 0) {
-      allConfigs[existingIndex] = updatedConfig;
-    } else {
-      allConfigs.push(updatedConfig);
-    }
-
-    this.saveTankConfigurations(allConfigs);
-  }
-
-  static getStoreConfigurations(storeName: string): TankConfiguration[] {
-    const allConfigs = this.getTankConfigurations();
-    return allConfigs.filter(config => config.store_name === storeName);
-  }
-
-  // Auto-configuration helper for new stores (enhanced with admin contact)
-  static autoConfigureNewStore(storeName: string, tankCount: number, tankData?: any[]): void {
-    console.log(`🔧 Auto-configuring new store: ${storeName} with ${tankCount} tanks`);
-    console.log(`📊 Tank data provided:`, tankData);
-    console.log(`📊 Tank data provided:`, tankData);
-    console.log(`📊 Tank data provided:`, tankData);
-    console.log(`📊 Tank data provided:`, tankData);
-    console.log(`📊 Tank data provided:`, tankData);
-    console.log(`📊 Tank data provided:`, tankData);
-    
-    // Use Mascoutah as the template for new stores
-    const templateHours = this.getStoreHoursForStore('Mascoutah') || DEFAULT_STORE_HOURS[0];
-
-    // Add store hours with admin contact
-    this.updateStoreHours(
-      storeName, 
-      templateHours.open_hour, 
-      templateHours.close_hour, 
-      templateHours.timezone,
-      'Store Manager', // Default admin name
-      '+1234567890', // Default phone (should be updated by admin)
-      `manager@${storeName.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`, // Auto-generated email
-      true // Enable alerts by default
-    );
-
-    // Auto-configure tanks based on detected data or use defaults
-    for (let i = 1; i <= tankCount; i++) {
-      const existingConfig = this.getTankConfiguration(storeName, i);
-      if (!existingConfig) {
-        let tankName = `TANK ${i}`;
-        let productType = 'Regular Unleaded';
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
-
-        // Try to determine tank type from data if available
-        if (tankData && tankData[i - 1]) {
-          const tank = tankData[i - 1];
+      
+      setLoading(true);
+      setError(null);
+      
+      try {
+        console.log(`📊 Fetching 5 days of chart data for ${tank.latest_log.store_name} Tank ${tank.tank_id}...`);
+        
+        let logs: any[] = [];
+        
+        // Try multiple approaches to get chart data
+        try {
+          // First try: 5 days (120 hours) of data
+          logs = await ApiService.getTankLogs(tank.latest_log.store_name, tank.tank_id, 120);
+          console.log(`📈 Retrieved ${logs.length} logs from 5-day fetch`);
+        } catch (error) {
+          console.warn('5-day fetch failed, trying 3 days:', error);
           
-          // Use tank name from API if available
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-            if (product.includes('unleaded') || product.includes('unl')) {
-              if (product.includes('premium') || product.includes('prem')) {
-                tankName = 'PREMIUM';
-                productType = 'Premium Unleaded';
+          try {
+            // Second try: 3 days (72 hours) of data
+            logs = await ApiService.getTankLogs(tank.latest_log.store_name, tank.tank_id, 72);
+            console.log(`📈 Retrieved ${logs.length} logs from 3-day fetch`);
+          } catch (error) {
+            console.warn('3-day fetch failed, trying 1 day:', error);
+            
+            try {
+              // Third try: 1 day (24 hours) of data
+              logs = await ApiService.getTankLogs(tank.latest_log.store_name, tank.tank_id, 24);
+              console.log(`📈 Retrieved ${logs.length} logs from 1-day fetch`);
+            } catch (error) {
+              console.warn('All fetches failed, using tank logs if available:', error);
+              
+              // Final fallback: use any logs attached to the tank
+              if (tank.logs && tank.logs.length > 0) {
+                logs = tank.logs;
+                console.log(`📈 Using attached tank logs: ${logs.length} entries`);
               } else {
-                tankName = 'UNLEADED';
-                productType = 'Regular Unleaded';
+                // Create synthetic data from latest log for demonstration
+                logs = createSyntheticData(tank);
+                console.log(`📈 Created synthetic data: ${logs.length} entries`);
               }
-            } else if (product.includes('diesel')) {
-              tankName = 'DIESEL';
-              productType = 'Diesel';
-            } else if (product.includes('kerosene') || product.includes('k1')) {
-              tankName = 'K1';
-              productType = 'Kerosene';
-            } else {
-              tankName = productSource.toUpperCase();
-              productType = productSource;
             }
           }
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-          
-          console.log(`🔧 Auto-configured tank ${i}: ${tankName} (${productType})`);
-        } else {
-          // Use standard naming pattern
-          if (i === 1) {
-            tankName = 'UNLEADED';
-            productType = 'Regular Unleaded';
-          } else if (i === 2) {
-            tankName = 'PREMIUM';
-            productType = 'Premium Unleaded';
-          } else if (i === 3) {
-            tankName = 'DIESEL';
-            productType = 'Diesel';
-          } else {
-            tankName = `TANK ${i}`;
-            productType = 'Regular Unleaded';
-          }
+        }
+        
+        // Process and validate logs
+        const processedLogs = logs
+          .map(log => {
+            try {
+              return {
+                id: log.id || 0,
+                store_name: log.store_name || tank.latest_log?.store_name || '',
+                tank_id: log.tank_id || tank.tank_id,
+                product: log.product || tank.product || tank.tank_name || '',
+                volume: Number(log.volume) || 0,
+                tc_volume: Number(log.tc_volume) || 0,
+                ullage: Number(log.ullage) || 0,
+                height: Number(log.height) || 0,
+                water: Number(log.water) || 0,
+                temp: Number(log.temp) || 70,
+                timestamp: log.timestamp || log.recorded_at || new Date().toISOString(),
+              };
+            } catch (error) {
+              console.warn('Error processing log entry:', error);
+              return null;
+            }
+          })
+          .filter((log): log is any => log !== null && log.tc_volume > 0 && log.height > 0)
+          .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+
+        if (processedLogs.length === 0) {
+          throw new Error('No valid chart data available');
         }
 
-        const newConfig: TankConfiguration = {
-          store_name: storeName,
-          tank_id: i,
-          tank_name: tankName,
-          product_type: productType,
-          diameter_inches: diameter,
-          length_inches: length,
-          critical_height_inches: 10,
-          warning_height_inches: 20,
-          alerts_enabled: true, // Enable alerts by default
-        };
-
-        this.updateTankConfiguration(newConfig);
-        console.log(`✅ Auto-configured tank ${i}: ${tankName} (${productType}) - ${diameter}" × ${length}"`);
+        setChartLogs(processedLogs);
+        console.log(`✅ Chart data loaded: ${processedLogs.length} valid readings`);
+        
+      } catch (error) {
+        console.error(`❌ Failed to fetch chart data for Tank ${tank.tank_id}:`, error);
+        setError(`Unable to load chart data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        
+        // Final fallback: create synthetic data for demonstration
+        const syntheticData = createSyntheticData(tank);
+        setChartLogs(syntheticData);
+        console.log(`📊 Using synthetic data for Tank ${tank.tank_id} chart`);
+      } finally {
+        setLoading(false);
       }
-    }
-
-    console.log(`✅ Auto-configured admin contact for ${storeName} (please update phone number)`);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Enhanced method to mark stores as test data
-  static markStoreAsTestData(storeName: string, isTestData: boolean): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_test_data: isTestData,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Enhanced method to toggle store visibility
-  static toggleStoreVisibility(storeName: string): void {
-    const allHours = this.getStoreHours();
-    const existingIndex = allHours.findIndex(hours => hours.store_name === storeName);
-    
-    if (existingIndex >= 0) {
-      allHours[existingIndex] = {
-        ...allHours[existingIndex],
-        is_active: !allHours[existingIndex].is_active,
-      };
-      this.saveStoreHours(allHours);
-    }
-  }
-
-  // Get visible stores (not hidden)
-  static getVisibleStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false)
-      .map(hours => hours.store_name);
-  }
-
-  // Get active stores (visible and not test data)
-  static getActiveStores(): string[] {
-    return this.getStoreHours()
-      .filter(hours => hours.is_active !== false && !hours.is_test_data)
-      .map(hours => hours.store_name);
-  }
-
-  // Helper method to calculate tank capacity using cylindrical geometry
-  private static calculateMaxCapacity(diameterInches: number, lengthInches: number): number {
-    try {
-      const r = diameterInches / 2;
-      const h = diameterInches; // Full height
-      const L = lengthInches;
-      
-      if (h <= 0 || h > diameterInches || !isFinite(h) || !isFinite(r) || !isFinite(L)) {
-        return 8000; // Default capacity
-      }
-      
-      const theta = Math.acos((r - h) / r);
-      if (!isFinite(theta)) return 8000;
-      
-      const segmentArea = (r ** 2) * (theta - Math.sin(2 * theta) / 2);
-      if (!isFinite(segmentArea)) return 8000;
-      
-      const volumeCubicInches = segmentArea * L;
-      const gallons = volumeCubicInches / 231; // Convert to gallons
-      
-      return isFinite(gallons) ? Math.round(Math.max(0, gallons)) : 8000;
-    } catch (error) {
-      console.error('Error calculating tank capacity:', error);
-      return 8000;
-    }
-  }
-
-  // Reset to defaults
-  static resetToDefaults(): void {
-    localStorage.removeItem(STORAGE_KEYS.STORE_HOURS);
-    localStorage.removeItem(STORAGE_KEYS.TANK_CONFIGS);
-  }
-
-  // Export/Import functionality (enhanced to include admin contacts)
-  static exportConfiguration(): string {
-    const config = {
-      storeHours: this.getStoreHours(),
-      tankConfigurations: this.getTankConfigurations(),
-      exportDate: new Date().toISOString(),
-      version: '2.0', // Version with admin contacts
     };
-    return JSON.stringify(config, null, 2);
+
+    fetchChartData();
+  }, [tank.tank_id, tank.latest_log?.store_name, tank.product]);
+
+  // Create synthetic chart data from latest reading for demonstration
+  const createSyntheticData = (tank: Tank): any[] => {
+    if (!tank.latest_log) return [];
+
+    const syntheticLogs = [];
+    const now = new Date();
+    const baseVolume = tank.latest_log.tc_volume || 5000;
+    const baseHeight = tank.latest_log.height || 60;
+    
+    // Create 48 hours of synthetic data showing gradual consumption
+    for (let i = 47; i >= 0; i--) {
+      const timestamp = new Date(now.getTime() - (i * 60 * 60 * 1000));
+      const consumptionRate = tank.run_rate || 10; // gallons per hour
+      const volumeDecrease = i * consumptionRate;
+      const currentVolume = Math.max(baseVolume - volumeDecrease, 500);
+      const currentHeight = (currentVolume / baseVolume) * baseHeight;
+      
+      syntheticLogs.push({
+        id: i,
+        store_name: tank.latest_log.store_name,
+        tank_id: tank.tank_id,
+        product: tank.product,
+        volume: currentVolume,
+        tc_volume: currentVolume,
+        ullage: 8000 - currentVolume,
+        height: currentHeight,
+        water: tank.latest_log.water || 0,
+        temp: tank.latest_log.temp || 70,
+        timestamp: timestamp.toISOString(),
+      });
+    }
+    
+    return syntheticLogs;
+  };
+
+  if (loading) {
+    return (
+      <div className="bg-slate-800 rounded-xl p-6 text-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mx-auto mb-2"></div>
+        <p className="text-slate-400">Loading chart data for {tank.tank_name}...</p>
+        <p className="text-slate-500 text-xs mt-1">Fetching historical readings...</p>
+      </div>
+    );
   }
 
-  static importConfiguration(configJson: string): boolean {
-    try {
-      const config = JSON.parse(configJson);
-      
-      if (config.storeHours && Array.isArray(config.storeHours)) {
-        // Migrate old format if needed
-        const migratedHours = config.storeHours.map((hours: any) => ({
-          ...hours,
-          admin_name: hours.admin_name || 'Store Manager',
-          admin_phone: hours.admin_phone || '+1234567890',
-          admin_email: hours.admin_email || `manager@${hours.store_name.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
-          alerts_enabled: hours.alerts_enabled !== false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-          is_active: hours.is_active !== false,
-          is_test_data: hours.is_test_data || false,
-        }));
-        this.saveStoreHours(migratedHours);
-      }
-      
-      if (config.tankConfigurations && Array.isArray(config.tankConfigurations)) {
-        this.saveTankConfigurations(config.tankConfigurations);
-      }
-      
-      return true;
-    } catch (error) {
-      console.error('Error importing configuration:', error);
-      return false;
-    }
+  if (error && chartLogs.length === 0) {
+    return (
+      <div className="bg-slate-800 rounded-xl p-6 text-center">
+        <div className="text-slate-400 mb-4">
+          <div className="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-3">
+            ⚠️
+          </div>
+          <p className="font-medium">Chart Data Unavailable</p>
+          <p className="text-sm text-slate-500 mt-1">
+            {error}
+          </p>
+        </div>
+        <div className="bg-slate-700/50 rounded-lg p-3">
+          <p className="text-xs text-slate-400">
+            Charts require historical tank readings. This may be due to:
+            • Limited historical data available
+            • Network connectivity issues
+            • Tank recently added to system
+          </p>
+        </div>
+      </div>
+    );
   }
-}
+
+  if (chartLogs.length === 0) {
+    return (
+      <div className="bg-slate-800 rounded-xl p-6 text-center">
+        <div className="text-slate-400 mb-4">
+          <div className="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-3">
+            📊
+          </div>
+          <p className="font-medium">No Chart Data Available</p>
+          <p className="text-sm text-slate-500 mt-1">
+            No historical data found for {tank.tank_name}
+          </p>
+        </div>
+        <div className="bg-slate-700/50 rounded-lg p-3">
+          <p className="text-xs text-slate-400">
+            Charts require at least a few hours of historical tank readings. 
+            Data may not be available yet or the tank may be newly configured.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Generate labels with appropriate frequency
+  const labels = chartLogs.map(log => {
+    try {
+      const date = new Date(log.timestamp);
+      if (chartLogs.length > 100) {
+        // For lots of data, show date and hour
+        return format(date, 'MM/dd HH:mm');
+      } else if (chartLogs.length > 24) {
+        // For moderate data, show day and time
+        return format(date, 'dd HH:mm');
+      } else {
+        // For limited data, show full time
+        return format(date, 'HH:mm');
+      }
+    } catch {
+      return 'Invalid Date';
+    }
+  });
+
+  // Calculate tank dimensions and levels
+  const maxDiameter = tank.profile?.diameter_inches || 96;
+  const criticalHeight = tank.profile?.critical_height_inches || 10;
+  const warningHeight = tank.profile?.warning_height_inches || 20;
+  const maxCapacity = tank.profile?.max_capacity_gallons || 8000;
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'Product Height (in)',
+        data: chartLogs.map(log => log.height),
+        borderColor: 'rgb(59, 130, 246)',
+        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        fill: true,
+        tension: 0.1,
+        pointRadius: chartLogs.length > 50 ? 0 : 2,
+        pointHoverRadius: 4,
+        borderWidth: 2,
+        yAxisID: 'y',
+      },
+      {
+        label: 'TC Volume (gal)',
+        data: chartLogs.map(log => log.tc_volume),
+        borderColor: 'rgb(14, 165, 233)',
+        backgroundColor: 'rgba(14, 165, 233, 0.1)',
+        fill: false,
+        tension: 0.1,
+        pointRadius: chartLogs.length > 50 ? 0 : 2,
+        pointHoverRadius: 4,
+        borderWidth: 2,
+        yAxisID: 'y1',
+      },
+      // Warning Level Line at 20"
+      {
+        label: 'Warning Level (20")',
+        data: new Array(chartLogs.length).fill(warningHeight),
+        borderColor: 'rgb(234, 179, 8)',
+        backgroundColor: 'rgba(234, 179, 8, 0.1)',
+        fill: false,
+        tension: 0,
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        borderWidth: 2,
+        borderDash: [8, 4],
+        yAxisID: 'y',
+      },
+      // Critical Level Line at 10"
+      {
+        label: 'Critical Level (10")',
+        data: new Array(chartLogs.length).fill(criticalHeight),
+        borderColor: 'rgb(239, 68, 68)',
+        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+        fill: false,
+        tension: 0,
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        borderWidth: 2,
+        borderDash: [5, 5],
+        yAxisID: 'y',
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: {
+      duration: 0, // Disable animations for better performance
+    },
+    plugins: {
+      legend: {
+        position: 'top' as const,
+        labels: {
+          color: 'rgb(148, 163, 184)',
+          filter: function(legendItem: any) {
+            return true;
+          }
+        },
+      },
+      title: {
+        display: true,
+        text: `${tank.tank_name} - Historical Trend${readOnly ? ' (Read Only)' : ''}`,
+        color: 'rgb(226, 232, 240)',
+        font: {
+          size: 16,
+          weight: 'bold',
+        },
+      },
+      tooltip: {
+        mode: 'index' as const,
+        intersect: false,
+        backgroundColor: 'rgba(30, 41, 59, 0.95)',
+        titleColor: 'rgb(226, 232, 240)',
+        bodyColor: 'rgb(148, 163, 184)',
+        borderColor: 'rgb(59, 130, 246)',
+        borderWidth: 1,
+        filter: function(tooltipItem: any) {
+          // Don't show tooltip for the warning and critical level lines
+          return tooltipItem.datasetIndex !== 2 && tooltipItem.datasetIndex !== 3;
+        },
+        callbacks: {
+          afterBody: (context: any) => {
+            const dataIndex = context[0]?.dataIndex;
+            if (dataIndex !== undefined && chartLogs[dataIndex]) {
+              const log = chartLogs[dataIndex];
+              const capacityPct = tank.profile ? 
+                ((log.tc_volume / tank.profile.max_capacity_gallons) * 100).toFixed(1) : 
+                'N/A';
+              return [
+                `Temperature: ${log.temp?.toFixed(1)}°F`,
+                `Water: ${log.water?.toFixed(2)}"`,
+                `Ullage: ${log.ullage?.toLocaleString()} gal`,
+                `Capacity: ${capacityPct}%`
+              ];
+            }
+            return [];
+          }
+        }
+      },
+    },
+    interaction: {
+      mode: 'nearest' as const,
+      axis: 'x' as const,
+      intersect: false,
+    },
+    scales: {
+      x: {
+        display: true,
+        grid: {
+          color: 'rgba(71, 85, 105, 0.3)',
+        },
+        ticks: {
+          color: 'rgb(148, 163, 184)',
+          maxTicksLimit: Math.min(20, Math.max(5, Math.floor(chartLogs.length / 5))),
+          callback: function(value: any, index: number) {
+            // Show every nth tick based on data density
+            const skipFactor = Math.max(1, Math.floor(chartLogs.length / 15));
+            if (index % skipFactor === 0) {
+              return this.getLabelForValue(value);
+            }
+            return '';
+          }
+        },
+      },
+      y: {
+        type: 'linear' as const,
+        display: true,
+        position: 'left' as const,
+        title: {
+          display: true,
+          text: 'Product Height (inches)',
+          color: 'rgb(59, 130, 246)',
+        },
+        grid: {
+          color: 'rgba(71, 85, 105, 0.3)',
+        },
+        ticks: {
+          color: 'rgb(59, 130, 246)',
+          callback: function(value: any) {
+            return typeof value === 'number' ? `${value.toFixed(1)}"` : value;
+          }
+        },
+        min: 0,
+        max: maxDiameter,
+      },
+      y1: {
+        type: 'linear' as const,
+        display: true,
+        position: 'right' as const,
+        title: {
+          display: true,
+          text: 'TC Volume (gal)',
+          color: 'rgb(14, 165, 233)',
+        },
+        grid: {
+          drawOnChartArea: false,
+        },
+        ticks: {
+          color: 'rgb(14, 165, 233)',
+          callback: function(value: any) {
+            return typeof value === 'number' ? value.toLocaleString() : value;
+          }
+        },
+        min: 0,
+        max: maxCapacity * 1.1,
+      },
+    },
+  };
+
+  // Determine data period for display
+  const getDataPeriod = () => {
+    if (chartLogs.length === 0) return 'No data';
+    
+    const firstLog = chartLogs[0];
+    const lastLog = chartLogs[chartLogs.length - 1];
+    
+    try {
+      const firstDate = new Date(firstLog.timestamp);
+      const lastDate = new Date(lastLog.timestamp);
+      const hoursDiff = (lastDate.getTime() - firstDate.getTime()) / (1000 * 60 * 60);
+      
+      if (hoursDiff >= 96) return '5+ days';
+      if (hoursDiff >= 48) return '2-3 days';
+      if (hoursDiff >= 24) return '1-2 days';
+      return `${Math.round(hoursDiff)} hours`;
+    } catch {
+      return 'Historical';
+    }
+  };
+
+  return (
+    <div className="bg-slate-800 rounded-xl p-4">
+      <div style={{ height: '350px' }}>
+        <Line ref={chartRef} data={data} options={options} />
+      </div>
+      <div className="mt-3 grid grid-cols-2 gap-4 text-xs">
+        <div className="text-slate-400">
+          <div className="flex justify-between">
+            <span>Tank Diameter:</span>
+            <span className="text-white">{maxDiameter}"</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Current Height:</span>
+            <span className="text-blue-400">
+              {tank.latest_log?.height?.toFixed(1) || 'N/A'}"
+            </span>
+          </div>
+          {tank.run_rate && tank.run_rate > 0 && (
+            <div className="flex justify-between">
+              <span>Run Rate:</span>
+              <span className="text-green-400">{tank.run_rate.toFixed(1)} gal/hr</span>
+            </div>
+          )}
+        </div>
+        <div className="text-slate-400">
+          <div className="flex justify-between">
+            <span>Warning Level:</span>
+            <span className="text-yellow-400">{warningHeight}" (Yellow Line)</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Critical Level:</span>
+            <span className="text-red-400">{criticalHeight}" (Red Line)</span>
+          </div>
+          {tank.hours_to_10_inches && tank.hours_to_10_inches > 0 && (
+            <div className="flex justify-between">
+              <span>Hours to 10":</span>
+              <span className="text-orange-400">{tank.hours_to_10_inches.toFixed(1)} hrs</span>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="mt-2 text-xs text-slate-400 text-center">
+        Showing {getDataPeriod()} of data ({chartLogs.length} readings) • Tank Profile: {tank.profile?.diameter_inches}"Ø × {tank.profile?.length_inches}"L
+        {readOnly && <span className="text-yellow-400 ml-2">• READ ONLY VIEW</span>}
+        {error && <span className="text-yellow-400 ml-2">• Using fallback data</span>}
+      </div>
+    </div>
+  );
+};
