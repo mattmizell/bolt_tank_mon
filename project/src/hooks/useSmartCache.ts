@@ -43,11 +43,12 @@ export const useSmartCache = () => {
           let capacityPercentage = rawTank.capacity_percentage || 0;
           let historicalLogs: any[] = [];
 
-          // ALWAYS fetch 10 days of historical data for charts (240 hours)
+          // Skip historical data fetch during initial load - charts will load their own data
+          // This prevents the app from hanging on initial load
           try {
-            console.log(`📈 Fetching 10 days of historical data for ${rawStore.store_name} Tank ${rawTank.tank_id}...`);
-            historicalLogs = await ApiService.getTankLogs(rawStore.store_name, rawTank.tank_id, 240); // 10 days = 240 hours
-            console.log(`✅ Retrieved ${historicalLogs.length} historical logs for charts`);
+            console.log(`📈 Skipping historical data fetch for initial load - charts will load independently`);
+            historicalLogs = []; // Charts will fetch their own data when needed
+            console.log(`✅ Deferred historical data loading for performance`);
           } catch (logError) {
             console.warn(`⚠️ Could not fetch historical logs for ${rawStore.store_name} Tank ${rawTank.tank_id}:`, logError);
             historicalLogs = [];

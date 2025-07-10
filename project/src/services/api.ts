@@ -1,6 +1,6 @@
 // Enhanced API service for Central Tank Server
 
-const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_URL || 'https://central-tank-server.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://central-tank-server.onrender.com';
 
 // Request cache for API responses
 const requestCache = new Map<string, { data: any; timestamp: number }>();
