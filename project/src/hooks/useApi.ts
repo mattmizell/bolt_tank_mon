@@ -31,7 +31,10 @@ const processStoreDataFast = async (rawStore: any): Promise<Store> => {
   }
 
   // Process tanks with minimal computation for fast display
+  console.log('🔍 DEBUG: rawStore.tanks:', rawStore.tanks);
   const fastTanks = rawStore.tanks.map((rawTank: any) => {
+    console.log('🔍 DEBUG: rawTank keys:', Object.keys(rawTank));
+    console.log('🔍 DEBUG: rawTank.configuration:', rawTank.configuration);
     // NEW SERVER FORMAT: latest_reading instead of latest_log
     const latestReading = rawTank.latest_reading;
     const latestLog = latestReading ? {
@@ -79,10 +82,17 @@ const processStoreDataFast = async (rawStore: any): Promise<Store> => {
       product: rawTank.tank_name, // Keep for backward compatibility but use tank_name
       latest_log: latestLog,
       logs: rawTank.historical_data || [], // Include historical data for charts
-      run_rate: runRate,
-      hours_to_10_inches: hoursTo10,
+      run_rate: analytics.run_rate || 0.5,
+      hours_to_10_inches: analytics.hours_to_critical || 0,
       status: status,
-      profile: profile,
+      profile: {
+        store_name: rawStore.store_name,
+        tank_id: rawTank.tank_id,
+        tank_name: rawTank.tank_name,
+        max_capacity_gallons: serverConfig?.max_capacity_gallons || 10000,
+        critical_height_inches: serverConfig?.critical_height_inches || 10,
+        warning_height_inches: serverConfig?.warning_height_inches || 20,
+      },
       configuration: serverConfig, // Add server configuration
       analytics: analytics, // Include full analytics object
       capacity_percentage: Math.round(capacityPercentage),
