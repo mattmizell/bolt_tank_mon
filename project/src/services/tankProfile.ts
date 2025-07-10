@@ -5,8 +5,6 @@ export interface TankProfile {
   store_name: string;
   tank_id: number;
   tank_name: string;
-  diameter_inches: number;
-  length_inches: number;
   max_capacity_gallons: number;
   critical_height_inches: number;
   warning_height_inches: number;
@@ -117,9 +115,7 @@ export function createTankProfile(storeName: string, tankId: number): TankProfil
         store_name: config.store_name,
         tank_id: config.tank_id,
         tank_name: config.tank_name,
-        diameter_inches: config.diameter_inches,
-        length_inches: config.length_inches,
-        max_capacity_gallons: config.max_capacity_gallons || gallonsAtDepth(config.diameter_inches, config.diameter_inches, config.length_inches),
+        max_capacity_gallons: config.max_capacity_gallons || 10000,
         critical_height_inches: config.critical_height_inches,
         warning_height_inches: config.warning_height_inches,
       };
@@ -128,17 +124,13 @@ export function createTankProfile(storeName: string, tankId: number): TankProfil
     console.warn('Error getting tank configuration, using defaults:', error);
   }
   
-  const [diameter, length] = getTankDimensions(storeName, tankId);
   const tankName = getTankName(storeName, tankId);
-  const maxCapacity = gallonsAtDepth(diameter, diameter, length);
   
   return {
     store_name: storeName,
     tank_id: tankId,
     tank_name: tankName,
-    diameter_inches: diameter,
-    length_inches: length,
-    max_capacity_gallons: Math.round(maxCapacity),
+    max_capacity_gallons: 10000,
     critical_height_inches: 10,
     warning_height_inches: 20,
   };
