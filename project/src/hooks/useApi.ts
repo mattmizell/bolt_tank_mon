@@ -66,12 +66,13 @@ const processStoreDataFast = async (rawStore: any): Promise<Store> => {
       tank_name: rawTank.tank_name, // Use server tank name directly
       product: rawTank.tank_name, // Keep for backward compatibility but use tank_name
       latest_log: latestLog,
-      logs: [], // No logs for fast load
+      logs: rawTank.historical_data || [], // Include historical data for charts
       run_rate: runRate,
       hours_to_10_inches: hoursTo10,
       status: status,
       profile: profile,
       configuration: serverConfig, // Add server configuration
+      analytics: analytics, // Include full analytics object
       capacity_percentage: Math.round(capacityPercentage),
       predicted_time: analytics.predicted_empty,
     };

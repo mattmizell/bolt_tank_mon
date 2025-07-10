@@ -32,6 +32,13 @@ export interface TankConfiguration {
   warning_height_inches: number;
 }
 
+export interface TankAnalytics {
+  run_rate?: number;
+  hours_to_critical?: number;
+  predicted_empty?: string;
+  predicted_height_48h?: number;
+}
+
 export interface Tank {
   tank_id: number;
   tank_name: string;
@@ -44,6 +51,7 @@ export interface Tank {
   status?: 'normal' | 'warning' | 'critical';
   profile?: TankProfile;
   configuration?: TankConfiguration; // Server-provided tank configuration
+  analytics?: TankAnalytics; // Server analytics
   capacity_percentage?: number;
 }
 
