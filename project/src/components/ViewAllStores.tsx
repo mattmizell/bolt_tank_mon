@@ -335,23 +335,12 @@ export class ConfigService {
         let productType = 'Regular Unleaded';
         let diameter = 96; // Default
         let length = 319.3; // Default
-        let diameter = 96; // Default
-        let length = 319.3; // Default
 
         // Try to determine tank type from data if available
         if (tankData && tankData[i - 1]) {
           const tank = tankData[i - 1];
           
           // Use tank name from API if available
-          if (tank.tank_name) {
-            tankName = tank.tank_name;
-          }
-          
-          // Determine product type from tank name or latest log
-          const productSource = tank.tank_name || tank.latest_log?.product || '';
-          if (productSource) {
-            const product = productSource.toLowerCase();
-          }
           if (tank.tank_name) {
             tankName = tank.tank_name;
           }
