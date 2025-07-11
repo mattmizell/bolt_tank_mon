@@ -1,5 +1,5 @@
 [build]
-  # Build from project subdirectory
+  # Build from project subdirectory - UPDATED
   base = "project"
   # Build command for Vite React app
   command = "npm run build"
