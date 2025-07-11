@@ -37,7 +37,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  // OPTIMIZED: Fetch hourly-sampled data for fast chart loading (5 days = ~120 points max)
+  // Fetch fresh chart data directly from API (no caching)
   useEffect(() => {
     const fetchChartData = async () => {
       if (!tank.latest_log?.store_name) {
@@ -49,42 +49,36 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
       setError(null);
       
       try {
-        console.log(`📊 Fetching 5 days of chart data for ${tank.latest_log.store_name} Tank ${tank.tank_id}...`);
+        console.log(`📊 Fetching FRESH chart data for ${tank.latest_log.store_name} Tank ${tank.tank_id} (no cache)`);
         
         let logs: any[] = [];
         
-        // OPTIMIZED: Use fast sampled endpoint for much faster loading
+        // Use direct API call to dashboard endpoint for fresh data
         try {
-          // First try: Fast sampled data (5 days, hourly averages = ~120 points max)
-          logs = await ApiService.getSampledTankData(tank.latest_log.store_name, tank.tank_id, 5, 'hourly');
-          console.log(`📈 Retrieved ${logs.length} sampled points from fast endpoint (5d hourly)`);
+          // Fetch 7 days of sampled data directly from the dashboard API with cache busting
+          const cacheBuster = Date.now();
+          const response = await fetch(
+            `https://central-tank-server.onrender.com/dashboard/stores/${tank.latest_log.store_name}/tanks/${tank.tank_id}/sampled?hours=168&sampling_rate=4&_t=${cacheBuster}`
+          );
+          
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+          
+          const data = await response.json();
+          logs = data.logs || [];
+          console.log(`📈 Retrieved ${logs.length} fresh sampled points directly from API (7 days)`);
         } catch (error) {
-          console.warn('Fast sampled fetch failed, trying 3 days 2-hourly:', error);
+          console.warn('Direct API fetch failed, trying ApiService fallback:', error);
           
           try {
-            // Second try: 3 days with 2-hourly sampling (fewer points)
-            logs = await ApiService.getSampledTankData(tank.latest_log.store_name, tank.tank_id, 3, '2hourly');
-            console.log(`📈 Retrieved ${logs.length} sampled points from 3-day 2-hourly fetch`);
+            // Fallback: Use ApiService but bypass any caching
+            await ApiService.initialize();
+            logs = await ApiService.getSampledTankData(tank.latest_log.store_name, tank.tank_id, 5, 'hourly');
+            console.log(`📈 Retrieved ${logs.length} sampled points from ApiService fallback`);
           } catch (error) {
-            console.warn('Sampled endpoints failed, falling back to raw logs:', error);
-            
-            try {
-              // Third try: Raw logs (24 hours only for speed)
-              logs = await ApiService.getTankLogs(tank.latest_log.store_name, tank.tank_id, 24);
-              console.log(`📈 Retrieved ${logs.length} raw logs from 1-day fallback`);
-            } catch (error) {
-              console.warn('All API calls failed, using tank logs if available:', error);
-              
-              // Final fallback: use any logs attached to the tank
-              if (tank.logs && tank.logs.length > 0) {
-                logs = tank.logs;
-                console.log(`📈 Using attached tank logs: ${logs.length} entries`);
-              } else {
-                // Create synthetic data from latest log for demonstration
-                logs = createSyntheticData(tank);
-                console.log(`📈 Created synthetic data: ${logs.length} entries`);
-              }
-            }
+            console.error('All API calls failed, no synthetic data will be used:', error);
+            throw new Error('Unable to fetch real chart data from any source');
           }
         }
         
@@ -144,53 +138,15 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
       } catch (error) {
         console.error(`❌ Failed to fetch chart data for Tank ${tank.tank_id}:`, error);
         setError(`Unable to load chart data: ${error instanceof Error ? error.message : 'Unknown error'}`);
-        
-        // Final fallback: create synthetic data for demonstration
-        const syntheticData = createSyntheticData(tank);
-        setChartLogs(syntheticData);
-        console.log(`📊 Using synthetic data for Tank ${tank.tank_id} chart`);
+        setChartLogs([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchChartData();
-  }, [tank.tank_id, tank.latest_log?.store_name, tank.product]);
+  }, [tank.tank_id, tank.latest_log?.store_name, tank.product, tank.latest_log?.timestamp]);
 
-  // Create synthetic chart data from latest reading for demonstration
-  const createSyntheticData = (tank: Tank): any[] => {
-    if (!tank.latest_log) return [];
-
-    const syntheticLogs = [];
-    const now = new Date();
-    const baseVolume = tank.latest_log.tc_volume || 5000;
-    const baseHeight = tank.latest_log.height || 60;
-    
-    // Create 48 hours of synthetic data showing gradual consumption
-    for (let i = 47; i >= 0; i--) {
-      const timestamp = new Date(now.getTime() - (i * 60 * 60 * 1000));
-      const consumptionRate = tank.run_rate || 10; // gallons per hour
-      const volumeDecrease = i * consumptionRate;
-      const currentVolume = Math.max(baseVolume - volumeDecrease, 500);
-      const currentHeight = (currentVolume / baseVolume) * baseHeight;
-      
-      syntheticLogs.push({
-        id: i,
-        store_name: tank.latest_log.store_name,
-        tank_id: tank.tank_id,
-        product: tank.product,
-        volume: currentVolume,
-        tc_volume: currentVolume,
-        ullage: (tank.configuration?.max_capacity_gallons || tank.profile?.max_capacity_gallons || 10000) - currentVolume,
-        height: currentHeight,
-        water: tank.latest_log.water || 0,
-        temp: tank.latest_log.temp || 70,
-        timestamp: timestamp.toISOString(),
-      });
-    }
-    
-    return syntheticLogs;
-  };
 
   if (loading) {
     return (
@@ -519,7 +475,6 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
       <div className="mt-2 text-xs text-slate-400 text-center">
         Showing {getDataPeriod()} of data ({chartLogs.length} readings) • Capacity: {maxCapacity.toLocaleString()} gal
         {readOnly && <span className="text-yellow-400 ml-2">• READ ONLY VIEW</span>}
-        {error && <span className="text-yellow-400 ml-2">• Using fallback data</span>}
       </div>
     </div>
   );
