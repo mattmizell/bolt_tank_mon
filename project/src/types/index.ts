@@ -9,6 +9,25 @@ export interface StoreConfiguration {
   admin_phone?: string;
   admin_email?: string;
   alerts_enabled?: boolean;
+  // Alert frequency settings
+  critical_height_hours?: number;
+  warning_height_hours?: number;
+  predictive_warning_hours?: number;
+  daily_summary_enabled?: boolean;
+  daily_summary_time?: string;
+  offline_threshold_hours?: number;
+  offline_alerts_enabled?: boolean;
+}
+
+export interface StoreContact {
+  id?: number;
+  store_name: string;
+  contact_name: string;
+  email?: string;
+  phone?: string;
+  is_primary: boolean;
+  alerts_enabled: boolean;
+  contact_type: 'operations' | 'manager' | 'owner' | 'emergency';
 }
 
 export interface TankConfiguration {
@@ -20,7 +39,14 @@ export interface TankConfiguration {
   critical_height_inches: number;
   warning_height_inches: number;
   max_fill_ullage_percentage: number; // Configurable max fill ullage (default 90%)
+  // Alert configuration
   alerts_enabled?: boolean;
+  critical_height_enabled?: boolean;
+  warning_height_enabled?: boolean;
+  predictive_enabled?: boolean;
+  custom_critical_height?: number;
+  custom_warning_height?: number;
+  custom_warning_hours?: number;
   alert_phone_number?: string; // Override for specific tank
 }
 
