@@ -115,7 +115,7 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Capacity Used</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">90% Ullage</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Max Fill Ullage</th>
-              <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Height</th>
+              <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Current Height</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Run Rate</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Hours to 10"</th>
               <th className="px-4 py-3 text-left text-sm font-semibold text-slate-200">Predicted Time</th>
@@ -173,12 +173,12 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
                   </div>
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <div className="flex items-center justify-end space-x-1">
-                    <Droplets className="w-4 h-4 text-blue-400" />
-                    <span className="text-white font-mono">
-                      {formatValue(tank.latest_log?.height, 1)}
-                    </span>
-                    <span className="text-slate-400 text-sm">in</span>
+                  <span className="text-cyan-400 font-mono text-lg">
+                    {formatValue(tank.latest_log?.height, 1)}
+                  </span>
+                  <span className="text-slate-400 text-sm ml-1">in</span>
+                  <div className="text-xs text-slate-500 mt-1">
+                    To 10": {tank.latest_log?.height ? (tank.latest_log.height - 10).toFixed(1) : 'N/A'}"
                   </div>
                   {tank.latest_log?.height && tank.latest_log.height < 20 && (
                     <div className="text-xs text-yellow-400 mt-1">

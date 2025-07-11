@@ -1,0 +1,3617 @@
+[vite] connecting... client:495:9
+[vite] connected. client:614:15
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools react-dom_client.js:21551:25
+🚨 APP.TSX COMPONENT LOADING/RELOADING App.tsx:59:11
+🚀 useSmartCache HOOK INITIALIZING... useSmartCache.ts:6:11
+🚀 useSmartCache initial state: 
+Object { storesLength: 0, loading: true, error: null, isLiveData: false, cacheInfo: {…} }
+useSmartCache.ts:13:11
+🚨 APP.TSX COMPONENT LOADING/RELOADING App.tsx:59:11
+🚀 useSmartCache HOOK INITIALIZING... useSmartCache.ts:6:11
+🚀 useSmartCache initial state: 
+Object { storesLength: 0, loading: true, error: null, isLiveData: false, cacheInfo: {…} }
+useSmartCache.ts:13:11
+🚀 useSmartCache useEffect TRIGGERED - starting initial load useSmartCache.ts:203:13
+🔥 FORCE CLEARING CACHE TO FIX DATA ISSUE useSmartCache.ts:204:13
+🗑️ Smart cache cleared smartCache.ts:181:15
+🚀 Calling smartLoad()... useSmartCache.ts:208:13
+🚀 smartLoad() FUNCTION STARTING... useSmartCache.ts:91:13
+🚀 Clearing any previous errors useSmartCache.ts:93:15
+🚀 SIMPLIFIED: Fetching fresh endpoint data (NO historical logs) useSmartCache.ts:105:17
+🚀🔍 MASSIVE DEBUG ApiService.initialize START =================== api.ts:10:13
+🔍 DEBUG this.initialized: false api.ts:11:13
+🔄 Initializing Central Tank Server API... api.ts:16:13
+🔍 DEBUG Setting initialized to true api.ts:17:13
+🚀🔍 MASSIVE DEBUG ApiService.initialize END =================== api.ts:19:13
+🚨 APP.TSX DEBUG - FORCED WARNING LOG App.tsx:64:13
+🚨 APP.TSX DEBUG - FORCED ERROR LOG App.tsx:65:13
+🔍 APP.TSX DATA FLOW DEBUG: App.tsx:66:13
+🔍   stores.length: 0 App.tsx:67:13
+🔍   loading: true App.tsx:68:13
+🔍   error: null App.tsx:69:13
+🔍   stores array: 
+Array []
+App.tsx:70:13
+🔍   viewMode: selector App.tsx:71:13
+🚀 useSmartCache useEffect TRIGGERED - starting initial load useSmartCache.ts:203:13
+🔥 FORCE CLEARING CACHE TO FIX DATA ISSUE useSmartCache.ts:204:13
+🗑️ Smart cache cleared smartCache.ts:181:15
+🚀 Calling smartLoad()... useSmartCache.ts:208:13
+🚀 smartLoad() FUNCTION STARTING... useSmartCache.ts:91:13
+🚀 Clearing any previous errors useSmartCache.ts:93:15
+🚀 SIMPLIFIED: Fetching fresh endpoint data (NO historical logs) useSmartCache.ts:105:17
+🚀🔍 MASSIVE DEBUG ApiService.initialize START =================== api.ts:10:13
+🔍 DEBUG this.initialized: true api.ts:11:13
+🔍 DEBUG Already initialized, skipping api.ts:13:15
+🚨 APP.TSX DEBUG - FORCED WARNING LOG App.tsx:64:13
+🚨 APP.TSX DEBUG - FORCED ERROR LOG App.tsx:65:13
+🔍 APP.TSX DATA FLOW DEBUG: App.tsx:66:13
+🔍   stores.length: 0 App.tsx:67:13
+🔍   loading: true App.tsx:68:13
+🔍   error: null App.tsx:69:13
+🔍   stores array: 
+Array []
+App.tsx:70:13
+🔍   viewMode: selector App.tsx:71:13
+🚀🔍 MASSIVE DEBUG ApiService.initialize START =================== api.ts:10:13
+🔍 DEBUG this.initialized: true api.ts:11:13
+🔍 DEBUG Already initialized, skipping api.ts:13:15
+🚀🔍 MASSIVE DEBUG ApiService.initialize START =================== api.ts:10:13
+🔍 DEBUG this.initialized: true api.ts:11:13
+🔍 DEBUG Already initialized, skipping api.ts:13:15
+🚀🔍 MASSIVE DEBUG getAllStoresData START =================== api.ts:117:13
+🔍 DEBUG: API_BASE_URL: https://central-tank-server.onrender.com api.ts:118:13
+🔍 DEBUG: Attempting /dashboard/stores endpoint... api.ts:120:15
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== api.ts:22:13
+🔍 DEBUG endpoint: /dashboard/stores api.ts:23:13
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores api.ts:24:13
+🔍 DEBUG options: {
+  "cacheKey": "dashboard-stores",
+  "cacheDuration": 120000
+} api.ts:25:13
+🔍 DEBUG cacheKey: dashboard-stores api.ts:29:15
+🔍 DEBUG cacheDuration: 120000ms api.ts:30:15
+🔍 DEBUG no cache for /dashboard/stores api.ts:42:17
+🔍 DEBUG making HTTP request to: https://central-tank-server.onrender.com/dashboard/stores api.ts:49:15
+🚀🔍 MASSIVE DEBUG getAllStoresData START =================== api.ts:117:13
+🔍 DEBUG: API_BASE_URL: https://central-tank-server.onrender.com api.ts:118:13
+🔍 DEBUG: Attempting /dashboard/stores endpoint... api.ts:120:15
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== api.ts:22:13
+🔍 DEBUG endpoint: /dashboard/stores api.ts:23:13
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores api.ts:24:13
+🔍 DEBUG options: {
+  "cacheKey": "dashboard-stores",
+  "cacheDuration": 120000
+} api.ts:25:13
+🔍 DEBUG cacheKey: dashboard-stores api.ts:29:15
+🔍 DEBUG cacheDuration: 120000ms api.ts:30:15
+🔍 DEBUG no cache for /dashboard/stores api.ts:42:17
+🔍 DEBUG making HTTP request to: https://central-tank-server.onrender.com/dashboard/stores api.ts:49:15
+🚨 APP.TSX COMPONENT LOADING/RELOADING App.tsx:59:11
+🚀 useSmartCache HOOK INITIALIZING... useSmartCache.ts:6:11
+🚀 useSmartCache initial state: 
+Object { storesLength: 0, loading: true, error: null, isLiveData: false, cacheInfo: {…} }
+useSmartCache.ts:13:11
+🚨 APP.TSX COMPONENT LOADING/RELOADING App.tsx:59:11
+🚀 useSmartCache HOOK INITIALIZING... useSmartCache.ts:6:11
+🚀 useSmartCache initial state: 
+Object { storesLength: 0, loading: true, error: null, isLiveData: false, cacheInfo: {…} }
+useSmartCache.ts:13:11
+🔍 DEBUG response status: 200 api.ts:55:15
+🔍 DEBUG response statusText: api.ts:56:15
+🔍 DEBUG response ok: true api.ts:57:15
+🔍 DEBUG response headers: 
+Object { "content-length": "171", "content-type": "application/json" }
+api.ts:58:15
+🔍 DEBUG raw response text length: 369 api.ts:66:15
+🔍 DEBUG raw response text (first 500 chars): [{"store_name":"Mascoutah","tank_count":3,"critical_tanks":0,"warning_tanks":0,"last_update":"2025-07-11T06:54:46.280583"},{"store_name":"North City","tank_count":5,"critical_tanks":1,"warning_tanks":1,"last_update":"2025-07-11T06:51:34.242565"},{"store_name":"TEST_STORE","tank_count":3,"critical_tanks":0,"warning_tanks":0,"last_update":"2025-06-28T14:32:31.407159"}] api.ts:67:15
+🔍 DEBUG parsed JSON data: [
+  {
+    "store_name": "Mascoutah",
+    "tank_count": 3,
+    "critical_tanks": 0,
+    "warning_tanks": 0,
+    "last_update": "2025-07-11T06:54:46.280583"
+  },
+  {
+    "store_name": "North City",
+    "tank_count": 5,
+    "critical_tanks": 1,
+    "warning_tanks": 1,
+    "last_update": "2025-07-11T06:51:34.242565"
+  },
+  {
+    "store_name": "TEST_STORE",
+    "tank_count": 3,
+    "critical_tanks": 0,
+    "warning_tanks": 0,
+    "last_update": "2025-06-28T14:32:31.407159"
+  }
+] api.ts:71:17
+🔍 DEBUG cached response for dashboard-stores api.ts:78:15
+🌐🔍 MASSIVE DEBUG API REQUEST SUCCESS END =================== api.ts:90:15
+🔍 DEBUG: /dashboard/stores response: [
+  {
+    "store_name": "Mascoutah",
+    "tank_count": 3,
+    "critical_tanks": 0,
+    "warning_tanks": 0,
+    "last_update": "2025-07-11T06:54:46.280583"
+  },
+  {
+    "store_name": "North City",
+    "tank_count": 5,
+    "critical_tanks": 1,
+    "warning_tanks": 1,
+    "last_update": "2025-07-11T06:51:34.242565"
+  },
+  {
+    "store_name": "TEST_STORE",
+    "tank_count": 3,
+    "critical_tanks": 0,
+    "warning_tanks": 0,
+    "last_update": "2025-06-28T14:32:31.407159"
+  }
+] api.ts:126:15
+🔍 DEBUG: stores array length: 3 api.ts:127:15
+🔍 DEBUG: Processing store 1/3: Mascoutah api.ts:137:17
+🔍 DEBUG: Fetching store details from: /dashboard/stores/Mascoutah api.ts:139:17
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== api.ts:22:13
+🔍 DEBUG endpoint: /dashboard/stores/Mascoutah api.ts:23:13
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores/Mascoutah api.ts:24:13
+🔍 DEBUG options: {
+  "cacheKey": "store-Mascoutah",
+  "cacheDuration": 120000
+} api.ts:25:13
+🔍 DEBUG cacheKey: store-Mascoutah api.ts:29:15
+🔍 DEBUG cacheDuration: 120000ms api.ts:30:15
+🔍 DEBUG no cache for /dashboard/stores/Mascoutah api.ts:42:17
+🔍 DEBUG making HTTP request to: https://central-tank-server.onrender.com/dashboard/stores/Mascoutah api.ts:49:15
+🔍 DEBUG response status: 200 api.ts:55:15
+🔍 DEBUG response statusText: api.ts:56:15
+🔍 DEBUG response ok: true api.ts:57:15
+🔍 DEBUG response headers: 
+Object { "content-length": "171", "content-type": "application/json" }
+api.ts:58:15
+🔍 DEBUG raw response text length: 369 api.ts:66:15
+🔍 DEBUG raw response text (first 500 chars): [{"store_name":"Mascoutah","tank_count":3,"critical_tanks":0,"warning_tanks":0,"last_update":"2025-07-11T06:54:46.280583"},{"store_name":"North City","tank_count":5,"critical_tanks":1,"warning_tanks":1,"last_update":"2025-07-11T06:51:34.242565"},{"store_name":"TEST_STORE","tank_count":3,"critical_tanks":0,"warning_tanks":0,"last_update":"2025-06-28T14:32:31.407159"}] api.ts:67:15
+🔍 DEBUG parsed JSON data: [
+  {
+    "store_name": "Mascoutah",
+    "tank_count": 3,
+    "critical_tanks": 0,
+    "warning_tanks": 0,
+    "last_update": "2025-07-11T06:54:46.280583"
+  },
+  {
+    "store_name": "North City",
+    "tank_count": 5,
+    "critical_tanks": 1,
+    "warning_tanks": 1,
+    "last_update": "2025-07-11T06:51:34.242565"
+  },
+  {
+    "store_name": "TEST_STORE",
+    "tank_count": 3,
+    "critical_tanks": 0,
+    "warning_tanks": 0,
+    "last_update": "2025-06-28T14:32:31.407159"
+  }
+] api.ts:71:17
+🔍 DEBUG cached response for dashboard-stores api.ts:78:15
+🌐🔍 MASSIVE DEBUG API REQUEST SUCCESS END =================== api.ts:90:15
+🔍 DEBUG: /dashboard/stores response: [
+  {
+    "store_name": "Mascoutah",
+    "tank_count": 3,
+    "critical_tanks": 0,
+    "warning_tanks": 0,
+    "last_update": "2025-07-11T06:54:46.280583"
+  },
+  {
+    "store_name": "North City",
+    "tank_count": 5,
+    "critical_tanks": 1,
+    "warning_tanks": 1,
+    "last_update": "2025-07-11T06:51:34.242565"
+  },
+  {
+    "store_name": "TEST_STORE",
+    "tank_count": 3,
+    "critical_tanks": 0,
+    "warning_tanks": 0,
+    "last_update": "2025-06-28T14:32:31.407159"
+  }
+] api.ts:126:15
+🔍 DEBUG: stores array length: 3 api.ts:127:15
+🔍 DEBUG: Processing store 1/3: Mascoutah api.ts:137:17
+🔍 DEBUG: Fetching store details from: /dashboard/stores/Mascoutah api.ts:139:17
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== api.ts:22:13
+🔍 DEBUG endpoint: /dashboard/stores/Mascoutah api.ts:23:13
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores/Mascoutah api.ts:24:13
+🔍 DEBUG options: {
+  "cacheKey": "store-Mascoutah",
+  "cacheDuration": 120000
+} api.ts:25:13
+🔍 DEBUG cacheKey: store-Mascoutah api.ts:29:15
+🔍 DEBUG cacheDuration: 120000ms api.ts:30:15
+🔍 DEBUG no cache for /dashboard/stores/Mascoutah api.ts:42:17
+🔍 DEBUG making HTTP request to: https://central-tank-server.onrender.com/dashboard/stores/Mascoutah api.ts:49:15
+🔍 DEBUG response status: 200 api.ts:55:15
+🔍 DEBUG response statusText: api.ts:56:15
+🔍 DEBUG response ok: true api.ts:57:15
+🔍 DEBUG response headers: 
+Object { "content-length": "4152", "content-type": "application/json" }
+api.ts:58:15
+🔍 DEBUG raw response text length: 28369 api.ts:66:15
+🔍 DEBUG raw response text (first 500 chars): {"store_name":"Mascoutah","tanks":[{"tank_id":1,"tank_name":"UNLEADED","current_status":"normal","latest_reading":{"volume":7007,"height":62.56999969482422,"timestamp":"2025-07-11T06:54:46.280533"},"historical_data":[{"timestamp":"2025-07-06 11:00:00","volume":4994,"height":47.38999938964844},{"timestamp":"2025-07-06 12:00:00","volume":4957,"height":47.11416753133138},{"timestamp":"2025-07-06 13:00:00","volume":4905,"height":46.72999922434489},{"timestamp":"2025-07-06 14:00:00","volume":4852,"he api.ts:67:15
+🔍 DEBUG parsed JSON data: 
+{
+  "store_name": "Mascoutah",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNLEADED",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 7007,
+        "height": 62.56999969482422,
+        "timestamp": "2025-07-11T06:54:46.280533"
+      },
+      "historical_data": [
+        {
+          "timestamp": "2025-07-06 11:00:00",
+          "volume": 4994,
+          "height": 47.38999938964844
+        },
+        {
+          "timestamp": "2025-07-06 12:00:00",
+          "volume": 4957,
+          "height": 47.11416753133138
+        },
+        {
+          "timestamp": "2025-07-06 13:00:00",
+          "volume": 4905,
+          "height": 46.72999922434489
+        },
+        {
+          "timestamp": "2025-07-06 14:00:00",
+          "volume": 4852,
+          "height": 46.34249941507975
+        },
+        {
+          "timestamp": "2025-07-06 15:00:00",
+          "volume": 4807,
+          "height": 46.00909077037465
+        },
+        {
+          "timestamp": "202…
+api.ts:71:17
+🔍 DEBUG cached response for store-Mascoutah api.ts:78:15
+🌐🔍 MASSIVE DEBUG API REQUEST SUCCESS END =================== api.ts:90:15
+🔍 DEBUG: Store Mascoutah response: 
+{
+  "store_name": "Mascoutah",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNLEADED",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 7007,
+        "height": 62.56999969482422,
+        "timestamp": "2025-07-11T06:54:46.280533"
+      },
+      "historical_data": [
+        {
+          "timestamp": "2025-07-06 11:00:00",
+          "volume": 4994,
+          "height": 47.38999938964844
+        },
+        {
+          "timestamp": "2025-07-06 12:00:00",
+          "volume": 4957,
+          "height": 47.11416753133138
+        },
+        {
+          "timestamp": "2025-07-06 13:00:00",
+          "volume": 4905,
+          "height": 46.72999922434489
+        },
+        {
+          "timestamp": "2025-07-06 14:00:00",
+          "volume": 4852,
+          "height": 46.34249941507975
+        },
+        {
+          "timestamp": "2025-07-06 15:00:00",
+          "volume": 4807,
+          "height": 46.00909077037465
+        },
+        {
+          "timestamp": "202…
+api.ts:144:17
+🔍 DEBUG: Store Mascoutah tanks count: 3 api.ts:145:17
+🔍 DEBUG: Tank 1 in Mascoutah: api.ts:148:21
+🔍 DEBUG:   tank_id: 1 api.ts:149:21
+🔍 DEBUG:   tank_name: UNLEADED api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":1,"tank_name":"UNLEADED","store_name":"Mascoutah","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.48579999804496765,"hours_to_critical":12365.1708984375,"predicted_empty":"2027-03-04T11:32:40.422667","predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":7007,"height":62.56999969482422,"timestamp":"2025-07-11T06:54:46.280533"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 2 in Mascoutah: api.ts:148:21
+🔍 DEBUG:   tank_id: 2 api.ts:149:21
+🔍 DEBUG:   tank_name: PREMIUM api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":2,"tank_name":"PREMIUM","store_name":"Mascoutah","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.09189999848604202,"hours_to_critical":10674.646484375,"predicted_empty":"2027-12-26T15:57:10.300015","predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":1981,"height":23.969999313354492,"timestamp":"2025-07-11T06:54:46.280568"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 3 in Mascoutah: api.ts:148:21
+🔍 DEBUG:   tank_id: 3 api.ts:149:21
+🔍 DEBUG:   tank_name: DIESEL api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":3,"tank_name":"DIESEL","store_name":"Mascoutah","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.02969999983906746,"hours_to_critical":37575.7578125,"predicted_empty":"2033-08-27T01:42:19.261173","predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":2116,"height":25.110000610351562,"timestamp":"2025-07-11T06:54:46.280583"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Processing store 2/3: North City api.ts:137:17
+🔍 DEBUG: Fetching store details from: /dashboard/stores/North City api.ts:139:17
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== api.ts:22:13
+🔍 DEBUG endpoint: /dashboard/stores/North City api.ts:23:13
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores/North City api.ts:24:13
+🔍 DEBUG options: {
+  "cacheKey": "store-North City",
+  "cacheDuration": 120000
+} api.ts:25:13
+🔍 DEBUG cacheKey: store-North City api.ts:29:15
+🔍 DEBUG cacheDuration: 120000ms api.ts:30:15
+🔍 DEBUG no cache for /dashboard/stores/North City api.ts:42:17
+🔍 DEBUG making HTTP request to: https://central-tank-server.onrender.com/dashboard/stores/North City api.ts:49:15
+🔍 DEBUG response status: 200 api.ts:55:15
+🔍 DEBUG response statusText: api.ts:56:15
+🔍 DEBUG response ok: true api.ts:57:15
+🔍 DEBUG response headers: 
+Object { "content-length": "4152", "content-type": "application/json" }
+api.ts:58:15
+🔍 DEBUG raw response text length: 28369 api.ts:66:15
+🔍 DEBUG raw response text (first 500 chars): {"store_name":"Mascoutah","tanks":[{"tank_id":1,"tank_name":"UNLEADED","current_status":"normal","latest_reading":{"volume":7007,"height":62.56999969482422,"timestamp":"2025-07-11T06:54:46.280533"},"historical_data":[{"timestamp":"2025-07-06 11:00:00","volume":4994,"height":47.38999938964844},{"timestamp":"2025-07-06 12:00:00","volume":4957,"height":47.11416753133138},{"timestamp":"2025-07-06 13:00:00","volume":4905,"height":46.72999922434489},{"timestamp":"2025-07-06 14:00:00","volume":4852,"he api.ts:67:15
+🔍 DEBUG parsed JSON data: 
+{
+  "store_name": "Mascoutah",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNLEADED",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 7007,
+        "height": 62.56999969482422,
+        "timestamp": "2025-07-11T06:54:46.280533"
+      },
+      "historical_data": [
+        {
+          "timestamp": "2025-07-06 11:00:00",
+          "volume": 4994,
+          "height": 47.38999938964844
+        },
+        {
+          "timestamp": "2025-07-06 12:00:00",
+          "volume": 4957,
+          "height": 47.11416753133138
+        },
+        {
+          "timestamp": "2025-07-06 13:00:00",
+          "volume": 4905,
+          "height": 46.72999922434489
+        },
+        {
+          "timestamp": "2025-07-06 14:00:00",
+          "volume": 4852,
+          "height": 46.34249941507975
+        },
+        {
+          "timestamp": "2025-07-06 15:00:00",
+          "volume": 4807,
+          "height": 46.00909077037465
+        },
+        {
+          "timestamp": "202…
+api.ts:71:17
+🔍 DEBUG cached response for store-Mascoutah api.ts:78:15
+🌐🔍 MASSIVE DEBUG API REQUEST SUCCESS END =================== api.ts:90:15
+🔍 DEBUG: Store Mascoutah response: 
+{
+  "store_name": "Mascoutah",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNLEADED",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 7007,
+        "height": 62.56999969482422,
+        "timestamp": "2025-07-11T06:54:46.280533"
+      },
+      "historical_data": [
+        {
+          "timestamp": "2025-07-06 11:00:00",
+          "volume": 4994,
+          "height": 47.38999938964844
+        },
+        {
+          "timestamp": "2025-07-06 12:00:00",
+          "volume": 4957,
+          "height": 47.11416753133138
+        },
+        {
+          "timestamp": "2025-07-06 13:00:00",
+          "volume": 4905,
+          "height": 46.72999922434489
+        },
+        {
+          "timestamp": "2025-07-06 14:00:00",
+          "volume": 4852,
+          "height": 46.34249941507975
+        },
+        {
+          "timestamp": "2025-07-06 15:00:00",
+          "volume": 4807,
+          "height": 46.00909077037465
+        },
+        {
+          "timestamp": "202…
+api.ts:144:17
+🔍 DEBUG: Store Mascoutah tanks count: 3 api.ts:145:17
+🔍 DEBUG: Tank 1 in Mascoutah: api.ts:148:21
+🔍 DEBUG:   tank_id: 1 api.ts:149:21
+🔍 DEBUG:   tank_name: UNLEADED api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":1,"tank_name":"UNLEADED","store_name":"Mascoutah","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.48579999804496765,"hours_to_critical":12365.1708984375,"predicted_empty":"2027-03-04T11:32:40.422667","predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":7007,"height":62.56999969482422,"timestamp":"2025-07-11T06:54:46.280533"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 2 in Mascoutah: api.ts:148:21
+🔍 DEBUG:   tank_id: 2 api.ts:149:21
+🔍 DEBUG:   tank_name: PREMIUM api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":2,"tank_name":"PREMIUM","store_name":"Mascoutah","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.09189999848604202,"hours_to_critical":10674.646484375,"predicted_empty":"2027-12-26T15:57:10.300015","predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":1981,"height":23.969999313354492,"timestamp":"2025-07-11T06:54:46.280568"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 3 in Mascoutah: api.ts:148:21
+🔍 DEBUG:   tank_id: 3 api.ts:149:21
+🔍 DEBUG:   tank_name: DIESEL api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":3,"tank_name":"DIESEL","store_name":"Mascoutah","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.02969999983906746,"hours_to_critical":37575.7578125,"predicted_empty":"2033-08-27T01:42:19.261173","predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":2116,"height":25.110000610351562,"timestamp":"2025-07-11T06:54:46.280583"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Processing store 2/3: North City api.ts:137:17
+🔍 DEBUG: Fetching store details from: /dashboard/stores/North City api.ts:139:17
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== api.ts:22:13
+🔍 DEBUG endpoint: /dashboard/stores/North City api.ts:23:13
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores/North City api.ts:24:13
+🔍 DEBUG options: {
+  "cacheKey": "store-North City",
+  "cacheDuration": 120000
+} api.ts:25:13
+🔍 DEBUG cacheKey: store-North City api.ts:29:15
+🔍 DEBUG cacheDuration: 120000ms api.ts:30:15
+🔍 DEBUG no cache for /dashboard/stores/North City api.ts:42:17
+🔍 DEBUG making HTTP request to: https://central-tank-server.onrender.com/dashboard/stores/North City api.ts:49:15
+🔍 DEBUG response status: 200 api.ts:55:15
+🔍 DEBUG response statusText: api.ts:56:15
+🔍 DEBUG response ok: true api.ts:57:15
+🔍 DEBUG response headers: 
+Object { "content-length": "4880", "content-type": "application/json" }
+api.ts:58:15
+🔍 DEBUG raw response text length: 46558 api.ts:66:15
+🔍 DEBUG raw response text (first 500 chars): {"store_name":"North City","tanks":[{"tank_id":1,"tank_name":"UNL T1","current_status":"normal","latest_reading":{"volume":3545,"height":69.06999969482422,"timestamp":"2025-07-11T06:51:34.242464"},"historical_data":[{"timestamp":"2025-07-06 12:00:00","volume":3543,"height":69.01250076293945},{"timestamp":"2025-07-06 13:00:00","volume":3543,"height":69.01499938964844},{"timestamp":"2025-07-06 14:00:00","volume":3543,"height":69.01250076293945},{"timestamp":"2025-07-06 15:00:00","volume":3543,"hei api.ts:67:15
+🔍 DEBUG parsed JSON data: 
+{
+  "store_name": "North City",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNL T1",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 3545,
+        "height": 69.06999969482422,
+        "timestamp": "2025-07-11T06:51:34.242464"
+      },
+      "historical_data": [
+        {
+          "timestamp": "2025-07-06 12:00:00",
+          "volume": 3543,
+          "height": 69.01250076293945
+        },
+        {
+          "timestamp": "2025-07-06 13:00:00",
+          "volume": 3543,
+          "height": 69.01499938964844
+        },
+        {
+          "timestamp": "2025-07-06 14:00:00",
+          "volume": 3543,
+          "height": 69.01250076293945
+        },
+        {
+          "timestamp": "2025-07-06 15:00:00",
+          "volume": 3543,
+          "height": 69.02181521329013
+        },
+        {
+          "timestamp": "2025-07-06 16:00:00",
+          "volume": 3543,
+          "height": 69.0199966430664
+        },
+        {
+          "timestamp": "2025-…
+api.ts:71:17
+🔍 DEBUG cached response for store-North City api.ts:78:15
+🌐🔍 MASSIVE DEBUG API REQUEST SUCCESS END =================== api.ts:90:15
+🔍 DEBUG: Store North City response: 
+{
+  "store_name": "North City",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNL T1",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 3545,
+        "height": 69.06999969482422,
+        "timestamp": "2025-07-11T06:51:34.242464"
+      },
+      "historical_data": [
+        {
+          "timestamp": "2025-07-06 12:00:00",
+          "volume": 3543,
+          "height": 69.01250076293945
+        },
+        {
+          "timestamp": "2025-07-06 13:00:00",
+          "volume": 3543,
+          "height": 69.01499938964844
+        },
+        {
+          "timestamp": "2025-07-06 14:00:00",
+          "volume": 3543,
+          "height": 69.01250076293945
+        },
+        {
+          "timestamp": "2025-07-06 15:00:00",
+          "volume": 3543,
+          "height": 69.02181521329013
+        },
+        {
+          "timestamp": "2025-07-06 16:00:00",
+          "volume": 3543,
+          "height": 69.0199966430664
+        },
+        {
+          "timestamp": "2025-…
+api.ts:144:17
+🔍 DEBUG: Store North City tanks count: 5 api.ts:145:17
+🔍 DEBUG: Tank 1 in North City: api.ts:148:21
+🔍 DEBUG:   tank_id: 1 api.ts:149:21
+🔍 DEBUG:   tank_name: UNL T1 api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":1,"tank_name":"UNL T1","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.0007999999797903001,"hours_to_critical":3181250,"predicted_empty":"2531-01-15T21:51:36.776359","predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":3545,"height":69.06999969482422,"timestamp":"2025-07-11T06:51:34.242464"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 2 in North City: api.ts:148:21
+🔍 DEBUG:   tank_id: 2 api.ts:149:21
+🔍 DEBUG:   tank_name: UNL T2 api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":2,"tank_name":"UNL T2","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.0786999985575676,"hours_to_critical":23430.75,"predicted_empty":"2029-08-25T05:05:25.435815","predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":2844,"height":45.95000076293945,"timestamp":"2025-07-11T06:51:34.242511"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 3 in North City: api.ts:148:21
+🔍 DEBUG:   tank_id: 3 api.ts:149:21
+🔍 DEBUG:   tank_name: UNL T3 api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":3,"tank_name":"UNL T3","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":226,"height":6.309999942779541,"timestamp":"2025-07-11T06:51:34.242530"} api.ts:153:21
+🔍 DEBUG:   current_status: critical api.ts:154:21
+🔍 DEBUG: Tank 4 in North City: api.ts:148:21
+🔍 DEBUG:   tank_id: 4 api.ts:149:21
+🔍 DEBUG:   tank_name: PREM api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":4,"tank_name":"PREM","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.016499999910593033,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":815,"height":11.5600004196167,"timestamp":"2025-07-11T06:51:34.242547"} api.ts:153:21
+🔍 DEBUG:   current_status: warning api.ts:154:21
+🔍 DEBUG: Tank 5 in North City: api.ts:148:21
+🔍 DEBUG:   tank_id: 5 api.ts:149:21
+🔍 DEBUG:   tank_name: K1 api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":5,"tank_name":"K1","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":4888,"height":72.69999694824219,"timestamp":"2025-07-11T06:51:34.242565"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Processing store 3/3: TEST_STORE api.ts:137:17
+🔍 DEBUG: Fetching store details from: /dashboard/stores/TEST_STORE api.ts:139:17
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== api.ts:22:13
+🔍 DEBUG endpoint: /dashboard/stores/TEST_STORE api.ts:23:13
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores/TEST_STORE api.ts:24:13
+🔍 DEBUG options: {
+  "cacheKey": "store-TEST_STORE",
+  "cacheDuration": 120000
+} api.ts:25:13
+🔍 DEBUG cacheKey: store-TEST_STORE api.ts:29:15
+🔍 DEBUG cacheDuration: 120000ms api.ts:30:15
+🔍 DEBUG no cache for /dashboard/stores/TEST_STORE api.ts:42:17
+🔍 DEBUG making HTTP request to: https://central-tank-server.onrender.com/dashboard/stores/TEST_STORE api.ts:49:15
+🔍 DEBUG response status: 200 api.ts:55:15
+🔍 DEBUG response statusText: api.ts:56:15
+🔍 DEBUG response ok: true api.ts:57:15
+🔍 DEBUG response headers: 
+Object { "content-length": "4880", "content-type": "application/json" }
+api.ts:58:15
+🔍 DEBUG raw response text length: 46558 api.ts:66:15
+🔍 DEBUG raw response text (first 500 chars): {"store_name":"North City","tanks":[{"tank_id":1,"tank_name":"UNL T1","current_status":"normal","latest_reading":{"volume":3545,"height":69.06999969482422,"timestamp":"2025-07-11T06:51:34.242464"},"historical_data":[{"timestamp":"2025-07-06 12:00:00","volume":3543,"height":69.01250076293945},{"timestamp":"2025-07-06 13:00:00","volume":3543,"height":69.01499938964844},{"timestamp":"2025-07-06 14:00:00","volume":3543,"height":69.01250076293945},{"timestamp":"2025-07-06 15:00:00","volume":3543,"hei api.ts:67:15
+🔍 DEBUG parsed JSON data: 
+{
+  "store_name": "North City",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNL T1",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 3545,
+        "height": 69.06999969482422,
+        "timestamp": "2025-07-11T06:51:34.242464"
+      },
+      "historical_data": [
+        {
+          "timestamp": "2025-07-06 12:00:00",
+          "volume": 3543,
+          "height": 69.01250076293945
+        },
+        {
+          "timestamp": "2025-07-06 13:00:00",
+          "volume": 3543,
+          "height": 69.01499938964844
+        },
+        {
+          "timestamp": "2025-07-06 14:00:00",
+          "volume": 3543,
+          "height": 69.01250076293945
+        },
+        {
+          "timestamp": "2025-07-06 15:00:00",
+          "volume": 3543,
+          "height": 69.02181521329013
+        },
+        {
+          "timestamp": "2025-07-06 16:00:00",
+          "volume": 3543,
+          "height": 69.0199966430664
+        },
+        {
+          "timestamp": "2025-…
+api.ts:71:17
+🔍 DEBUG cached response for store-North City api.ts:78:15
+🌐🔍 MASSIVE DEBUG API REQUEST SUCCESS END =================== api.ts:90:15
+🔍 DEBUG: Store North City response: 
+{
+  "store_name": "North City",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNL T1",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 3545,
+        "height": 69.06999969482422,
+        "timestamp": "2025-07-11T06:51:34.242464"
+      },
+      "historical_data": [
+        {
+          "timestamp": "2025-07-06 12:00:00",
+          "volume": 3543,
+          "height": 69.01250076293945
+        },
+        {
+          "timestamp": "2025-07-06 13:00:00",
+          "volume": 3543,
+          "height": 69.01499938964844
+        },
+        {
+          "timestamp": "2025-07-06 14:00:00",
+          "volume": 3543,
+          "height": 69.01250076293945
+        },
+        {
+          "timestamp": "2025-07-06 15:00:00",
+          "volume": 3543,
+          "height": 69.02181521329013
+        },
+        {
+          "timestamp": "2025-07-06 16:00:00",
+          "volume": 3543,
+          "height": 69.0199966430664
+        },
+        {
+          "timestamp": "2025-…
+api.ts:144:17
+🔍 DEBUG: Store North City tanks count: 5 api.ts:145:17
+🔍 DEBUG: Tank 1 in North City: api.ts:148:21
+🔍 DEBUG:   tank_id: 1 api.ts:149:21
+🔍 DEBUG:   tank_name: UNL T1 api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":1,"tank_name":"UNL T1","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.0007999999797903001,"hours_to_critical":3181250,"predicted_empty":"2531-01-15T21:51:36.776359","predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":3545,"height":69.06999969482422,"timestamp":"2025-07-11T06:51:34.242464"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 2 in North City: api.ts:148:21
+🔍 DEBUG:   tank_id: 2 api.ts:149:21
+🔍 DEBUG:   tank_name: UNL T2 api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":2,"tank_name":"UNL T2","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.0786999985575676,"hours_to_critical":23430.75,"predicted_empty":"2029-08-25T05:05:25.435815","predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":2844,"height":45.95000076293945,"timestamp":"2025-07-11T06:51:34.242511"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 3 in North City: api.ts:148:21
+🔍 DEBUG:   tank_id: 3 api.ts:149:21
+🔍 DEBUG:   tank_name: UNL T3 api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":3,"tank_name":"UNL T3","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":226,"height":6.309999942779541,"timestamp":"2025-07-11T06:51:34.242530"} api.ts:153:21
+🔍 DEBUG:   current_status: critical api.ts:154:21
+🔍 DEBUG: Tank 4 in North City: api.ts:148:21
+🔍 DEBUG:   tank_id: 4 api.ts:149:21
+🔍 DEBUG:   tank_name: PREM api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":4,"tank_name":"PREM","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.016499999910593033,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":815,"height":11.5600004196167,"timestamp":"2025-07-11T06:51:34.242547"} api.ts:153:21
+🔍 DEBUG:   current_status: warning api.ts:154:21
+🔍 DEBUG: Tank 5 in North City: api.ts:148:21
+🔍 DEBUG:   tank_id: 5 api.ts:149:21
+🔍 DEBUG:   tank_name: K1 api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":5,"tank_name":"K1","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":4888,"height":72.69999694824219,"timestamp":"2025-07-11T06:51:34.242565"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Processing store 3/3: TEST_STORE api.ts:137:17
+🔍 DEBUG: Fetching store details from: /dashboard/stores/TEST_STORE api.ts:139:17
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== api.ts:22:13
+🔍 DEBUG endpoint: /dashboard/stores/TEST_STORE api.ts:23:13
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores/TEST_STORE api.ts:24:13
+🔍 DEBUG options: {
+  "cacheKey": "store-TEST_STORE",
+  "cacheDuration": 120000
+} api.ts:25:13
+🔍 DEBUG cacheKey: store-TEST_STORE api.ts:29:15
+🔍 DEBUG cacheDuration: 120000ms api.ts:30:15
+🔍 DEBUG no cache for /dashboard/stores/TEST_STORE api.ts:42:17
+🔍 DEBUG making HTTP request to: https://central-tank-server.onrender.com/dashboard/stores/TEST_STORE api.ts:49:15
+🔍 DEBUG response status: 200 api.ts:55:15
+🔍 DEBUG response statusText: api.ts:56:15
+🔍 DEBUG response ok: true api.ts:57:15
+🔍 DEBUG response headers: 
+Object { "content-length": "399", "content-type": "application/json" }
+api.ts:58:15
+🔍 DEBUG raw response text length: 1465 api.ts:66:15
+🔍 DEBUG raw response text (first 500 chars): {"store_name":"TEST_STORE","tanks":[{"tank_id":1,"tank_name":"UNLEADED","current_status":"normal","latest_reading":{"volume":7234,"height":48.5,"timestamp":"2025-06-28T14:32:31.407159"},"historical_data":[],"analytics":{"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null},"configuration":{"tank_id":1,"tank_name":"UNLEADED","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10.0,"warning_height_inches":2 api.ts:67:15
+🔍 DEBUG parsed JSON data: {
+  "store_name": "TEST_STORE",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNLEADED",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 7234,
+        "height": 48.5,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 1,
+        "tank_name": "UNLEADED",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    },
+    {
+      "tank_id": 2,
+      "tank_name": "PLUS",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 2156,
+        "height": 31.200000762939453,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 2,
+        "tank_name": "PLUS",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    },
+    {
+      "tank_id": 3,
+      "tank_name": "PREMIUM",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 1847,
+        "height": 28.899999618530273,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 3,
+        "tank_name": "PREMIUM",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    }
+  ]
+} api.ts:71:17
+🔍 DEBUG cached response for store-TEST_STORE api.ts:78:15
+🌐🔍 MASSIVE DEBUG API REQUEST SUCCESS END =================== api.ts:90:15
+🔍 DEBUG: Store TEST_STORE response: {
+  "store_name": "TEST_STORE",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNLEADED",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 7234,
+        "height": 48.5,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 1,
+        "tank_name": "UNLEADED",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    },
+    {
+      "tank_id": 2,
+      "tank_name": "PLUS",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 2156,
+        "height": 31.200000762939453,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 2,
+        "tank_name": "PLUS",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    },
+    {
+      "tank_id": 3,
+      "tank_name": "PREMIUM",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 1847,
+        "height": 28.899999618530273,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 3,
+        "tank_name": "PREMIUM",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    }
+  ]
+} api.ts:144:17
+🔍 DEBUG: Store TEST_STORE tanks count: 3 api.ts:145:17
+🔍 DEBUG: Tank 1 in TEST_STORE: api.ts:148:21
+🔍 DEBUG:   tank_id: 1 api.ts:149:21
+🔍 DEBUG:   tank_name: UNLEADED api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":1,"tank_name":"UNLEADED","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":7234,"height":48.5,"timestamp":"2025-06-28T14:32:31.407159"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 2 in TEST_STORE: api.ts:148:21
+🔍 DEBUG:   tank_id: 2 api.ts:149:21
+🔍 DEBUG:   tank_name: PLUS api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":2,"tank_name":"PLUS","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":2156,"height":31.200000762939453,"timestamp":"2025-06-28T14:32:31.407159"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 3 in TEST_STORE: api.ts:148:21
+🔍 DEBUG:   tank_id: 3 api.ts:149:21
+🔍 DEBUG:   tank_name: PREMIUM api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":3,"tank_name":"PREMIUM","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":1847,"height":28.899999618530273,"timestamp":"2025-06-28T14:32:31.407159"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Final detailedStores array: 
+[
+  {
+    "store_name": "Mascoutah",
+    "tanks": [
+      {
+        "tank_id": 1,
+        "tank_name": "UNLEADED",
+        "current_status": "normal",
+        "latest_reading": {
+          "volume": 7007,
+          "height": 62.56999969482422,
+          "timestamp": "2025-07-11T06:54:46.280533"
+        },
+        "historical_data": [
+          {
+            "timestamp": "2025-07-06 11:00:00",
+            "volume": 4994,
+            "height": 47.38999938964844
+          },
+          {
+            "timestamp": "2025-07-06 12:00:00",
+            "volume": 4957,
+            "height": 47.11416753133138
+          },
+          {
+            "timestamp": "2025-07-06 13:00:00",
+            "volume": 4905,
+            "height": 46.72999922434489
+          },
+          {
+            "timestamp": "2025-07-06 14:00:00",
+            "volume": 4852,
+            "height": 46.34249941507975
+          },
+          {
+            "timestamp": "2025-07-06 15:00:00",
+            "volume": 4807,
+            …
+api.ts:159:15
+✅ Fetched 3 stores with server analytics api.ts:160:15
+🚀🔍 MASSIVE DEBUG getAllStoresData END =================== api.ts:161:15
+🚀 SIMPLIFIED: Processing raw API data (NO historical data fetching) useSmartCache.ts:23:13
+📊 Processing store: Mascoutah with 3 tanks useSmartCache.ts:26:15
+🔍 Processing tank 1 in Mascoutah useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.48579999804496765, hours_to_critical=12365.1708984375 useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 2 in Mascoutah useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.09189999848604202, hours_to_critical=10674.646484375 useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 3 in Mascoutah useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.02969999983906746, hours_to_critical=37575.7578125 useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+📊 Processing store: North City with 5 tanks useSmartCache.ts:26:15
+🔍 Processing tank 1 in North City useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.0007999999797903001, hours_to_critical=3181250 useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 2 in North City useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.0786999985575676, hours_to_critical=23430.75 useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 3 in North City useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 4 in North City useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.016499999910593033, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 5 in North City useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+📊 Processing store: TEST_STORE with 3 tanks useSmartCache.ts:26:15
+🔍 Processing tank 1 in TEST_STORE useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=null, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 2 in TEST_STORE useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=null, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 3 in TEST_STORE useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=null, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+✅ SIMPLIFIED: Processed 3 stores (NO historical data) useSmartCache.ts:87:13
+💾 Smart cache updated: 3 stores (3 fresh), 5KB, 0 historical logs cached smartCache.ts:114:15
+✅ SIMPLIFIED: Load complete (3 stores, NO historical data) useSmartCache.ts:138:17
+🚀 smartLoad() completed successfully useSmartCache.ts:210:15
+🚀 Setting loading to false useSmartCache.ts:214:15
+🚨 APP.TSX COMPONENT LOADING/RELOADING App.tsx:59:11
+🚀 useSmartCache HOOK INITIALIZING... useSmartCache.ts:6:11
+🚀 useSmartCache initial state: 
+Object { storesLength: 3, loading: false, error: null, isLiveData: true, cacheInfo: {…} }
+useSmartCache.ts:13:11
+🚨 APP.TSX COMPONENT LOADING/RELOADING App.tsx:59:11
+🚀 useSmartCache HOOK INITIALIZING... useSmartCache.ts:6:11
+🚀 useSmartCache initial state: 
+Object { storesLength: 3, loading: false, error: null, isLiveData: true, cacheInfo: {…} }
+useSmartCache.ts:13:11
+Warning: validateDOMNesting(...): <div> cannot appear as a descendant of <p>.
+div
+DataFreshnessIndicator@http://localhost:5173/src/utils/dataFreshness.tsx:51:39
+p
+div
+div
+button
+div
+div
+div
+div
+StoreSelector@http://localhost:5173/src/components/StoreSelector.tsx:23:30
+div
+App@http://localhost:5173/src/App.tsx:60:92 react-dom_client.js:521:38
+🚀 useSmartCache useEffect TRIGGERED - starting initial load useSmartCache.ts:203:13
+🔥 FORCE CLEARING CACHE TO FIX DATA ISSUE useSmartCache.ts:204:13
+🗑️ Smart cache cleared smartCache.ts:181:15
+🚀 Calling smartLoad()... useSmartCache.ts:208:13
+🚀 smartLoad() FUNCTION STARTING... useSmartCache.ts:91:13
+🚀 Clearing any previous errors useSmartCache.ts:93:15
+🚀 SIMPLIFIED: Fetching fresh endpoint data (NO historical logs) useSmartCache.ts:105:17
+🚀🔍 MASSIVE DEBUG ApiService.initialize START =================== api.ts:10:13
+🔍 DEBUG this.initialized: true api.ts:11:13
+🔍 DEBUG Already initialized, skipping api.ts:13:15
+🔄 SIMPLIFIED: Background refresh started (every 30 seconds) useSmartCache.ts:200:13
+🚨 APP.TSX DEBUG - FORCED WARNING LOG App.tsx:64:13
+🚨 APP.TSX DEBUG - FORCED ERROR LOG App.tsx:65:13
+🔍 APP.TSX DATA FLOW DEBUG: App.tsx:66:13
+🔍   stores.length: 3 App.tsx:67:13
+🔍   loading: false App.tsx:68:13
+🔍   error: null App.tsx:69:13
+🔍   stores array: 
+Array(3) [ {…}, {…}, {…} ]
+App.tsx:70:13
+🔍   viewMode: selector App.tsx:71:13
+🔍   Store 1: Mascoutah App.tsx:74:17
+🔍     tanks.length: 3 App.tsx:75:17
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNLEADED", product: "Unknown", latest_log: {…}, logs: [], run_rate: 0.48579999804496765, hours_to_10_inches: 12365.1708984375, predicted_time: "2027-03-04T11:32:40.422667", status: "normal", capacity_percentage: 70.07, … }
+App.tsx:77:19
+🔍   Store 2: North City App.tsx:74:17
+🔍     tanks.length: 5 App.tsx:75:17
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNL T1", product: "Unknown", latest_log: {…}, logs: [], run_rate: 0.0007999999797903001, hours_to_10_inches: 3181250, predicted_time: "2531-01-15T21:51:36.776359", status: "normal", capacity_percentage: 35.449999999999996, … }
+App.tsx:77:19
+🔍   Store 3: TEST_STORE App.tsx:74:17
+🔍     tanks.length: 3 App.tsx:75:17
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNLEADED", product: "Unknown", latest_log: {…}, logs: [], run_rate: null, hours_to_10_inches: null, predicted_time: null, status: "normal", capacity_percentage: 72.34, … }
+App.tsx:77:19
+🚨 APP.TSX COMPONENT LOADING/RELOADING App.tsx:59:11
+🚀 useSmartCache HOOK INITIALIZING... useSmartCache.ts:6:11
+🚀 useSmartCache initial state: 
+Object { storesLength: 3, loading: true, error: null, isLiveData: true, cacheInfo: {…} }
+useSmartCache.ts:13:11
+🚨 APP.TSX COMPONENT LOADING/RELOADING App.tsx:59:11
+🚀 useSmartCache HOOK INITIALIZING... useSmartCache.ts:6:11
+🚀 useSmartCache initial state: 
+Object { storesLength: 3, loading: true, error: null, isLiveData: true, cacheInfo: {…} }
+useSmartCache.ts:13:11
+🚀🔍 MASSIVE DEBUG ApiService.initialize START =================== api.ts:10:13
+🔍 DEBUG this.initialized: true api.ts:11:13
+🔍 DEBUG Already initialized, skipping api.ts:13:15
+🚀🔍 MASSIVE DEBUG getAllStoresData START =================== api.ts:117:13
+🔍 DEBUG: API_BASE_URL: https://central-tank-server.onrender.com api.ts:118:13
+🔍 DEBUG: Attempting /dashboard/stores endpoint... api.ts:120:15
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== api.ts:22:13
+🔍 DEBUG endpoint: /dashboard/stores api.ts:23:13
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores api.ts:24:13
+🔍 DEBUG options: {
+  "cacheKey": "dashboard-stores",
+  "cacheDuration": 120000
+} api.ts:25:13
+🔍 DEBUG cacheKey: dashboard-stores api.ts:29:15
+🔍 DEBUG cacheDuration: 120000ms api.ts:30:15
+🔍 DEBUG cache found, age: 6126ms (limit: 120000ms) api.ts:34:17
+🔍 DEBUG using cached data for /dashboard/stores api.ts:36:19
+🔍 DEBUG: /dashboard/stores response: [
+  {
+    "store_name": "Mascoutah",
+    "tank_count": 3,
+    "critical_tanks": 0,
+    "warning_tanks": 0,
+    "last_update": "2025-07-11T06:54:46.280583"
+  },
+  {
+    "store_name": "North City",
+    "tank_count": 5,
+    "critical_tanks": 1,
+    "warning_tanks": 1,
+    "last_update": "2025-07-11T06:51:34.242565"
+  },
+  {
+    "store_name": "TEST_STORE",
+    "tank_count": 3,
+    "critical_tanks": 0,
+    "warning_tanks": 0,
+    "last_update": "2025-06-28T14:32:31.407159"
+  }
+] api.ts:126:15
+🔍 DEBUG: stores array length: 3 api.ts:127:15
+🔍 DEBUG: Processing store 1/3: Mascoutah api.ts:137:17
+🔍 DEBUG: Fetching store details from: /dashboard/stores/Mascoutah api.ts:139:17
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== api.ts:22:13
+🔍 DEBUG endpoint: /dashboard/stores/Mascoutah api.ts:23:13
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores/Mascoutah api.ts:24:13
+🔍 DEBUG options: {
+  "cacheKey": "store-Mascoutah",
+  "cacheDuration": 120000
+} api.ts:25:13
+🔍 DEBUG cacheKey: store-Mascoutah api.ts:29:15
+🔍 DEBUG cacheDuration: 120000ms api.ts:30:15
+🔍 DEBUG cache found, age: 4486ms (limit: 120000ms) api.ts:34:17
+🔍 DEBUG using cached data for /dashboard/stores/Mascoutah api.ts:36:19
+🔍 DEBUG: Store Mascoutah response: 
+{
+  "store_name": "Mascoutah",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNLEADED",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 7007,
+        "height": 62.56999969482422,
+        "timestamp": "2025-07-11T06:54:46.280533"
+      },
+      "historical_data": [
+        {
+          "timestamp": "2025-07-06 11:00:00",
+          "volume": 4994,
+          "height": 47.38999938964844
+        },
+        {
+          "timestamp": "2025-07-06 12:00:00",
+          "volume": 4957,
+          "height": 47.11416753133138
+        },
+        {
+          "timestamp": "2025-07-06 13:00:00",
+          "volume": 4905,
+          "height": 46.72999922434489
+        },
+        {
+          "timestamp": "2025-07-06 14:00:00",
+          "volume": 4852,
+          "height": 46.34249941507975
+        },
+        {
+          "timestamp": "2025-07-06 15:00:00",
+          "volume": 4807,
+          "height": 46.00909077037465
+        },
+        {
+          "timestamp": "202…
+api.ts:144:17
+🔍 DEBUG: Store Mascoutah tanks count: 3 api.ts:145:17
+🔍 DEBUG: Tank 1 in Mascoutah: api.ts:148:21
+🔍 DEBUG:   tank_id: 1 api.ts:149:21
+🔍 DEBUG:   tank_name: UNLEADED api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":1,"tank_name":"UNLEADED","store_name":"Mascoutah","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.48579999804496765,"hours_to_critical":12365.1708984375,"predicted_empty":"2027-03-04T11:32:40.422667","predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":7007,"height":62.56999969482422,"timestamp":"2025-07-11T06:54:46.280533"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 2 in Mascoutah: api.ts:148:21
+🔍 DEBUG:   tank_id: 2 api.ts:149:21
+🔍 DEBUG:   tank_name: PREMIUM api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":2,"tank_name":"PREMIUM","store_name":"Mascoutah","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.09189999848604202,"hours_to_critical":10674.646484375,"predicted_empty":"2027-12-26T15:57:10.300015","predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":1981,"height":23.969999313354492,"timestamp":"2025-07-11T06:54:46.280568"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 3 in Mascoutah: api.ts:148:21
+🔍 DEBUG:   tank_id: 3 api.ts:149:21
+🔍 DEBUG:   tank_name: DIESEL api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":3,"tank_name":"DIESEL","store_name":"Mascoutah","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.02969999983906746,"hours_to_critical":37575.7578125,"predicted_empty":"2033-08-27T01:42:19.261173","predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":2116,"height":25.110000610351562,"timestamp":"2025-07-11T06:54:46.280583"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Processing store 2/3: North City api.ts:137:17
+🔍 DEBUG: Fetching store details from: /dashboard/stores/North City api.ts:139:17
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== api.ts:22:13
+🔍 DEBUG endpoint: /dashboard/stores/North City api.ts:23:13
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores/North City api.ts:24:13
+🔍 DEBUG options: {
+  "cacheKey": "store-North City",
+  "cacheDuration": 120000
+} api.ts:25:13
+🔍 DEBUG cacheKey: store-North City api.ts:29:15
+🔍 DEBUG cacheDuration: 120000ms api.ts:30:15
+🔍 DEBUG cache found, age: 2942ms (limit: 120000ms) api.ts:34:17
+🔍 DEBUG using cached data for /dashboard/stores/North City api.ts:36:19
+🔍 DEBUG: Store North City response: 
+{
+  "store_name": "North City",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNL T1",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 3545,
+        "height": 69.06999969482422,
+        "timestamp": "2025-07-11T06:51:34.242464"
+      },
+      "historical_data": [
+        {
+          "timestamp": "2025-07-06 12:00:00",
+          "volume": 3543,
+          "height": 69.01250076293945
+        },
+        {
+          "timestamp": "2025-07-06 13:00:00",
+          "volume": 3543,
+          "height": 69.01499938964844
+        },
+        {
+          "timestamp": "2025-07-06 14:00:00",
+          "volume": 3543,
+          "height": 69.01250076293945
+        },
+        {
+          "timestamp": "2025-07-06 15:00:00",
+          "volume": 3543,
+          "height": 69.02181521329013
+        },
+        {
+          "timestamp": "2025-07-06 16:00:00",
+          "volume": 3543,
+          "height": 69.0199966430664
+        },
+        {
+          "timestamp": "2025-…
+api.ts:144:17
+🔍 DEBUG: Store North City tanks count: 5 api.ts:145:17
+🔍 DEBUG: Tank 1 in North City: api.ts:148:21
+🔍 DEBUG:   tank_id: 1 api.ts:149:21
+🔍 DEBUG:   tank_name: UNL T1 api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":1,"tank_name":"UNL T1","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.0007999999797903001,"hours_to_critical":3181250,"predicted_empty":"2531-01-15T21:51:36.776359","predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":3545,"height":69.06999969482422,"timestamp":"2025-07-11T06:51:34.242464"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 2 in North City: api.ts:148:21
+🔍 DEBUG:   tank_id: 2 api.ts:149:21
+🔍 DEBUG:   tank_name: UNL T2 api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":2,"tank_name":"UNL T2","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.0786999985575676,"hours_to_critical":23430.75,"predicted_empty":"2029-08-25T05:05:25.435815","predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":2844,"height":45.95000076293945,"timestamp":"2025-07-11T06:51:34.242511"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 3 in North City: api.ts:148:21
+🔍 DEBUG:   tank_id: 3 api.ts:149:21
+🔍 DEBUG:   tank_name: UNL T3 api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":3,"tank_name":"UNL T3","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":226,"height":6.309999942779541,"timestamp":"2025-07-11T06:51:34.242530"} api.ts:153:21
+🔍 DEBUG:   current_status: critical api.ts:154:21
+🔍 DEBUG: Tank 4 in North City: api.ts:148:21
+🔍 DEBUG:   tank_id: 4 api.ts:149:21
+🔍 DEBUG:   tank_name: PREM api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":4,"tank_name":"PREM","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0.016499999910593033,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":815,"height":11.5600004196167,"timestamp":"2025-07-11T06:51:34.242547"} api.ts:153:21
+🔍 DEBUG:   current_status: warning api.ts:154:21
+🔍 DEBUG: Tank 5 in North City: api.ts:148:21
+🔍 DEBUG:   tank_id: 5 api.ts:149:21
+🔍 DEBUG:   tank_name: K1 api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":5,"tank_name":"K1","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":0,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":4888,"height":72.69999694824219,"timestamp":"2025-07-11T06:51:34.242565"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Processing store 3/3: TEST_STORE api.ts:137:17
+🔍 DEBUG: Fetching store details from: /dashboard/stores/TEST_STORE api.ts:139:17
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== api.ts:22:13
+🔍 DEBUG endpoint: /dashboard/stores/TEST_STORE api.ts:23:13
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores/TEST_STORE api.ts:24:13
+🔍 DEBUG options: {
+  "cacheKey": "store-TEST_STORE",
+  "cacheDuration": 120000
+} api.ts:25:13
+🔍 DEBUG cacheKey: store-TEST_STORE api.ts:29:15
+🔍 DEBUG cacheDuration: 120000ms api.ts:30:15
+🔍 DEBUG cache found, age: 321ms (limit: 120000ms) api.ts:34:17
+🔍 DEBUG using cached data for /dashboard/stores/TEST_STORE api.ts:36:19
+🔍 DEBUG: Store TEST_STORE response: {
+  "store_name": "TEST_STORE",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNLEADED",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 7234,
+        "height": 48.5,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 1,
+        "tank_name": "UNLEADED",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    },
+    {
+      "tank_id": 2,
+      "tank_name": "PLUS",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 2156,
+        "height": 31.200000762939453,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 2,
+        "tank_name": "PLUS",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    },
+    {
+      "tank_id": 3,
+      "tank_name": "PREMIUM",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 1847,
+        "height": 28.899999618530273,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 3,
+        "tank_name": "PREMIUM",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    }
+  ]
+} api.ts:144:17
+🔍 DEBUG: Store TEST_STORE tanks count: 3 api.ts:145:17
+🔍 DEBUG: Tank 1 in TEST_STORE: api.ts:148:21
+🔍 DEBUG:   tank_id: 1 api.ts:149:21
+🔍 DEBUG:   tank_name: UNLEADED api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":1,"tank_name":"UNLEADED","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":7234,"height":48.5,"timestamp":"2025-06-28T14:32:31.407159"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 2 in TEST_STORE: api.ts:148:21
+🔍 DEBUG:   tank_id: 2 api.ts:149:21
+🔍 DEBUG:   tank_name: PLUS api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":2,"tank_name":"PLUS","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":2156,"height":31.200000762939453,"timestamp":"2025-06-28T14:32:31.407159"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 3 in TEST_STORE: api.ts:148:21
+🔍 DEBUG:   tank_id: 3 api.ts:149:21
+🔍 DEBUG:   tank_name: PREMIUM api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":3,"tank_name":"PREMIUM","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":1847,"height":28.899999618530273,"timestamp":"2025-06-28T14:32:31.407159"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Final detailedStores array: 
+[
+  {
+    "store_name": "Mascoutah",
+    "tanks": [
+      {
+        "tank_id": 1,
+        "tank_name": "UNLEADED",
+        "current_status": "normal",
+        "latest_reading": {
+          "volume": 7007,
+          "height": 62.56999969482422,
+          "timestamp": "2025-07-11T06:54:46.280533"
+        },
+        "historical_data": [
+          {
+            "timestamp": "2025-07-06 11:00:00",
+            "volume": 4994,
+            "height": 47.38999938964844
+          },
+          {
+            "timestamp": "2025-07-06 12:00:00",
+            "volume": 4957,
+            "height": 47.11416753133138
+          },
+          {
+            "timestamp": "2025-07-06 13:00:00",
+            "volume": 4905,
+            "height": 46.72999922434489
+          },
+          {
+            "timestamp": "2025-07-06 14:00:00",
+            "volume": 4852,
+            "height": 46.34249941507975
+          },
+          {
+            "timestamp": "2025-07-06 15:00:00",
+            "volume": 4807,
+            …
+api.ts:159:15
+✅ Fetched 3 stores with server analytics api.ts:160:15
+🚀🔍 MASSIVE DEBUG getAllStoresData END =================== api.ts:161:15
+🚀 SIMPLIFIED: Processing raw API data (NO historical data fetching) useSmartCache.ts:23:13
+📊 Processing store: Mascoutah with 3 tanks useSmartCache.ts:26:15
+🔍 Processing tank 1 in Mascoutah useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.48579999804496765, hours_to_critical=12365.1708984375 useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 2 in Mascoutah useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.09189999848604202, hours_to_critical=10674.646484375 useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 3 in Mascoutah useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.02969999983906746, hours_to_critical=37575.7578125 useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+📊 Processing store: North City with 5 tanks useSmartCache.ts:26:15
+🔍 Processing tank 1 in North City useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.0007999999797903001, hours_to_critical=3181250 useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 2 in North City useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.0786999985575676, hours_to_critical=23430.75 useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 3 in North City useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 4 in North City useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.016499999910593033, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 5 in North City useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+📊 Processing store: TEST_STORE with 3 tanks useSmartCache.ts:26:15
+🔍 Processing tank 1 in TEST_STORE useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=null, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 2 in TEST_STORE useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=null, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 3 in TEST_STORE useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=null, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+✅ SIMPLIFIED: Processed 3 stores (NO historical data) useSmartCache.ts:87:13
+💾 Smart cache updated: 3 stores (3 fresh), 5KB, 0 historical logs cached smartCache.ts:114:15
+✅ SIMPLIFIED: Load complete (3 stores, NO historical data) useSmartCache.ts:138:17
+🚀 smartLoad() completed successfully useSmartCache.ts:210:15
+🚀 Setting loading to false useSmartCache.ts:214:15
+🚨 APP.TSX DEBUG - FORCED WARNING LOG App.tsx:64:13
+🚨 APP.TSX DEBUG - FORCED ERROR LOG App.tsx:65:13
+🔍 APP.TSX DATA FLOW DEBUG: App.tsx:66:13
+🔍   stores.length: 3 App.tsx:67:13
+🔍   loading: true App.tsx:68:13
+🔍   error: null App.tsx:69:13
+🔍   stores array: 
+Array(3) [ {…}, {…}, {…} ]
+App.tsx:70:13
+🔍   viewMode: selector App.tsx:71:13
+🔍   Store 1: Mascoutah App.tsx:74:17
+🔍     tanks.length: 3 App.tsx:75:17
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNLEADED", product: "Unknown", latest_log: {…}, logs: [], run_rate: 0.48579999804496765, hours_to_10_inches: 12365.1708984375, predicted_time: "2027-03-04T11:32:40.422667", status: "normal", capacity_percentage: 70.07, … }
+App.tsx:77:19
+🔍   Store 2: North City App.tsx:74:17
+🔍     tanks.length: 5 App.tsx:75:17
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNL T1", product: "Unknown", latest_log: {…}, logs: [], run_rate: 0.0007999999797903001, hours_to_10_inches: 3181250, predicted_time: "2531-01-15T21:51:36.776359", status: "normal", capacity_percentage: 35.449999999999996, … }
+App.tsx:77:19
+🔍   Store 3: TEST_STORE App.tsx:74:17
+🔍     tanks.length: 3 App.tsx:75:17
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNLEADED", product: "Unknown", latest_log: {…}, logs: [], run_rate: null, hours_to_10_inches: null, predicted_time: null, status: "normal", capacity_percentage: 72.34, … }
+App.tsx:77:19
+🚨 APP.TSX COMPONENT LOADING/RELOADING App.tsx:59:11
+🚀 useSmartCache HOOK INITIALIZING... useSmartCache.ts:6:11
+🚀 useSmartCache initial state: 
+Object { storesLength: 3, loading: false, error: null, isLiveData: true, cacheInfo: {…} }
+useSmartCache.ts:13:11
+🚨 APP.TSX COMPONENT LOADING/RELOADING App.tsx:59:11
+🚀 useSmartCache HOOK INITIALIZING... useSmartCache.ts:6:11
+🚀 useSmartCache initial state: 
+Object { storesLength: 3, loading: false, error: null, isLiveData: true, cacheInfo: {…} }
+useSmartCache.ts:13:11
+🔄 SIMPLIFIED: Background refresh started (every 30 seconds) useSmartCache.ts:200:13
+🚨 APP.TSX DEBUG - FORCED WARNING LOG App.tsx:64:13
+🚨 APP.TSX DEBUG - FORCED ERROR LOG App.tsx:65:13
+🔍 APP.TSX DATA FLOW DEBUG: App.tsx:66:13
+🔍   stores.length: 3 App.tsx:67:13
+🔍   loading: false App.tsx:68:13
+🔍   error: null App.tsx:69:13
+🔍   stores array: 
+Array(3) [ {…}, {…}, {…} ]
+App.tsx:70:13
+🔍   viewMode: selector App.tsx:71:13
+🔍   Store 1: Mascoutah App.tsx:74:17
+🔍     tanks.length: 3 App.tsx:75:17
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNLEADED", product: "Unknown", latest_log: {…}, logs: [], run_rate: 0.48579999804496765, hours_to_10_inches: 12365.1708984375, predicted_time: "2027-03-04T11:32:40.422667", status: "normal", capacity_percentage: 70.07, … }
+App.tsx:77:19
+🔍   Store 2: North City App.tsx:74:17
+🔍     tanks.length: 5 App.tsx:75:17
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNL T1", product: "Unknown", latest_log: {…}, logs: [], run_rate: 0.0007999999797903001, hours_to_10_inches: 3181250, predicted_time: "2531-01-15T21:51:36.776359", status: "normal", capacity_percentage: 35.449999999999996, … }
+App.tsx:77:19
+🔍   Store 3: TEST_STORE App.tsx:74:17
+🔍     tanks.length: 3 App.tsx:75:17
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNLEADED", product: "Unknown", latest_log: {…}, logs: [], run_rate: null, hours_to_10_inches: null, predicted_time: null, status: "normal", capacity_percentage: 72.34, … }
+App.tsx:77:19
+🔍 DEBUG response status: 200 api.ts:55:15
+🔍 DEBUG response statusText: api.ts:56:15
+🔍 DEBUG response ok: true api.ts:57:15
+🔍 DEBUG response headers: 
+Object { "content-length": "399", "content-type": "application/json" }
+api.ts:58:15
+🔍 DEBUG raw response text length: 1465 api.ts:66:15
+🔍 DEBUG raw response text (first 500 chars): {"store_name":"TEST_STORE","tanks":[{"tank_id":1,"tank_name":"UNLEADED","current_status":"normal","latest_reading":{"volume":7234,"height":48.5,"timestamp":"2025-06-28T14:32:31.407159"},"historical_data":[],"analytics":{"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null},"configuration":{"tank_id":1,"tank_name":"UNLEADED","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10.0,"warning_height_inches":2 api.ts:67:15
+🔍 DEBUG parsed JSON data: {
+  "store_name": "TEST_STORE",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNLEADED",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 7234,
+        "height": 48.5,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 1,
+        "tank_name": "UNLEADED",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    },
+    {
+      "tank_id": 2,
+      "tank_name": "PLUS",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 2156,
+        "height": 31.200000762939453,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 2,
+        "tank_name": "PLUS",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    },
+    {
+      "tank_id": 3,
+      "tank_name": "PREMIUM",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 1847,
+        "height": 28.899999618530273,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 3,
+        "tank_name": "PREMIUM",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    }
+  ]
+} api.ts:71:17
+🔍 DEBUG cached response for store-TEST_STORE api.ts:78:15
+🌐🔍 MASSIVE DEBUG API REQUEST SUCCESS END =================== api.ts:90:15
+🔍 DEBUG: Store TEST_STORE response: {
+  "store_name": "TEST_STORE",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNLEADED",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 7234,
+        "height": 48.5,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 1,
+        "tank_name": "UNLEADED",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    },
+    {
+      "tank_id": 2,
+      "tank_name": "PLUS",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 2156,
+        "height": 31.200000762939453,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 2,
+        "tank_name": "PLUS",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    },
+    {
+      "tank_id": 3,
+      "tank_name": "PREMIUM",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 1847,
+        "height": 28.899999618530273,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 3,
+        "tank_name": "PREMIUM",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    }
+  ]
+} api.ts:144:17
+🔍 DEBUG: Store TEST_STORE tanks count: 3 api.ts:145:17
+🔍 DEBUG: Tank 1 in TEST_STORE: api.ts:148:21
+🔍 DEBUG:   tank_id: 1 api.ts:149:21
+🔍 DEBUG:   tank_name: UNLEADED api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":1,"tank_name":"UNLEADED","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":7234,"height":48.5,"timestamp":"2025-06-28T14:32:31.407159"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 2 in TEST_STORE: api.ts:148:21
+🔍 DEBUG:   tank_id: 2 api.ts:149:21
+🔍 DEBUG:   tank_name: PLUS api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":2,"tank_name":"PLUS","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":2156,"height":31.200000762939453,"timestamp":"2025-06-28T14:32:31.407159"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Tank 3 in TEST_STORE: api.ts:148:21
+🔍 DEBUG:   tank_id: 3 api.ts:149:21
+🔍 DEBUG:   tank_name: PREMIUM api.ts:150:21
+🔍 DEBUG:   configuration: {"tank_id":3,"tank_name":"PREMIUM","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} api.ts:151:21
+🔍 DEBUG:   analytics: {"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} api.ts:152:21
+🔍 DEBUG:   latest_reading: {"volume":1847,"height":28.899999618530273,"timestamp":"2025-06-28T14:32:31.407159"} api.ts:153:21
+🔍 DEBUG:   current_status: normal api.ts:154:21
+🔍 DEBUG: Final detailedStores array: 
+[
+  {
+    "store_name": "Mascoutah",
+    "tanks": [
+      {
+        "tank_id": 1,
+        "tank_name": "UNLEADED",
+        "current_status": "normal",
+        "latest_reading": {
+          "volume": 7007,
+          "height": 62.56999969482422,
+          "timestamp": "2025-07-11T06:54:46.280533"
+        },
+        "historical_data": [
+          {
+            "timestamp": "2025-07-06 11:00:00",
+            "volume": 4994,
+            "height": 47.38999938964844
+          },
+          {
+            "timestamp": "2025-07-06 12:00:00",
+            "volume": 4957,
+            "height": 47.11416753133138
+          },
+          {
+            "timestamp": "2025-07-06 13:00:00",
+            "volume": 4905,
+            "height": 46.72999922434489
+          },
+          {
+            "timestamp": "2025-07-06 14:00:00",
+            "volume": 4852,
+            "height": 46.34249941507975
+          },
+          {
+            "timestamp": "2025-07-06 15:00:00",
+            "volume": 4807,
+            …
+api.ts:159:15
+✅ Fetched 3 stores with server analytics api.ts:160:15
+🚀🔍 MASSIVE DEBUG getAllStoresData END =================== api.ts:161:15
+🚀 SIMPLIFIED: Processing raw API data (NO historical data fetching) useSmartCache.ts:23:13
+📊 Processing store: Mascoutah with 3 tanks useSmartCache.ts:26:15
+🔍 Processing tank 1 in Mascoutah useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.48579999804496765, hours_to_critical=12365.1708984375 useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 2 in Mascoutah useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.09189999848604202, hours_to_critical=10674.646484375 useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 3 in Mascoutah useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.02969999983906746, hours_to_critical=37575.7578125 useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+📊 Processing store: North City with 5 tanks useSmartCache.ts:26:15
+🔍 Processing tank 1 in North City useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.0007999999797903001, hours_to_critical=3181250 useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 2 in North City useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.0786999985575676, hours_to_critical=23430.75 useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 3 in North City useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 4 in North City useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0.016499999910593033, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 5 in North City useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=0, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+📊 Processing store: TEST_STORE with 3 tanks useSmartCache.ts:26:15
+🔍 Processing tank 1 in TEST_STORE useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=null, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 2 in TEST_STORE useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=null, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+🔍 Processing tank 3 in TEST_STORE useSmartCache.ts:29:17
+✅ Using server analytics: run_rate=null, hours_to_critical=null useSmartCache.ts:41:17
+✅ Using server config: max_capacity=10000 useSmartCache.ts:42:17
+✅ SIMPLIFIED: Processed 3 stores (NO historical data) useSmartCache.ts:87:13
+💾 Smart cache updated: 3 stores (3 fresh), 5KB, 0 historical logs cached smartCache.ts:114:15
+✅ SIMPLIFIED: Load complete (3 stores, NO historical data) useSmartCache.ts:138:17
+🚀 smartLoad() completed successfully useSmartCache.ts:210:15
+🚀 Setting loading to false useSmartCache.ts:214:15
+🚨 APP.TSX COMPONENT LOADING/RELOADING App.tsx:59:11
+🚀 useSmartCache HOOK INITIALIZING... useSmartCache.ts:6:11
+🚀 useSmartCache initial state: 
+Object { storesLength: 3, loading: false, error: null, isLiveData: true, cacheInfo: {…} }
+useSmartCache.ts:13:11
+🚨 APP.TSX COMPONENT LOADING/RELOADING App.tsx:59:11
+🚀 useSmartCache HOOK INITIALIZING... useSmartCache.ts:6:11
+🚀 useSmartCache initial state: 
+Object { storesLength: 3, loading: false, error: null, isLiveData: true, cacheInfo: {…} }
+useSmartCache.ts:13:11
+🚨 APP.TSX DEBUG - FORCED WARNING LOG App.tsx:64:13
+🚨 APP.TSX DEBUG - FORCED ERROR LOG App.tsx:65:13
+🔍 APP.TSX DATA FLOW DEBUG: App.tsx:66:13
+🔍   stores.length: 3 App.tsx:67:13
+🔍   loading: false App.tsx:68:13
+🔍   error: null App.tsx:69:13
+🔍   stores array: 
+Array(3) [ {…}, {…}, {…} ]
+App.tsx:70:13
+🔍   viewMode: selector App.tsx:71:13
+🔍   Store 1: Mascoutah App.tsx:74:17
+🔍     tanks.length: 3 App.tsx:75:17
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNLEADED", product: "Unknown", latest_log: {…}, logs: [], run_rate: 0.48579999804496765, hours_to_10_inches: 12365.1708984375, predicted_time: "2027-03-04T11:32:40.422667", status: "normal", capacity_percentage: 70.07, … }
+App.tsx:77:19
+🔍   Store 2: North City App.tsx:74:17
+🔍     tanks.length: 5 App.tsx:75:17
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNL T1", product: "Unknown", latest_log: {…}, logs: [], run_rate: 0.0007999999797903001, hours_to_10_inches: 3181250, predicted_time: "2531-01-15T21:51:36.776359", status: "normal", capacity_percentage: 35.449999999999996, … }
+App.tsx:77:19
+🔍   Store 3: TEST_STORE App.tsx:74:17
+🔍     tanks.length: 3 App.tsx:75:17
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNLEADED", product: "Unknown", latest_log: {…}, logs: [], run_rate: null, hours_to_10_inches: null, predicted_time: null, status: "normal", capacity_percentage: 72.34, … }
+App.tsx:77:19
+🚨 HANDLE VIEW ALL CLICKED - viewMode changing to all-stores App.tsx:99:13
+🔍 Current stores when clicking View All: 
+Array(3) [ {…}, {…}, {…} ]
+App.tsx:100:13
+🚨 APP.TSX COMPONENT LOADING/RELOADING App.tsx:59:11
+🚀 useSmartCache HOOK INITIALIZING... useSmartCache.ts:6:11
+🚀 useSmartCache initial state: 
+Object { storesLength: 3, loading: false, error: null, isLiveData: true, cacheInfo: {…} }
+useSmartCache.ts:13:11
+🚨 APP.TSX COMPONENT LOADING/RELOADING App.tsx:59:11
+🚀 useSmartCache HOOK INITIALIZING... useSmartCache.ts:6:11
+🚀 useSmartCache initial state: 
+Object { storesLength: 3, loading: false, error: null, isLiveData: true, cacheInfo: {…} }
+useSmartCache.ts:13:11
+🚨 APP.TSX DEBUG - FORCED WARNING LOG App.tsx:64:13
+🚨 APP.TSX DEBUG - FORCED ERROR LOG App.tsx:65:13
+🔍 APP.TSX DATA FLOW DEBUG: App.tsx:66:13
+🔍   stores.length: 3 App.tsx:67:13
+🔍   loading: false App.tsx:68:13
+🔍   error: null App.tsx:69:13
+🔍   stores array: 
+Array(3) [ {…}, {…}, {…} ]
+App.tsx:70:13
+🔍   viewMode: all-stores App.tsx:71:13
+🔍   Store 1: Mascoutah App.tsx:74:17
+🔍     tanks.length: 3 App.tsx:75:17
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNLEADED", product: "Unknown", latest_log: {…}, logs: [], run_rate: 0.48579999804496765, hours_to_10_inches: 12365.1708984375, predicted_time: "2027-03-04T11:32:40.422667", status: "normal", capacity_percentage: 70.07, … }
+App.tsx:77:19
+🔍   Store 2: North City App.tsx:74:17
+🔍     tanks.length: 5 App.tsx:75:17
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNL T1", product: "Unknown", latest_log: {…}, logs: [], run_rate: 0.0007999999797903001, hours_to_10_inches: 3181250, predicted_time: "2531-01-15T21:51:36.776359", status: "normal", capacity_percentage: 35.449999999999996, … }
+App.tsx:77:19
+🔍   Store 3: TEST_STORE App.tsx:74:17
+🔍     tanks.length: 3 App.tsx:75:17
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNLEADED", product: "Unknown", latest_log: {…}, logs: [], run_rate: null, hours_to_10_inches: null, predicted_time: null, status: "normal", capacity_percentage: 72.34, … }
+App.tsx:77:19
+🔍 TANKTABLE COMPONENT DEBUG: TankTable.tsx:24:13
+🔍   Received tanks.length: 3 TankTable.tsx:25:13
+🔍   Received tanks: 
+Array(3) [ {…}, {…}, {…} ]
+TankTable.tsx:26:13
+🔍   Table Tank 1: TankTable.tsx:29:17
+🔍     tank_id: 1 TankTable.tsx:30:17
+🔍     tank_name: UNLEADED TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 1, product: "Unknown", volume: 7007, tc_volume: 7007, ullage: 0, height: 62.56999969482422, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 70.07 TankTable.tsx:34:17
+🔍   Table Tank 2: TankTable.tsx:29:17
+🔍     tank_id: 2 TankTable.tsx:30:17
+🔍     tank_name: PREMIUM TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 2, product: "Unknown", volume: 1981, tc_volume: 1981, ullage: 0, height: 23.969999313354492, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 19.81 TankTable.tsx:34:17
+🔍   Table Tank 3: TankTable.tsx:29:17
+🔍     tank_id: 3 TankTable.tsx:30:17
+🔍     tank_name: DIESEL TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 3, product: "Unknown", volume: 2116, tc_volume: 2116, ullage: 0, height: 25.110000610351562, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 21.16 TankTable.tsx:34:17
+🔍 TANKTABLE COMPONENT DEBUG: TankTable.tsx:24:13
+🔍   Received tanks.length: 5 TankTable.tsx:25:13
+🔍   Received tanks: 
+Array(5) [ {…}, {…}, {…}, {…}, {…} ]
+TankTable.tsx:26:13
+🔍   Table Tank 1: TankTable.tsx:29:17
+🔍     tank_id: 1 TankTable.tsx:30:17
+🔍     tank_name: UNL T1 TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 1, product: "Unknown", volume: 3545, tc_volume: 3545, ullage: 0, height: 69.06999969482422, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 35.449999999999996 TankTable.tsx:34:17
+🔍   Table Tank 2: TankTable.tsx:29:17
+🔍     tank_id: 2 TankTable.tsx:30:17
+🔍     tank_name: UNL T2 TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 2, product: "Unknown", volume: 2844, tc_volume: 2844, ullage: 0, height: 45.95000076293945, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 28.439999999999998 TankTable.tsx:34:17
+🔍   Table Tank 3: TankTable.tsx:29:17
+🔍     tank_id: 3 TankTable.tsx:30:17
+🔍     tank_name: UNL T3 TankTable.tsx:31:17
+🔍     status: critical TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 3, product: "Unknown", volume: 226, tc_volume: 226, ullage: 0, height: 6.309999942779541, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 2.26 TankTable.tsx:34:17
+🔍   Table Tank 4: TankTable.tsx:29:17
+🔍     tank_id: 4 TankTable.tsx:30:17
+🔍     tank_name: PREM TankTable.tsx:31:17
+🔍     status: warning TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 4, product: "Unknown", volume: 815, tc_volume: 815, ullage: 0, height: 11.5600004196167, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 8.15 TankTable.tsx:34:17
+🔍   Table Tank 5: TankTable.tsx:29:17
+🔍     tank_id: 5 TankTable.tsx:30:17
+🔍     tank_name: K1 TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 5, product: "Unknown", volume: 4888, tc_volume: 4888, ullage: 0, height: 72.69999694824219, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 48.88 TankTable.tsx:34:17
+🔍 TANKTABLE COMPONENT DEBUG: TankTable.tsx:24:13
+🔍   Received tanks.length: 3 TankTable.tsx:25:13
+🔍   Received tanks: 
+Array(3) [ {…}, {…}, {…} ]
+TankTable.tsx:26:13
+🔍   Table Tank 1: TankTable.tsx:29:17
+🔍     tank_id: 1 TankTable.tsx:30:17
+🔍     tank_name: UNLEADED TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 1, product: "Unknown", volume: 7234, tc_volume: 7234, ullage: 0, height: 48.5, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 72.34 TankTable.tsx:34:17
+🔍   Table Tank 2: TankTable.tsx:29:17
+🔍     tank_id: 2 TankTable.tsx:30:17
+🔍     tank_name: PLUS TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 2, product: "Unknown", volume: 2156, tc_volume: 2156, ullage: 0, height: 31.200000762939453, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 21.560000000000002 TankTable.tsx:34:17
+🔍   Table Tank 3: TankTable.tsx:29:17
+🔍     tank_id: 3 TankTable.tsx:30:17
+🔍     tank_name: PREMIUM TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 3, product: "Unknown", volume: 1847, tc_volume: 1847, ullage: 0, height: 28.899999618530273, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 18.47 TankTable.tsx:34:17
+🔍 VIEWALLSTORES COMPONENT DEBUG: DebugLogger.tsx:42:18
+🔍   Received stores.length: 3 DebugLogger.tsx:42:18
+🔍   Received stores: 
+Array(3) [ {…}, {…}, {…} ]
+DebugLogger.tsx:42:18
+🔍   loading: false DebugLogger.tsx:42:18
+🔍   ViewAll Store 1: Mascoutah with 3 tanks DebugLogger.tsx:42:18
+🔍     Tank 1: UNLEADED (ID: 1) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 1, product: "Unknown", volume: 7007, tc_volume: 7007, ullage: 0, height: 62.56999969482422, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 1, tank_name: "UNLEADED", store_name: "Mascoutah", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 2: PREMIUM (ID: 2) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 2, product: "Unknown", volume: 1981, tc_volume: 1981, ullage: 0, height: 23.969999313354492, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 2, tank_name: "PREMIUM", store_name: "Mascoutah", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 3: DIESEL (ID: 3) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 3, product: "Unknown", volume: 2116, tc_volume: 2116, ullage: 0, height: 25.110000610351562, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 3, tank_name: "DIESEL", store_name: "Mascoutah", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍   ViewAll Store 2: North City with 5 tanks DebugLogger.tsx:42:18
+🔍     Tank 1: UNL T1 (ID: 1) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 1, product: "Unknown", volume: 3545, tc_volume: 3545, ullage: 0, height: 69.06999969482422, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 1, tank_name: "UNL T1", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 2: UNL T2 (ID: 2) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 2, product: "Unknown", volume: 2844, tc_volume: 2844, ullage: 0, height: 45.95000076293945, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 2, tank_name: "UNL T2", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 3: UNL T3 (ID: 3) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 3, product: "Unknown", volume: 226, tc_volume: 226, ullage: 0, height: 6.309999942779541, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 3, tank_name: "UNL T3", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 4: PREM (ID: 4) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 4, product: "Unknown", volume: 815, tc_volume: 815, ullage: 0, height: 11.5600004196167, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 4, tank_name: "PREM", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 5: K1 (ID: 5) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 5, product: "Unknown", volume: 4888, tc_volume: 4888, ullage: 0, height: 72.69999694824219, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 5, tank_name: "K1", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍   ViewAll Store 3: TEST_STORE with 3 tanks DebugLogger.tsx:42:18
+🔍     Tank 1: UNLEADED (ID: 1) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 1, product: "Unknown", volume: 7234, tc_volume: 7234, ullage: 0, height: 48.5, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 1, tank_name: "UNLEADED", store_name: "TEST_STORE", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 2: PLUS (ID: 2) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 2, product: "Unknown", volume: 2156, tc_volume: 2156, ullage: 0, height: 31.200000762939453, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 2, tank_name: "PLUS", store_name: "TEST_STORE", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 3: PREMIUM (ID: 3) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 3, product: "Unknown", volume: 1847, tc_volume: 1847, ullage: 0, height: 28.899999618530273, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 3, tank_name: "PREMIUM", store_name: "TEST_STORE", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍 TANKTABLE COMPONENT DEBUG: TankTable.tsx:24:13
+🔍   Received tanks.length: 3 TankTable.tsx:25:13
+🔍   Received tanks: 
+Array(3) [ {…}, {…}, {…} ]
+TankTable.tsx:26:13
+🔍   Table Tank 1: TankTable.tsx:29:17
+🔍     tank_id: 1 TankTable.tsx:30:17
+🔍     tank_name: UNLEADED TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 1, product: "Unknown", volume: 7007, tc_volume: 7007, ullage: 0, height: 62.56999969482422, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 70.07 TankTable.tsx:34:17
+🔍   Table Tank 2: TankTable.tsx:29:17
+🔍     tank_id: 2 TankTable.tsx:30:17
+🔍     tank_name: PREMIUM TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 2, product: "Unknown", volume: 1981, tc_volume: 1981, ullage: 0, height: 23.969999313354492, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 19.81 TankTable.tsx:34:17
+🔍   Table Tank 3: TankTable.tsx:29:17
+🔍     tank_id: 3 TankTable.tsx:30:17
+🔍     tank_name: DIESEL TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 3, product: "Unknown", volume: 2116, tc_volume: 2116, ullage: 0, height: 25.110000610351562, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 21.16 TankTable.tsx:34:17
+🔍 TANKTABLE COMPONENT DEBUG: TankTable.tsx:24:13
+🔍   Received tanks.length: 5 TankTable.tsx:25:13
+🔍   Received tanks: 
+Array(5) [ {…}, {…}, {…}, {…}, {…} ]
+TankTable.tsx:26:13
+🔍   Table Tank 1: TankTable.tsx:29:17
+🔍     tank_id: 1 TankTable.tsx:30:17
+🔍     tank_name: UNL T1 TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 1, product: "Unknown", volume: 3545, tc_volume: 3545, ullage: 0, height: 69.06999969482422, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 35.449999999999996 TankTable.tsx:34:17
+🔍   Table Tank 2: TankTable.tsx:29:17
+🔍     tank_id: 2 TankTable.tsx:30:17
+🔍     tank_name: UNL T2 TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 2, product: "Unknown", volume: 2844, tc_volume: 2844, ullage: 0, height: 45.95000076293945, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 28.439999999999998 TankTable.tsx:34:17
+🔍   Table Tank 3: TankTable.tsx:29:17
+🔍     tank_id: 3 TankTable.tsx:30:17
+🔍     tank_name: UNL T3 TankTable.tsx:31:17
+🔍     status: critical TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 3, product: "Unknown", volume: 226, tc_volume: 226, ullage: 0, height: 6.309999942779541, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 2.26 TankTable.tsx:34:17
+🔍   Table Tank 4: TankTable.tsx:29:17
+🔍     tank_id: 4 TankTable.tsx:30:17
+🔍     tank_name: PREM TankTable.tsx:31:17
+🔍     status: warning TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 4, product: "Unknown", volume: 815, tc_volume: 815, ullage: 0, height: 11.5600004196167, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 8.15 TankTable.tsx:34:17
+🔍   Table Tank 5: TankTable.tsx:29:17
+🔍     tank_id: 5 TankTable.tsx:30:17
+🔍     tank_name: K1 TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 5, product: "Unknown", volume: 4888, tc_volume: 4888, ullage: 0, height: 72.69999694824219, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 48.88 TankTable.tsx:34:17
+🔍 TANKTABLE COMPONENT DEBUG: TankTable.tsx:24:13
+🔍   Received tanks.length: 3 TankTable.tsx:25:13
+🔍   Received tanks: 
+Array(3) [ {…}, {…}, {…} ]
+TankTable.tsx:26:13
+🔍   Table Tank 1: TankTable.tsx:29:17
+🔍     tank_id: 1 TankTable.tsx:30:17
+🔍     tank_name: UNLEADED TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 1, product: "Unknown", volume: 7234, tc_volume: 7234, ullage: 0, height: 48.5, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 72.34 TankTable.tsx:34:17
+🔍   Table Tank 2: TankTable.tsx:29:17
+🔍     tank_id: 2 TankTable.tsx:30:17
+🔍     tank_name: PLUS TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 2, product: "Unknown", volume: 2156, tc_volume: 2156, ullage: 0, height: 31.200000762939453, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 21.560000000000002 TankTable.tsx:34:17
+🔍   Table Tank 3: TankTable.tsx:29:17
+🔍     tank_id: 3 TankTable.tsx:30:17
+🔍     tank_name: PREMIUM TankTable.tsx:31:17
+🔍     status: normal TankTable.tsx:32:17
+🔍     latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 3, product: "Unknown", volume: 1847, tc_volume: 1847, ullage: 0, height: 28.899999618530273, water: 0, temp: 0, … }
+TankTable.tsx:33:17
+🔍     capacity_percentage: 18.47 TankTable.tsx:34:17
+🔍 VIEWALLSTORES COMPONENT DEBUG: DebugLogger.tsx:42:18
+🔍   Received stores.length: 3 DebugLogger.tsx:42:18
+🔍   Received stores: 
+Array(3) [ {…}, {…}, {…} ]
+DebugLogger.tsx:42:18
+🔍   loading: false DebugLogger.tsx:42:18
+🔍   ViewAll Store 1: Mascoutah with 3 tanks DebugLogger.tsx:42:18
+🔍     Tank 1: UNLEADED (ID: 1) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 1, product: "Unknown", volume: 7007, tc_volume: 7007, ullage: 0, height: 62.56999969482422, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 1, tank_name: "UNLEADED", store_name: "Mascoutah", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 2: PREMIUM (ID: 2) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 2, product: "Unknown", volume: 1981, tc_volume: 1981, ullage: 0, height: 23.969999313354492, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 2, tank_name: "PREMIUM", store_name: "Mascoutah", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 3: DIESEL (ID: 3) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 3, product: "Unknown", volume: 2116, tc_volume: 2116, ullage: 0, height: 25.110000610351562, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 3, tank_name: "DIESEL", store_name: "Mascoutah", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍   ViewAll Store 2: North City with 5 tanks DebugLogger.tsx:42:18
+🔍     Tank 1: UNL T1 (ID: 1) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 1, product: "Unknown", volume: 3545, tc_volume: 3545, ullage: 0, height: 69.06999969482422, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 1, tank_name: "UNL T1", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 2: UNL T2 (ID: 2) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 2, product: "Unknown", volume: 2844, tc_volume: 2844, ullage: 0, height: 45.95000076293945, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 2, tank_name: "UNL T2", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 3: UNL T3 (ID: 3) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 3, product: "Unknown", volume: 226, tc_volume: 226, ullage: 0, height: 6.309999942779541, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 3, tank_name: "UNL T3", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 4: PREM (ID: 4) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 4, product: "Unknown", volume: 815, tc_volume: 815, ullage: 0, height: 11.5600004196167, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 4, tank_name: "PREM", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 5: K1 (ID: 5) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 5, product: "Unknown", volume: 4888, tc_volume: 4888, ullage: 0, height: 72.69999694824219, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 5, tank_name: "K1", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍   ViewAll Store 3: TEST_STORE with 3 tanks DebugLogger.tsx:42:18
+🔍     Tank 1: UNLEADED (ID: 1) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 1, product: "Unknown", volume: 7234, tc_volume: 7234, ullage: 0, height: 48.5, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 1, tank_name: "UNLEADED", store_name: "TEST_STORE", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 2: PLUS (ID: 2) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 2, product: "Unknown", volume: 2156, tc_volume: 2156, ullage: 0, height: 31.200000762939453, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 2, tank_name: "PLUS", store_name: "TEST_STORE", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 3: PREMIUM (ID: 3) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 3, product: "Unknown", volume: 1847, tc_volume: 1847, ullage: 0, height: 28.899999618530273, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 3, tank_name: "PREMIUM", store_name: "TEST_STORE", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+⏰ SIMPLIFIED: Background refresh (30s interval) - endpoint data only DebugLogger.tsx:42:18
+🚀🔍 MASSIVE DEBUG ApiService.initialize START =================== DebugLogger.tsx:42:18
+🔍 DEBUG this.initialized: true DebugLogger.tsx:42:18
+🔍 DEBUG Already initialized, skipping DebugLogger.tsx:42:18
+🚀🔍 MASSIVE DEBUG ApiService.initialize START =================== DebugLogger.tsx:42:18
+🔍 DEBUG this.initialized: true DebugLogger.tsx:42:18
+🔍 DEBUG Already initialized, skipping DebugLogger.tsx:42:18
+🚀🔍 MASSIVE DEBUG getAllStoresData START =================== DebugLogger.tsx:42:18
+🔍 DEBUG: API_BASE_URL: https://central-tank-server.onrender.com DebugLogger.tsx:42:18
+🔍 DEBUG: Attempting /dashboard/stores endpoint... DebugLogger.tsx:42:18
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== DebugLogger.tsx:42:18
+🔍 DEBUG endpoint: /dashboard/stores DebugLogger.tsx:42:18
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores DebugLogger.tsx:42:18
+🔍 DEBUG options: {
+  "cacheKey": "dashboard-stores",
+  "cacheDuration": 120000
+} DebugLogger.tsx:42:18
+🔍 DEBUG cacheKey: dashboard-stores DebugLogger.tsx:42:18
+🔍 DEBUG cacheDuration: 120000ms DebugLogger.tsx:42:18
+🔍 DEBUG cache found, age: 36199ms (limit: 120000ms) DebugLogger.tsx:42:18
+🔍 DEBUG using cached data for /dashboard/stores DebugLogger.tsx:42:18
+🔍 DEBUG: /dashboard/stores response: [
+  {
+    "store_name": "Mascoutah",
+    "tank_count": 3,
+    "critical_tanks": 0,
+    "warning_tanks": 0,
+    "last_update": "2025-07-11T06:54:46.280583"
+  },
+  {
+    "store_name": "North City",
+    "tank_count": 5,
+    "critical_tanks": 1,
+    "warning_tanks": 1,
+    "last_update": "2025-07-11T06:51:34.242565"
+  },
+  {
+    "store_name": "TEST_STORE",
+    "tank_count": 3,
+    "critical_tanks": 0,
+    "warning_tanks": 0,
+    "last_update": "2025-06-28T14:32:31.407159"
+  }
+] DebugLogger.tsx:42:18
+🔍 DEBUG: stores array length: 3 DebugLogger.tsx:42:18
+🔍 DEBUG: Processing store 1/3: Mascoutah DebugLogger.tsx:42:18
+🔍 DEBUG: Fetching store details from: /dashboard/stores/Mascoutah DebugLogger.tsx:42:18
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== DebugLogger.tsx:42:18
+🔍 DEBUG endpoint: /dashboard/stores/Mascoutah DebugLogger.tsx:42:18
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores/Mascoutah DebugLogger.tsx:42:18
+🔍 DEBUG options: {
+  "cacheKey": "store-Mascoutah",
+  "cacheDuration": 120000
+} DebugLogger.tsx:42:18
+🔍 DEBUG cacheKey: store-Mascoutah DebugLogger.tsx:42:18
+🔍 DEBUG cacheDuration: 120000ms DebugLogger.tsx:42:18
+🔍 DEBUG cache found, age: 34559ms (limit: 120000ms) DebugLogger.tsx:42:18
+🔍 DEBUG using cached data for /dashboard/stores/Mascoutah DebugLogger.tsx:42:18
+🔍 DEBUG: Store Mascoutah response: 
+{
+  "store_name": "Mascoutah",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNLEADED",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 7007,
+        "height": 62.56999969482422,
+        "timestamp": "2025-07-11T06:54:46.280533"
+      },
+      "historical_data": [
+        {
+          "timestamp": "2025-07-06 11:00:00",
+          "volume": 4994,
+          "height": 47.38999938964844
+        },
+        {
+          "timestamp": "2025-07-06 12:00:00",
+          "volume": 4957,
+          "height": 47.11416753133138
+        },
+        {
+          "timestamp": "2025-07-06 13:00:00",
+          "volume": 4905,
+          "height": 46.72999922434489
+        },
+        {
+          "timestamp": "2025-07-06 14:00:00",
+          "volume": 4852,
+          "height": 46.34249941507975
+        },
+        {
+          "timestamp": "2025-07-06 15:00:00",
+          "volume": 4807,
+          "height": 46.00909077037465
+        },
+        {
+          "timestamp": "202…
+DebugLogger.tsx:42:18
+🔍 DEBUG: Store Mascoutah tanks count: 3 DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 1 in Mascoutah: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 1 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: UNLEADED DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":1,"tank_name":"UNLEADED","store_name":"Mascoutah","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0.48579999804496765,"hours_to_critical":12365.1708984375,"predicted_empty":"2027-03-04T11:32:40.422667","predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":7007,"height":62.56999969482422,"timestamp":"2025-07-11T06:54:46.280533"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 2 in Mascoutah: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 2 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: PREMIUM DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":2,"tank_name":"PREMIUM","store_name":"Mascoutah","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0.09189999848604202,"hours_to_critical":10674.646484375,"predicted_empty":"2027-12-26T15:57:10.300015","predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":1981,"height":23.969999313354492,"timestamp":"2025-07-11T06:54:46.280568"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 3 in Mascoutah: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 3 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: DIESEL DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":3,"tank_name":"DIESEL","store_name":"Mascoutah","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0.02969999983906746,"hours_to_critical":37575.7578125,"predicted_empty":"2033-08-27T01:42:19.261173","predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":2116,"height":25.110000610351562,"timestamp":"2025-07-11T06:54:46.280583"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Processing store 2/3: North City DebugLogger.tsx:42:18
+🔍 DEBUG: Fetching store details from: /dashboard/stores/North City DebugLogger.tsx:42:18
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== DebugLogger.tsx:42:18
+🔍 DEBUG endpoint: /dashboard/stores/North City DebugLogger.tsx:42:18
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores/North City DebugLogger.tsx:42:18
+🔍 DEBUG options: {
+  "cacheKey": "store-North City",
+  "cacheDuration": 120000
+} DebugLogger.tsx:42:18
+🔍 DEBUG cacheKey: store-North City DebugLogger.tsx:42:18
+🔍 DEBUG cacheDuration: 120000ms DebugLogger.tsx:42:18
+🔍 DEBUG cache found, age: 33038ms (limit: 120000ms) DebugLogger.tsx:42:18
+🔍 DEBUG using cached data for /dashboard/stores/North City DebugLogger.tsx:42:18
+🔍 DEBUG: Store North City response: 
+{
+  "store_name": "North City",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNL T1",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 3545,
+        "height": 69.06999969482422,
+        "timestamp": "2025-07-11T06:51:34.242464"
+      },
+      "historical_data": [
+        {
+          "timestamp": "2025-07-06 12:00:00",
+          "volume": 3543,
+          "height": 69.01250076293945
+        },
+        {
+          "timestamp": "2025-07-06 13:00:00",
+          "volume": 3543,
+          "height": 69.01499938964844
+        },
+        {
+          "timestamp": "2025-07-06 14:00:00",
+          "volume": 3543,
+          "height": 69.01250076293945
+        },
+        {
+          "timestamp": "2025-07-06 15:00:00",
+          "volume": 3543,
+          "height": 69.02181521329013
+        },
+        {
+          "timestamp": "2025-07-06 16:00:00",
+          "volume": 3543,
+          "height": 69.0199966430664
+        },
+        {
+          "timestamp": "2025-…
+DebugLogger.tsx:42:18
+🔍 DEBUG: Store North City tanks count: 5 DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 1 in North City: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 1 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: UNL T1 DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":1,"tank_name":"UNL T1","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0.0007999999797903001,"hours_to_critical":3181250,"predicted_empty":"2531-01-15T21:51:36.776359","predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":3545,"height":69.06999969482422,"timestamp":"2025-07-11T06:51:34.242464"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 2 in North City: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 2 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: UNL T2 DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":2,"tank_name":"UNL T2","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0.0786999985575676,"hours_to_critical":23430.75,"predicted_empty":"2029-08-25T05:05:25.435815","predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":2844,"height":45.95000076293945,"timestamp":"2025-07-11T06:51:34.242511"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 3 in North City: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 3 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: UNL T3 DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":3,"tank_name":"UNL T3","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":226,"height":6.309999942779541,"timestamp":"2025-07-11T06:51:34.242530"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: critical DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 4 in North City: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 4 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: PREM DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":4,"tank_name":"PREM","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0.016499999910593033,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":815,"height":11.5600004196167,"timestamp":"2025-07-11T06:51:34.242547"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: warning DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 5 in North City: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 5 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: K1 DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":5,"tank_name":"K1","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":4888,"height":72.69999694824219,"timestamp":"2025-07-11T06:51:34.242565"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Processing store 3/3: TEST_STORE DebugLogger.tsx:42:18
+🔍 DEBUG: Fetching store details from: /dashboard/stores/TEST_STORE DebugLogger.tsx:42:18
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== DebugLogger.tsx:42:18
+🔍 DEBUG endpoint: /dashboard/stores/TEST_STORE DebugLogger.tsx:42:18
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores/TEST_STORE DebugLogger.tsx:42:18
+🔍 DEBUG options: {
+  "cacheKey": "store-TEST_STORE",
+  "cacheDuration": 120000
+} DebugLogger.tsx:42:18
+🔍 DEBUG cacheKey: store-TEST_STORE DebugLogger.tsx:42:18
+🔍 DEBUG cacheDuration: 120000ms DebugLogger.tsx:42:18
+🔍 DEBUG cache found, age: 29772ms (limit: 120000ms) DebugLogger.tsx:42:18
+🔍 DEBUG using cached data for /dashboard/stores/TEST_STORE DebugLogger.tsx:42:18
+🔍 DEBUG: Store TEST_STORE response: {
+  "store_name": "TEST_STORE",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNLEADED",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 7234,
+        "height": 48.5,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 1,
+        "tank_name": "UNLEADED",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    },
+    {
+      "tank_id": 2,
+      "tank_name": "PLUS",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 2156,
+        "height": 31.200000762939453,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 2,
+        "tank_name": "PLUS",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    },
+    {
+      "tank_id": 3,
+      "tank_name": "PREMIUM",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 1847,
+        "height": 28.899999618530273,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 3,
+        "tank_name": "PREMIUM",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    }
+  ]
+} DebugLogger.tsx:42:18
+🔍 DEBUG: Store TEST_STORE tanks count: 3 DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 1 in TEST_STORE: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 1 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: UNLEADED DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":1,"tank_name":"UNLEADED","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":7234,"height":48.5,"timestamp":"2025-06-28T14:32:31.407159"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 2 in TEST_STORE: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 2 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: PLUS DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":2,"tank_name":"PLUS","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":2156,"height":31.200000762939453,"timestamp":"2025-06-28T14:32:31.407159"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 3 in TEST_STORE: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 3 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: PREMIUM DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":3,"tank_name":"PREMIUM","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":1847,"height":28.899999618530273,"timestamp":"2025-06-28T14:32:31.407159"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Final detailedStores array: 
+[
+  {
+    "store_name": "Mascoutah",
+    "tanks": [
+      {
+        "tank_id": 1,
+        "tank_name": "UNLEADED",
+        "current_status": "normal",
+        "latest_reading": {
+          "volume": 7007,
+          "height": 62.56999969482422,
+          "timestamp": "2025-07-11T06:54:46.280533"
+        },
+        "historical_data": [
+          {
+            "timestamp": "2025-07-06 11:00:00",
+            "volume": 4994,
+            "height": 47.38999938964844
+          },
+          {
+            "timestamp": "2025-07-06 12:00:00",
+            "volume": 4957,
+            "height": 47.11416753133138
+          },
+          {
+            "timestamp": "2025-07-06 13:00:00",
+            "volume": 4905,
+            "height": 46.72999922434489
+          },
+          {
+            "timestamp": "2025-07-06 14:00:00",
+            "volume": 4852,
+            "height": 46.34249941507975
+          },
+          {
+            "timestamp": "2025-07-06 15:00:00",
+            "volume": 4807,
+            …
+DebugLogger.tsx:42:18
+✅ Fetched 3 stores with server analytics DebugLogger.tsx:42:18
+🚀🔍 MASSIVE DEBUG getAllStoresData END =================== DebugLogger.tsx:42:18
+🚀 SIMPLIFIED: Processing raw API data (NO historical data fetching) DebugLogger.tsx:42:18
+📊 Processing store: Mascoutah with 3 tanks DebugLogger.tsx:42:18
+🔍 Processing tank 1 in Mascoutah DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0.48579999804496765, hours_to_critical=12365.1708984375 DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 2 in Mascoutah DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0.09189999848604202, hours_to_critical=10674.646484375 DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 3 in Mascoutah DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0.02969999983906746, hours_to_critical=37575.7578125 DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+📊 Processing store: North City with 5 tanks DebugLogger.tsx:42:18
+🔍 Processing tank 1 in North City DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0.0007999999797903001, hours_to_critical=3181250 DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 2 in North City DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0.0786999985575676, hours_to_critical=23430.75 DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 3 in North City DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0, hours_to_critical=null DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 4 in North City DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0.016499999910593033, hours_to_critical=null DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 5 in North City DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0, hours_to_critical=null DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+📊 Processing store: TEST_STORE with 3 tanks DebugLogger.tsx:42:18
+🔍 Processing tank 1 in TEST_STORE DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=null, hours_to_critical=null DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 2 in TEST_STORE DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=null, hours_to_critical=null DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 3 in TEST_STORE DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=null, hours_to_critical=null DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+✅ SIMPLIFIED: Processed 3 stores (NO historical data) DebugLogger.tsx:42:18
+💾 Smart cache updated: 3 stores (3 fresh), 5KB, 0 historical logs cached DebugLogger.tsx:42:18
+✅ SIMPLIFIED: Background refresh complete DebugLogger.tsx:42:18
+🚨 APP.TSX COMPONENT LOADING/RELOADING DebugLogger.tsx:46:19
+Warning: Cannot update a component (`DebugLogger`) while rendering a different component (`App`). To locate the bad setState() call inside `App`, follow the stack trace as described in https://reactjs.org/link/setstate-in-render
+App@http://localhost:5173/src/App.tsx:60:92 DebugLogger.tsx:50:20
+🚀 useSmartCache HOOK INITIALIZING... DebugLogger.tsx:42:18
+🚀 useSmartCache initial state: 
+Object { storesLength: 3, loading: false, error: null, isLiveData: true, cacheInfo: {…} }
+DebugLogger.tsx:42:18
+🚨 APP.TSX COMPONENT LOADING/RELOADING DebugLogger.tsx:46:19
+🚀 useSmartCache HOOK INITIALIZING... DebugLogger.tsx:42:18
+🚀 useSmartCache initial state: 
+Object { storesLength: 3, loading: false, error: null, isLiveData: true, cacheInfo: {…} }
+DebugLogger.tsx:42:18
+🔍 TANKTABLE COMPONENT DEBUG: DebugLogger.tsx:42:18
+🔍   Received tanks.length: 3 DebugLogger.tsx:42:18
+🔍   Received tanks: 
+Array(3) [ {…}, {…}, {…} ]
+DebugLogger.tsx:42:18
+🔍   Table Tank 1: DebugLogger.tsx:42:18
+🔍     tank_id: 1 DebugLogger.tsx:42:18
+🔍     tank_name: UNLEADED DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 1, product: "Unknown", volume: 7007, tc_volume: 7007, ullage: 0, height: 62.56999969482422, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 70.07 DebugLogger.tsx:42:18
+🔍   Table Tank 2: DebugLogger.tsx:42:18
+🔍     tank_id: 2 DebugLogger.tsx:42:18
+🔍     tank_name: PREMIUM DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 2, product: "Unknown", volume: 1981, tc_volume: 1981, ullage: 0, height: 23.969999313354492, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 19.81 DebugLogger.tsx:42:18
+🔍   Table Tank 3: DebugLogger.tsx:42:18
+🔍     tank_id: 3 DebugLogger.tsx:42:18
+🔍     tank_name: DIESEL DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 3, product: "Unknown", volume: 2116, tc_volume: 2116, ullage: 0, height: 25.110000610351562, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 21.16 DebugLogger.tsx:42:18
+🔍 TANKTABLE COMPONENT DEBUG: DebugLogger.tsx:42:18
+🔍   Received tanks.length: 5 DebugLogger.tsx:42:18
+🔍   Received tanks: 
+Array(5) [ {…}, {…}, {…}, {…}, {…} ]
+DebugLogger.tsx:42:18
+🔍   Table Tank 1: DebugLogger.tsx:42:18
+🔍     tank_id: 1 DebugLogger.tsx:42:18
+🔍     tank_name: UNL T1 DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 1, product: "Unknown", volume: 3545, tc_volume: 3545, ullage: 0, height: 69.06999969482422, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 35.449999999999996 DebugLogger.tsx:42:18
+🔍   Table Tank 2: DebugLogger.tsx:42:18
+🔍     tank_id: 2 DebugLogger.tsx:42:18
+🔍     tank_name: UNL T2 DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 2, product: "Unknown", volume: 2844, tc_volume: 2844, ullage: 0, height: 45.95000076293945, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 28.439999999999998 DebugLogger.tsx:42:18
+🔍   Table Tank 3: DebugLogger.tsx:42:18
+🔍     tank_id: 3 DebugLogger.tsx:42:18
+🔍     tank_name: UNL T3 DebugLogger.tsx:42:18
+🔍     status: critical DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 3, product: "Unknown", volume: 226, tc_volume: 226, ullage: 0, height: 6.309999942779541, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 2.26 DebugLogger.tsx:42:18
+🔍   Table Tank 4: DebugLogger.tsx:42:18
+🔍     tank_id: 4 DebugLogger.tsx:42:18
+🔍     tank_name: PREM DebugLogger.tsx:42:18
+🔍     status: warning DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 4, product: "Unknown", volume: 815, tc_volume: 815, ullage: 0, height: 11.5600004196167, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 8.15 DebugLogger.tsx:42:18
+🔍   Table Tank 5: DebugLogger.tsx:42:18
+🔍     tank_id: 5 DebugLogger.tsx:42:18
+🔍     tank_name: K1 DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 5, product: "Unknown", volume: 4888, tc_volume: 4888, ullage: 0, height: 72.69999694824219, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 48.88 DebugLogger.tsx:42:18
+🔍 TANKTABLE COMPONENT DEBUG: DebugLogger.tsx:42:18
+🔍   Received tanks.length: 3 DebugLogger.tsx:42:18
+🔍   Received tanks: 
+Array(3) [ {…}, {…}, {…} ]
+DebugLogger.tsx:42:18
+🔍   Table Tank 1: DebugLogger.tsx:42:18
+🔍     tank_id: 1 DebugLogger.tsx:42:18
+🔍     tank_name: UNLEADED DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 1, product: "Unknown", volume: 7234, tc_volume: 7234, ullage: 0, height: 48.5, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 72.34 DebugLogger.tsx:42:18
+🔍   Table Tank 2: DebugLogger.tsx:42:18
+🔍     tank_id: 2 DebugLogger.tsx:42:18
+🔍     tank_name: PLUS DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 2, product: "Unknown", volume: 2156, tc_volume: 2156, ullage: 0, height: 31.200000762939453, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 21.560000000000002 DebugLogger.tsx:42:18
+🔍   Table Tank 3: DebugLogger.tsx:42:18
+🔍     tank_id: 3 DebugLogger.tsx:42:18
+🔍     tank_name: PREMIUM DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 3, product: "Unknown", volume: 1847, tc_volume: 1847, ullage: 0, height: 28.899999618530273, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 18.47 DebugLogger.tsx:42:18
+🔍 VIEWALLSTORES COMPONENT DEBUG: DebugLogger.tsx:42:18
+🔍   Received stores.length: 3 DebugLogger.tsx:42:18
+🔍   Received stores: 
+Array(3) [ {…}, {…}, {…} ]
+DebugLogger.tsx:42:18
+🔍   loading: false DebugLogger.tsx:42:18
+🔍   ViewAll Store 1: Mascoutah with 3 tanks DebugLogger.tsx:42:18
+🔍     Tank 1: UNLEADED (ID: 1) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 1, product: "Unknown", volume: 7007, tc_volume: 7007, ullage: 0, height: 62.56999969482422, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 1, tank_name: "UNLEADED", store_name: "Mascoutah", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 2: PREMIUM (ID: 2) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 2, product: "Unknown", volume: 1981, tc_volume: 1981, ullage: 0, height: 23.969999313354492, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 2, tank_name: "PREMIUM", store_name: "Mascoutah", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 3: DIESEL (ID: 3) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 3, product: "Unknown", volume: 2116, tc_volume: 2116, ullage: 0, height: 25.110000610351562, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 3, tank_name: "DIESEL", store_name: "Mascoutah", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍   ViewAll Store 2: North City with 5 tanks DebugLogger.tsx:42:18
+🔍     Tank 1: UNL T1 (ID: 1) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 1, product: "Unknown", volume: 3545, tc_volume: 3545, ullage: 0, height: 69.06999969482422, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 1, tank_name: "UNL T1", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 2: UNL T2 (ID: 2) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 2, product: "Unknown", volume: 2844, tc_volume: 2844, ullage: 0, height: 45.95000076293945, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 2, tank_name: "UNL T2", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 3: UNL T3 (ID: 3) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 3, product: "Unknown", volume: 226, tc_volume: 226, ullage: 0, height: 6.309999942779541, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 3, tank_name: "UNL T3", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 4: PREM (ID: 4) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 4, product: "Unknown", volume: 815, tc_volume: 815, ullage: 0, height: 11.5600004196167, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 4, tank_name: "PREM", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 5: K1 (ID: 5) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 5, product: "Unknown", volume: 4888, tc_volume: 4888, ullage: 0, height: 72.69999694824219, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 5, tank_name: "K1", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍   ViewAll Store 3: TEST_STORE with 3 tanks DebugLogger.tsx:42:18
+🔍     Tank 1: UNLEADED (ID: 1) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 1, product: "Unknown", volume: 7234, tc_volume: 7234, ullage: 0, height: 48.5, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 1, tank_name: "UNLEADED", store_name: "TEST_STORE", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 2: PLUS (ID: 2) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 2, product: "Unknown", volume: 2156, tc_volume: 2156, ullage: 0, height: 31.200000762939453, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 2, tank_name: "PLUS", store_name: "TEST_STORE", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 3: PREMIUM (ID: 3) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 3, product: "Unknown", volume: 1847, tc_volume: 1847, ullage: 0, height: 28.899999618530273, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 3, tank_name: "PREMIUM", store_name: "TEST_STORE", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🚨 APP.TSX DEBUG - FORCED WARNING LOG DebugLogger.tsx:46:19
+🚨 APP.TSX DEBUG - FORCED ERROR LOG DebugLogger.tsx:50:20
+🔍 APP.TSX DATA FLOW DEBUG: DebugLogger.tsx:42:18
+🔍   stores.length: 3 DebugLogger.tsx:42:18
+🔍   loading: false DebugLogger.tsx:42:18
+🔍   error: null DebugLogger.tsx:42:18
+🔍   stores array: 
+Array(3) [ {…}, {…}, {…} ]
+DebugLogger.tsx:42:18
+🔍   viewMode: all-stores DebugLogger.tsx:42:18
+🔍   Store 1: Mascoutah DebugLogger.tsx:42:18
+🔍     tanks.length: 3 DebugLogger.tsx:42:18
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNLEADED", product: "Unknown", latest_log: {…}, logs: [], run_rate: 0.48579999804496765, hours_to_10_inches: 12365.1708984375, predicted_time: "2027-03-04T11:32:40.422667", status: "normal", capacity_percentage: 70.07, … }
+DebugLogger.tsx:42:18
+🔍   Store 2: North City DebugLogger.tsx:42:18
+🔍     tanks.length: 5 DebugLogger.tsx:42:18
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNL T1", product: "Unknown", latest_log: {…}, logs: [], run_rate: 0.0007999999797903001, hours_to_10_inches: 3181250, predicted_time: "2531-01-15T21:51:36.776359", status: "normal", capacity_percentage: 35.449999999999996, … }
+DebugLogger.tsx:42:18
+🔍   Store 3: TEST_STORE DebugLogger.tsx:42:18
+🔍     tanks.length: 3 DebugLogger.tsx:42:18
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNLEADED", product: "Unknown", latest_log: {…}, logs: [], run_rate: null, hours_to_10_inches: null, predicted_time: null, status: "normal", capacity_percentage: 72.34, … }
+DebugLogger.tsx:42:18
+⏰ SIMPLIFIED: Background refresh (30s interval) - endpoint data only DebugLogger.tsx:42:18
+🚀🔍 MASSIVE DEBUG ApiService.initialize START =================== DebugLogger.tsx:42:18
+🔍 DEBUG this.initialized: true DebugLogger.tsx:42:18
+🔍 DEBUG Already initialized, skipping DebugLogger.tsx:42:18
+🚀🔍 MASSIVE DEBUG ApiService.initialize START =================== DebugLogger.tsx:42:18
+🔍 DEBUG this.initialized: true DebugLogger.tsx:42:18
+🔍 DEBUG Already initialized, skipping DebugLogger.tsx:42:18
+🚀🔍 MASSIVE DEBUG getAllStoresData START =================== DebugLogger.tsx:42:18
+🔍 DEBUG: API_BASE_URL: https://central-tank-server.onrender.com DebugLogger.tsx:42:18
+🔍 DEBUG: Attempting /dashboard/stores endpoint... DebugLogger.tsx:42:18
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== DebugLogger.tsx:42:18
+🔍 DEBUG endpoint: /dashboard/stores DebugLogger.tsx:42:18
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores DebugLogger.tsx:42:18
+🔍 DEBUG options: {
+  "cacheKey": "dashboard-stores",
+  "cacheDuration": 120000
+} DebugLogger.tsx:42:18
+🔍 DEBUG cacheKey: dashboard-stores DebugLogger.tsx:42:18
+🔍 DEBUG cacheDuration: 120000ms DebugLogger.tsx:42:18
+🔍 DEBUG cache found, age: 66215ms (limit: 120000ms) DebugLogger.tsx:42:18
+🔍 DEBUG using cached data for /dashboard/stores DebugLogger.tsx:42:18
+🔍 DEBUG: /dashboard/stores response: [
+  {
+    "store_name": "Mascoutah",
+    "tank_count": 3,
+    "critical_tanks": 0,
+    "warning_tanks": 0,
+    "last_update": "2025-07-11T06:54:46.280583"
+  },
+  {
+    "store_name": "North City",
+    "tank_count": 5,
+    "critical_tanks": 1,
+    "warning_tanks": 1,
+    "last_update": "2025-07-11T06:51:34.242565"
+  },
+  {
+    "store_name": "TEST_STORE",
+    "tank_count": 3,
+    "critical_tanks": 0,
+    "warning_tanks": 0,
+    "last_update": "2025-06-28T14:32:31.407159"
+  }
+] DebugLogger.tsx:42:18
+🔍 DEBUG: stores array length: 3 DebugLogger.tsx:42:18
+🔍 DEBUG: Processing store 1/3: Mascoutah DebugLogger.tsx:42:18
+🔍 DEBUG: Fetching store details from: /dashboard/stores/Mascoutah DebugLogger.tsx:42:18
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== DebugLogger.tsx:42:18
+🔍 DEBUG endpoint: /dashboard/stores/Mascoutah DebugLogger.tsx:42:18
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores/Mascoutah DebugLogger.tsx:42:18
+🔍 DEBUG options: {
+  "cacheKey": "store-Mascoutah",
+  "cacheDuration": 120000
+} DebugLogger.tsx:42:18
+🔍 DEBUG cacheKey: store-Mascoutah DebugLogger.tsx:42:18
+🔍 DEBUG cacheDuration: 120000ms DebugLogger.tsx:42:18
+🔍 DEBUG cache found, age: 64574ms (limit: 120000ms) DebugLogger.tsx:42:18
+🔍 DEBUG using cached data for /dashboard/stores/Mascoutah DebugLogger.tsx:42:18
+🔍 DEBUG: Store Mascoutah response: 
+{
+  "store_name": "Mascoutah",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNLEADED",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 7007,
+        "height": 62.56999969482422,
+        "timestamp": "2025-07-11T06:54:46.280533"
+      },
+      "historical_data": [
+        {
+          "timestamp": "2025-07-06 11:00:00",
+          "volume": 4994,
+          "height": 47.38999938964844
+        },
+        {
+          "timestamp": "2025-07-06 12:00:00",
+          "volume": 4957,
+          "height": 47.11416753133138
+        },
+        {
+          "timestamp": "2025-07-06 13:00:00",
+          "volume": 4905,
+          "height": 46.72999922434489
+        },
+        {
+          "timestamp": "2025-07-06 14:00:00",
+          "volume": 4852,
+          "height": 46.34249941507975
+        },
+        {
+          "timestamp": "2025-07-06 15:00:00",
+          "volume": 4807,
+          "height": 46.00909077037465
+        },
+        {
+          "timestamp": "202…
+DebugLogger.tsx:42:18
+🔍 DEBUG: Store Mascoutah tanks count: 3 DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 1 in Mascoutah: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 1 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: UNLEADED DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":1,"tank_name":"UNLEADED","store_name":"Mascoutah","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0.48579999804496765,"hours_to_critical":12365.1708984375,"predicted_empty":"2027-03-04T11:32:40.422667","predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":7007,"height":62.56999969482422,"timestamp":"2025-07-11T06:54:46.280533"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 2 in Mascoutah: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 2 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: PREMIUM DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":2,"tank_name":"PREMIUM","store_name":"Mascoutah","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0.09189999848604202,"hours_to_critical":10674.646484375,"predicted_empty":"2027-12-26T15:57:10.300015","predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":1981,"height":23.969999313354492,"timestamp":"2025-07-11T06:54:46.280568"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 3 in Mascoutah: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 3 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: DIESEL DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":3,"tank_name":"DIESEL","store_name":"Mascoutah","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0.02969999983906746,"hours_to_critical":37575.7578125,"predicted_empty":"2033-08-27T01:42:19.261173","predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":2116,"height":25.110000610351562,"timestamp":"2025-07-11T06:54:46.280583"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Processing store 2/3: North City DebugLogger.tsx:42:18
+🔍 DEBUG: Fetching store details from: /dashboard/stores/North City DebugLogger.tsx:42:18
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== DebugLogger.tsx:42:18
+🔍 DEBUG endpoint: /dashboard/stores/North City DebugLogger.tsx:42:18
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores/North City DebugLogger.tsx:42:18
+🔍 DEBUG options: {
+  "cacheKey": "store-North City",
+  "cacheDuration": 120000
+} DebugLogger.tsx:42:18
+🔍 DEBUG cacheKey: store-North City DebugLogger.tsx:42:18
+🔍 DEBUG cacheDuration: 120000ms DebugLogger.tsx:42:18
+🔍 DEBUG cache found, age: 63031ms (limit: 120000ms) DebugLogger.tsx:42:18
+🔍 DEBUG using cached data for /dashboard/stores/North City DebugLogger.tsx:42:18
+🔍 DEBUG: Store North City response: 
+{
+  "store_name": "North City",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNL T1",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 3545,
+        "height": 69.06999969482422,
+        "timestamp": "2025-07-11T06:51:34.242464"
+      },
+      "historical_data": [
+        {
+          "timestamp": "2025-07-06 12:00:00",
+          "volume": 3543,
+          "height": 69.01250076293945
+        },
+        {
+          "timestamp": "2025-07-06 13:00:00",
+          "volume": 3543,
+          "height": 69.01499938964844
+        },
+        {
+          "timestamp": "2025-07-06 14:00:00",
+          "volume": 3543,
+          "height": 69.01250076293945
+        },
+        {
+          "timestamp": "2025-07-06 15:00:00",
+          "volume": 3543,
+          "height": 69.02181521329013
+        },
+        {
+          "timestamp": "2025-07-06 16:00:00",
+          "volume": 3543,
+          "height": 69.0199966430664
+        },
+        {
+          "timestamp": "2025-…
+DebugLogger.tsx:42:18
+🔍 DEBUG: Store North City tanks count: 5 DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 1 in North City: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 1 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: UNL T1 DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":1,"tank_name":"UNL T1","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0.0007999999797903001,"hours_to_critical":3181250,"predicted_empty":"2531-01-15T21:51:36.776359","predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":3545,"height":69.06999969482422,"timestamp":"2025-07-11T06:51:34.242464"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 2 in North City: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 2 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: UNL T2 DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":2,"tank_name":"UNL T2","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0.0786999985575676,"hours_to_critical":23430.75,"predicted_empty":"2029-08-25T05:05:25.435815","predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":2844,"height":45.95000076293945,"timestamp":"2025-07-11T06:51:34.242511"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 3 in North City: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 3 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: UNL T3 DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":3,"tank_name":"UNL T3","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":226,"height":6.309999942779541,"timestamp":"2025-07-11T06:51:34.242530"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: critical DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 4 in North City: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 4 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: PREM DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":4,"tank_name":"PREM","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0.016499999910593033,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":815,"height":11.5600004196167,"timestamp":"2025-07-11T06:51:34.242547"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: warning DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 5 in North City: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 5 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: K1 DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":5,"tank_name":"K1","store_name":"North City","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":0,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":4888,"height":72.69999694824219,"timestamp":"2025-07-11T06:51:34.242565"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Processing store 3/3: TEST_STORE DebugLogger.tsx:42:18
+🔍 DEBUG: Fetching store details from: /dashboard/stores/TEST_STORE DebugLogger.tsx:42:18
+🌐🔍 MASSIVE DEBUG API REQUEST START =================== DebugLogger.tsx:42:18
+🔍 DEBUG endpoint: /dashboard/stores/TEST_STORE DebugLogger.tsx:42:18
+🔍 DEBUG full URL: https://central-tank-server.onrender.com/dashboard/stores/TEST_STORE DebugLogger.tsx:42:18
+🔍 DEBUG options: {
+  "cacheKey": "store-TEST_STORE",
+  "cacheDuration": 120000
+} DebugLogger.tsx:42:18
+🔍 DEBUG cacheKey: store-TEST_STORE DebugLogger.tsx:42:18
+🔍 DEBUG cacheDuration: 120000ms DebugLogger.tsx:42:18
+🔍 DEBUG cache found, age: 59764ms (limit: 120000ms) DebugLogger.tsx:42:18
+🔍 DEBUG using cached data for /dashboard/stores/TEST_STORE DebugLogger.tsx:42:18
+🔍 DEBUG: Store TEST_STORE response: {
+  "store_name": "TEST_STORE",
+  "tanks": [
+    {
+      "tank_id": 1,
+      "tank_name": "UNLEADED",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 7234,
+        "height": 48.5,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 1,
+        "tank_name": "UNLEADED",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    },
+    {
+      "tank_id": 2,
+      "tank_name": "PLUS",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 2156,
+        "height": 31.200000762939453,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 2,
+        "tank_name": "PLUS",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    },
+    {
+      "tank_id": 3,
+      "tank_name": "PREMIUM",
+      "current_status": "normal",
+      "latest_reading": {
+        "volume": 1847,
+        "height": 28.899999618530273,
+        "timestamp": "2025-06-28T14:32:31.407159"
+      },
+      "historical_data": [],
+      "analytics": {
+        "run_rate": null,
+        "hours_to_critical": null,
+        "predicted_empty": null,
+        "predicted_height_48h": null
+      },
+      "configuration": {
+        "tank_id": 3,
+        "tank_name": "PREMIUM",
+        "store_name": "TEST_STORE",
+        "product_type": "UNKNOWN",
+        "max_capacity_gallons": 10000,
+        "critical_height_inches": 10,
+        "warning_height_inches": 20
+      }
+    }
+  ]
+} DebugLogger.tsx:42:18
+🔍 DEBUG: Store TEST_STORE tanks count: 3 DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 1 in TEST_STORE: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 1 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: UNLEADED DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":1,"tank_name":"UNLEADED","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":7234,"height":48.5,"timestamp":"2025-06-28T14:32:31.407159"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 2 in TEST_STORE: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 2 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: PLUS DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":2,"tank_name":"PLUS","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":2156,"height":31.200000762939453,"timestamp":"2025-06-28T14:32:31.407159"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Tank 3 in TEST_STORE: DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_id: 3 DebugLogger.tsx:42:18
+🔍 DEBUG:   tank_name: PREMIUM DebugLogger.tsx:42:18
+🔍 DEBUG:   configuration: {"tank_id":3,"tank_name":"PREMIUM","store_name":"TEST_STORE","product_type":"UNKNOWN","max_capacity_gallons":10000,"critical_height_inches":10,"warning_height_inches":20} DebugLogger.tsx:42:18
+🔍 DEBUG:   analytics: {"run_rate":null,"hours_to_critical":null,"predicted_empty":null,"predicted_height_48h":null} DebugLogger.tsx:42:18
+🔍 DEBUG:   latest_reading: {"volume":1847,"height":28.899999618530273,"timestamp":"2025-06-28T14:32:31.407159"} DebugLogger.tsx:42:18
+🔍 DEBUG:   current_status: normal DebugLogger.tsx:42:18
+🔍 DEBUG: Final detailedStores array: 
+[
+  {
+    "store_name": "Mascoutah",
+    "tanks": [
+      {
+        "tank_id": 1,
+        "tank_name": "UNLEADED",
+        "current_status": "normal",
+        "latest_reading": {
+          "volume": 7007,
+          "height": 62.56999969482422,
+          "timestamp": "2025-07-11T06:54:46.280533"
+        },
+        "historical_data": [
+          {
+            "timestamp": "2025-07-06 11:00:00",
+            "volume": 4994,
+            "height": 47.38999938964844
+          },
+          {
+            "timestamp": "2025-07-06 12:00:00",
+            "volume": 4957,
+            "height": 47.11416753133138
+          },
+          {
+            "timestamp": "2025-07-06 13:00:00",
+            "volume": 4905,
+            "height": 46.72999922434489
+          },
+          {
+            "timestamp": "2025-07-06 14:00:00",
+            "volume": 4852,
+            "height": 46.34249941507975
+          },
+          {
+            "timestamp": "2025-07-06 15:00:00",
+            "volume": 4807,
+            …
+DebugLogger.tsx:42:18
+✅ Fetched 3 stores with server analytics DebugLogger.tsx:42:18
+🚀🔍 MASSIVE DEBUG getAllStoresData END =================== DebugLogger.tsx:42:18
+🚀 SIMPLIFIED: Processing raw API data (NO historical data fetching) DebugLogger.tsx:42:18
+📊 Processing store: Mascoutah with 3 tanks DebugLogger.tsx:42:18
+🔍 Processing tank 1 in Mascoutah DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0.48579999804496765, hours_to_critical=12365.1708984375 DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 2 in Mascoutah DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0.09189999848604202, hours_to_critical=10674.646484375 DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 3 in Mascoutah DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0.02969999983906746, hours_to_critical=37575.7578125 DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+📊 Processing store: North City with 5 tanks DebugLogger.tsx:42:18
+🔍 Processing tank 1 in North City DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0.0007999999797903001, hours_to_critical=3181250 DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 2 in North City DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0.0786999985575676, hours_to_critical=23430.75 DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 3 in North City DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0, hours_to_critical=null DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 4 in North City DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0.016499999910593033, hours_to_critical=null DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 5 in North City DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=0, hours_to_critical=null DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+📊 Processing store: TEST_STORE with 3 tanks DebugLogger.tsx:42:18
+🔍 Processing tank 1 in TEST_STORE DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=null, hours_to_critical=null DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 2 in TEST_STORE DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=null, hours_to_critical=null DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+🔍 Processing tank 3 in TEST_STORE DebugLogger.tsx:42:18
+✅ Using server analytics: run_rate=null, hours_to_critical=null DebugLogger.tsx:42:18
+✅ Using server config: max_capacity=10000 DebugLogger.tsx:42:18
+✅ SIMPLIFIED: Processed 3 stores (NO historical data) DebugLogger.tsx:42:18
+💾 Smart cache updated: 3 stores (3 fresh), 5KB, 0 historical logs cached DebugLogger.tsx:42:18
+✅ SIMPLIFIED: Background refresh complete DebugLogger.tsx:42:18
+🚨 APP.TSX COMPONENT LOADING/RELOADING DebugLogger.tsx:46:19
+🚀 useSmartCache HOOK INITIALIZING... DebugLogger.tsx:42:18
+🚀 useSmartCache initial state: 
+Object { storesLength: 3, loading: false, error: null, isLiveData: true, cacheInfo: {…} }
+DebugLogger.tsx:42:18
+🚨 APP.TSX COMPONENT LOADING/RELOADING DebugLogger.tsx:46:19
+🚀 useSmartCache HOOK INITIALIZING... DebugLogger.tsx:42:18
+🚀 useSmartCache initial state: 
+Object { storesLength: 3, loading: false, error: null, isLiveData: true, cacheInfo: {…} }
+DebugLogger.tsx:42:18
+🔍 TANKTABLE COMPONENT DEBUG: DebugLogger.tsx:42:18
+🔍   Received tanks.length: 3 DebugLogger.tsx:42:18
+🔍   Received tanks: 
+Array(3) [ {…}, {…}, {…} ]
+DebugLogger.tsx:42:18
+🔍   Table Tank 1: DebugLogger.tsx:42:18
+🔍     tank_id: 1 DebugLogger.tsx:42:18
+🔍     tank_name: UNLEADED DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 1, product: "Unknown", volume: 7007, tc_volume: 7007, ullage: 0, height: 62.56999969482422, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 70.07 DebugLogger.tsx:42:18
+🔍   Table Tank 2: DebugLogger.tsx:42:18
+🔍     tank_id: 2 DebugLogger.tsx:42:18
+🔍     tank_name: PREMIUM DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 2, product: "Unknown", volume: 1981, tc_volume: 1981, ullage: 0, height: 23.969999313354492, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 19.81 DebugLogger.tsx:42:18
+🔍   Table Tank 3: DebugLogger.tsx:42:18
+🔍     tank_id: 3 DebugLogger.tsx:42:18
+🔍     tank_name: DIESEL DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 3, product: "Unknown", volume: 2116, tc_volume: 2116, ullage: 0, height: 25.110000610351562, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 21.16 DebugLogger.tsx:42:18
+🔍 TANKTABLE COMPONENT DEBUG: DebugLogger.tsx:42:18
+🔍   Received tanks.length: 5 DebugLogger.tsx:42:18
+🔍   Received tanks: 
+Array(5) [ {…}, {…}, {…}, {…}, {…} ]
+DebugLogger.tsx:42:18
+🔍   Table Tank 1: DebugLogger.tsx:42:18
+🔍     tank_id: 1 DebugLogger.tsx:42:18
+🔍     tank_name: UNL T1 DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 1, product: "Unknown", volume: 3545, tc_volume: 3545, ullage: 0, height: 69.06999969482422, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 35.449999999999996 DebugLogger.tsx:42:18
+🔍   Table Tank 2: DebugLogger.tsx:42:18
+🔍     tank_id: 2 DebugLogger.tsx:42:18
+🔍     tank_name: UNL T2 DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 2, product: "Unknown", volume: 2844, tc_volume: 2844, ullage: 0, height: 45.95000076293945, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 28.439999999999998 DebugLogger.tsx:42:18
+🔍   Table Tank 3: DebugLogger.tsx:42:18
+🔍     tank_id: 3 DebugLogger.tsx:42:18
+🔍     tank_name: UNL T3 DebugLogger.tsx:42:18
+🔍     status: critical DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 3, product: "Unknown", volume: 226, tc_volume: 226, ullage: 0, height: 6.309999942779541, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 2.26 DebugLogger.tsx:42:18
+🔍   Table Tank 4: DebugLogger.tsx:42:18
+🔍     tank_id: 4 DebugLogger.tsx:42:18
+🔍     tank_name: PREM DebugLogger.tsx:42:18
+🔍     status: warning DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 4, product: "Unknown", volume: 815, tc_volume: 815, ullage: 0, height: 11.5600004196167, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 8.15 DebugLogger.tsx:42:18
+🔍   Table Tank 5: DebugLogger.tsx:42:18
+🔍     tank_id: 5 DebugLogger.tsx:42:18
+🔍     tank_name: K1 DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 5, product: "Unknown", volume: 4888, tc_volume: 4888, ullage: 0, height: 72.69999694824219, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 48.88 DebugLogger.tsx:42:18
+🔍 TANKTABLE COMPONENT DEBUG: DebugLogger.tsx:42:18
+🔍   Received tanks.length: 3 DebugLogger.tsx:42:18
+🔍   Received tanks: 
+Array(3) [ {…}, {…}, {…} ]
+DebugLogger.tsx:42:18
+🔍   Table Tank 1: DebugLogger.tsx:42:18
+🔍     tank_id: 1 DebugLogger.tsx:42:18
+🔍     tank_name: UNLEADED DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 1, product: "Unknown", volume: 7234, tc_volume: 7234, ullage: 0, height: 48.5, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 72.34 DebugLogger.tsx:42:18
+🔍   Table Tank 2: DebugLogger.tsx:42:18
+🔍     tank_id: 2 DebugLogger.tsx:42:18
+🔍     tank_name: PLUS DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 2, product: "Unknown", volume: 2156, tc_volume: 2156, ullage: 0, height: 31.200000762939453, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 21.560000000000002 DebugLogger.tsx:42:18
+🔍   Table Tank 3: DebugLogger.tsx:42:18
+🔍     tank_id: 3 DebugLogger.tsx:42:18
+🔍     tank_name: PREMIUM DebugLogger.tsx:42:18
+🔍     status: normal DebugLogger.tsx:42:18
+🔍     latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 3, product: "Unknown", volume: 1847, tc_volume: 1847, ullage: 0, height: 28.899999618530273, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍     capacity_percentage: 18.47 DebugLogger.tsx:42:18
+🔍 VIEWALLSTORES COMPONENT DEBUG: DebugLogger.tsx:42:18
+🔍   Received stores.length: 3 DebugLogger.tsx:42:18
+🔍   Received stores: 
+Array(3) [ {…}, {…}, {…} ]
+DebugLogger.tsx:42:18
+🔍   loading: false DebugLogger.tsx:42:18
+🔍   ViewAll Store 1: Mascoutah with 3 tanks DebugLogger.tsx:42:18
+🔍     Tank 1: UNLEADED (ID: 1) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 1, product: "Unknown", volume: 7007, tc_volume: 7007, ullage: 0, height: 62.56999969482422, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 1, tank_name: "UNLEADED", store_name: "Mascoutah", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 2: PREMIUM (ID: 2) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 2, product: "Unknown", volume: 1981, tc_volume: 1981, ullage: 0, height: 23.969999313354492, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 2, tank_name: "PREMIUM", store_name: "Mascoutah", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 3: DIESEL (ID: 3) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "Mascoutah", tank_id: 3, product: "Unknown", volume: 2116, tc_volume: 2116, ullage: 0, height: 25.110000610351562, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 3, tank_name: "DIESEL", store_name: "Mascoutah", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍   ViewAll Store 2: North City with 5 tanks DebugLogger.tsx:42:18
+🔍     Tank 1: UNL T1 (ID: 1) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 1, product: "Unknown", volume: 3545, tc_volume: 3545, ullage: 0, height: 69.06999969482422, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 1, tank_name: "UNL T1", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 2: UNL T2 (ID: 2) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 2, product: "Unknown", volume: 2844, tc_volume: 2844, ullage: 0, height: 45.95000076293945, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 2, tank_name: "UNL T2", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 3: UNL T3 (ID: 3) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 3, product: "Unknown", volume: 226, tc_volume: 226, ullage: 0, height: 6.309999942779541, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 3, tank_name: "UNL T3", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 4: PREM (ID: 4) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 4, product: "Unknown", volume: 815, tc_volume: 815, ullage: 0, height: 11.5600004196167, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 4, tank_name: "PREM", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 5: K1 (ID: 5) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "North City", tank_id: 5, product: "Unknown", volume: 4888, tc_volume: 4888, ullage: 0, height: 72.69999694824219, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 5, tank_name: "K1", store_name: "North City", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍   ViewAll Store 3: TEST_STORE with 3 tanks DebugLogger.tsx:42:18
+🔍     Tank 1: UNLEADED (ID: 1) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 1, product: "Unknown", volume: 7234, tc_volume: 7234, ullage: 0, height: 48.5, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 1, tank_name: "UNLEADED", store_name: "TEST_STORE", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 2: PLUS (ID: 2) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 2, product: "Unknown", volume: 2156, tc_volume: 2156, ullage: 0, height: 31.200000762939453, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 2, tank_name: "PLUS", store_name: "TEST_STORE", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🔍     Tank 3: PREMIUM (ID: 3) DebugLogger.tsx:42:18
+🔍       latest_log: 
+Object { id: 0, store_name: "TEST_STORE", tank_id: 3, product: "Unknown", volume: 1847, tc_volume: 1847, ullage: 0, height: 28.899999618530273, water: 0, temp: 0, … }
+DebugLogger.tsx:42:18
+🔍       configuration: 
+Object { tank_id: 3, tank_name: "PREMIUM", store_name: "TEST_STORE", product_type: "UNKNOWN", max_capacity_gallons: 10000, critical_height_inches: 10, warning_height_inches: 20 }
+DebugLogger.tsx:42:18
+🚨 APP.TSX DEBUG - FORCED WARNING LOG DebugLogger.tsx:46:19
+🚨 APP.TSX DEBUG - FORCED ERROR LOG DebugLogger.tsx:50:20
+🔍 APP.TSX DATA FLOW DEBUG: DebugLogger.tsx:42:18
+🔍   stores.length: 3 DebugLogger.tsx:42:18
+🔍   loading: false DebugLogger.tsx:42:18
+🔍   error: null DebugLogger.tsx:42:18
+🔍   stores array: 
+Array(3) [ {…}, {…}, {…} ]
+DebugLogger.tsx:42:18
+🔍   viewMode: all-stores DebugLogger.tsx:42:18
+🔍   Store 1: Mascoutah DebugLogger.tsx:42:18
+🔍     tanks.length: 3 DebugLogger.tsx:42:18
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNLEADED", product: "Unknown", latest_log: {…}, logs: [], run_rate: 0.48579999804496765, hours_to_10_inches: 12365.1708984375, predicted_time: "2027-03-04T11:32:40.422667", status: "normal", capacity_percentage: 70.07, … }
+DebugLogger.tsx:42:18
+🔍   Store 2: North City DebugLogger.tsx:42:18
+🔍     tanks.length: 5 DebugLogger.tsx:42:18
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNL T1", product: "Unknown", latest_log: {…}, logs: [], run_rate: 0.0007999999797903001, hours_to_10_inches: 3181250, predicted_time: "2531-01-15T21:51:36.776359", status: "normal", capacity_percentage: 35.449999999999996, … }
+DebugLogger.tsx:42:18
+🔍   Store 3: TEST_STORE DebugLogger.tsx:42:18
+🔍     tanks.length: 3 DebugLogger.tsx:42:18
+🔍     First tank: 
+Object { tank_id: 1, tank_name: "UNLEADED", product: "Unknown", latest_log: {…}, logs: [], run_rate: null, hours_to_10_inches: null, predicted_time: null, status: "normal", capacity_percentage: 72.34, … }
+DebugLogger.tsx:42:18
