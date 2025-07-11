@@ -103,6 +103,13 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
     return tank.configuration?.max_fill_ullage_percentage || 90.0;
   };
 
+  // Calculate available ullage - how much fuel can safely be added
+  const calculateAvailableUllage = (tank: Tank): number => {
+    const currentUllage = tank.latest_log?.ullage || 0;
+    const maxFillPercentage = tank.configuration?.max_fill_ullage_percentage || 90.0;
+    return currentUllage * (maxFillPercentage / 100);
+  };
+
   return (
     <div className="bg-slate-800 rounded-xl overflow-hidden">
       <div className="overflow-x-auto">
@@ -113,7 +120,7 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
               <th className="px-4 py-3 text-left text-sm font-semibold text-slate-200">Tank</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">TC Volume</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Capacity Used</th>
-              <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">90% Ullage</th>
+              <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Available Ullage</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Max Fill Ullage</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Current Height</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Run Rate</th>
@@ -156,11 +163,11 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
                 </td>
                 <td className="px-4 py-3 text-right">
                   <span className="text-slate-300 font-mono">
-                    {formatValue(tank.latest_log?.ullage ? tank.latest_log.ullage * 0.9 : 0)}
+                    {formatValue(calculateAvailableUllage(tank))}
                   </span>
                   <span className="text-slate-400 text-sm ml-1">gal</span>
                   <div className="text-xs text-slate-500 mt-1">
-                    90% of {formatValue(tank.latest_log?.ullage)} gal
+                    {getMaxFillPercentage(tank)}% of {formatValue(tank.latest_log?.ullage)} gal
                   </div>
                 </td>
                 <td className="px-4 py-3 text-right">
@@ -239,7 +246,7 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
         <div className="text-xs text-slate-400">
           <strong>Tank Specifications:</strong> Critical alert at 10" height • Warning alert at 20\" height • 
           Run rates calculated using business hours only (5 AM - 11 PM) • 
-          <strong>90% Ullage:</strong> Displays 90% of actual ullage for conservative capacity planning and safety margins
+          <strong>Available Ullage:</strong> Safe fuel capacity based on configured max fill percentage (set in admin panel)
         </div>
       </div>
     </div>
