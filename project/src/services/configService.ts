@@ -42,9 +42,10 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 1,
     tank_name: 'UNLEADED',
     product_type: 'Regular Unleaded',
+    max_capacity_gallons: 10000,
+    max_height_inches: 96,
     critical_height_inches: 10,
     warning_height_inches: 20,
-    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
   {
@@ -52,9 +53,10 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 2,
     tank_name: 'PREMIUM',
     product_type: 'Premium Unleaded',
+    max_capacity_gallons: 10000,
+    max_height_inches: 96,
     critical_height_inches: 10,
     warning_height_inches: 20,
-    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
   {
@@ -62,9 +64,10 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 3,
     tank_name: 'DIESEL',
     product_type: 'Diesel',
+    max_capacity_gallons: 10000,
+    max_height_inches: 96,
     critical_height_inches: 10,
     warning_height_inches: 20,
-    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
   // North City tanks
@@ -73,9 +76,10 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 1,
     tank_name: 'UNL T1',
     product_type: 'Regular Unleaded',
+    max_capacity_gallons: 10000,
+    max_height_inches: 96,
     critical_height_inches: 10,
     warning_height_inches: 20,
-    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
   {
@@ -83,9 +87,10 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 2,
     tank_name: 'UNL T2',
     product_type: 'Regular Unleaded',
+    max_capacity_gallons: 10000,
+    max_height_inches: 96,
     critical_height_inches: 10,
     warning_height_inches: 20,
-    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
   {
@@ -93,9 +98,10 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 3,
     tank_name: 'UNL T3',
     product_type: 'Regular Unleaded',
+    max_capacity_gallons: 10000,
+    max_height_inches: 96,
     critical_height_inches: 10,
     warning_height_inches: 20,
-    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
   {
@@ -103,9 +109,10 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 4,
     tank_name: 'PREM',
     product_type: 'Premium Unleaded',
+    max_capacity_gallons: 10000,
+    max_height_inches: 96,
     critical_height_inches: 10,
     warning_height_inches: 20,
-    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
   {
@@ -113,9 +120,10 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 5,
     tank_name: 'K1',
     product_type: 'Kerosene',
+    max_capacity_gallons: 10000,
+    max_height_inches: 96,
     critical_height_inches: 10,
     warning_height_inches: 20,
-    max_capacity_gallons: 10000,
     alerts_enabled: true,
   },
 ];
@@ -374,9 +382,10 @@ export class ConfigService {
           tank_id: i,
           tank_name: tankName,
           product_type: productType,
+          max_capacity_gallons: 10000, // Default 10,000 gallon capacity
+          max_height_inches: 96, // Default 96" height
           critical_height_inches: 10,
           warning_height_inches: 20,
-          max_capacity_gallons: 10000, // Default 10,000 gallon capacity
           alerts_enabled: true, // Enable alerts by default
         };
 

@@ -57,7 +57,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
         try {
           // Fetch 7 days of sampled data directly from the dashboard API with cache busting
           const cacheBuster = Date.now();
-          const url = `https://central-tank-server.onrender.com/dashboard/stores/${encodeURIComponent(tank.latest_log.store_name)}/tanks/${tank.tank_id}/sampled?hours=168&sampling_rate=4&_t=${cacheBuster}`;
+          const url = `https://central-tank-server.onrender.com/dashboard/stores/${encodeURIComponent(tank.latest_log.store_name)}/tanks/${tank.tank_id}/sampled?days=7&sample_rate=hourly&_t=${cacheBuster}`;
           console.log(`🔍 Fetching chart data from: ${url}`);
           const response = await fetch(url);
           
@@ -248,6 +248,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
   // Get tank configuration from server (has actual capacity set in admin UI)
   const criticalHeight = tank.configuration?.critical_height_inches || tank.profile?.critical_height_inches || 10;
   const maxCapacity = tank.configuration?.max_capacity_gallons || tank.profile?.max_capacity_gallons || 10000;
+  const maxHeight = tank.configuration?.max_height_inches || 96; // Use configured tank height
   
   // Calculate max fill ullage volume
   const maxFillPercentage = tank.configuration?.max_fill_ullage_percentage || 90.0;
@@ -438,7 +439,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
           }
         },
         min: 0,
-        max: 100, // Max height in inches - no need for diameter calculations
+        max: maxHeight, // Use configured tank height from admin panel
       },
       y1: {
         type: 'linear' as const,

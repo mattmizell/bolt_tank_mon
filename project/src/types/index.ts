@@ -36,6 +36,7 @@ export interface TankConfiguration {
   tank_name: string;
   product_type: string;
   max_capacity_gallons: number;
+  max_height_inches: number; // Total tank height in inches (for chart axis)
   critical_height_inches: number;
   warning_height_inches: number;
   max_fill_ullage_percentage: number; // Configurable max fill ullage (default 90%)

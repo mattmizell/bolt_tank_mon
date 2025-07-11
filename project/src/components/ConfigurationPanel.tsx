@@ -416,6 +416,22 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
                               
                               <div>
                                 <label className="block text-slate-300 text-sm mb-1">
+                                  Tank Height (inches)
+                                  <span className="text-slate-400 ml-1 text-xs">• Total tank height for chart axis</span>
+                                </label>
+                                <input
+                                  type="number"
+                                  value={config.max_height_inches || 96}
+                                  onChange={(e) => handleTankConfigUpdate(config.store_name, config.tank_id, 'max_height_inches', parseFloat(e.target.value))}
+                                  className="w-full bg-slate-500 text-white rounded px-3 py-2 text-sm"
+                                  min="60"
+                                  max="120"
+                                  step="1"
+                                />
+                              </div>
+                              
+                              <div>
+                                <label className="block text-slate-300 text-sm mb-1">
                                   Critical Level (inches)
                                   <span className="text-slate-400 ml-1 text-xs">• Industry standard: 10"</span>
                                 </label>
