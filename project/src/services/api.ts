@@ -1,4 +1,5 @@
 // Enhanced API service for Central Tank Server
+import { ConfigService } from './configService';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://central-tank-server.onrender.com';
 
@@ -169,11 +170,29 @@ export class ApiService {
         throw new Error('Invalid response from /dashboard/stores - not an array');
       }
       
-      // Get detailed data for each store with server-calculated analytics
+      // Filter to only visible stores before fetching detailed data
+      const visibleStoreNames = ConfigService.getVisibleStores();
+      const visibleStores = stores.filter(store => 
+        visibleStoreNames.length === 0 || visibleStoreNames.includes(store.store_name)
+      );
+      
+      const skippedStores = stores.filter(s => !visibleStores.includes(s));
+      console.log('🔍 DEBUG: Store visibility filtering:', {
+        totalStores: stores.length,
+        visibleStoreNames,
+        visibleStores: visibleStores.map(s => s.store_name),
+        skippedStores: skippedStores.map(s => s.store_name)
+      });
+      
+      if (skippedStores.length > 0) {
+        console.log(`⚡ PERFORMANCE: Skipping ${skippedStores.length} invisible stores - saved ${skippedStores.length} API calls!`);
+      }
+      
+      // Get detailed data only for visible stores
       const detailedStores = [];
-      for (let i = 0; i < stores.length; i++) {
-        const store = stores[i];
-        console.log(`🔍 DEBUG: Processing store ${i + 1}/${stores.length}: ${store.store_name}`);
+      for (let i = 0; i < visibleStores.length; i++) {
+        const store = visibleStores[i];
+        console.log(`🔍 DEBUG: Processing visible store ${i + 1}/${visibleStores.length}: ${store.store_name}`);
         
         const storeDetailUrl = `/dashboard/stores/${store.store_name}`;
         console.log(`🔍 DEBUG: Fetching store details from: ${storeDetailUrl}`);
