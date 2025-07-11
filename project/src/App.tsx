@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Store } from './types';
 import { StoreSelector } from './components/StoreSelector';
 
+type ViewMode = 'selector' | 'single-store' | 'all-stores';
+
 function App() {
   const [stores, setStores] = useState<Store[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>('selector');
+  const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -132,18 +136,140 @@ function App() {
     );
   }
   
-  return (
-    <div className="App">
-      <StoreSelector
-        stores={stores}
-        onStoreSelect={() => console.log('Store selected')}
-        onViewAllStores={() => console.log('View all stores')}
-        onRefresh={refreshData}
-        loading={false}
-        isLiveData={true}
-      />
-    </div>
-  );
+  const handleStoreSelect = (store: Store) => {
+    setSelectedStore(store);
+    setViewMode('single-store');
+  };
+
+  const handleViewAllStores = () => {
+    setViewMode('all-stores');
+  };
+
+  const handleBack = () => {
+    setSelectedStore(null);
+    setViewMode('selector');
+  };
+
+  if (viewMode === 'selector') {
+    return (
+      <div className="App">
+        <StoreSelector
+          stores={stores}
+          onStoreSelect={handleStoreSelect}
+          onViewAllStores={handleViewAllStores}
+          onRefresh={refreshData}
+          loading={false}
+          isLiveData={true}
+        />
+      </div>
+    );
+  }
+
+  if (viewMode === 'all-stores') {
+    return (
+      <div className="App">
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-between mb-8">
+              <button
+                onClick={handleBack}
+                className="flex items-center space-x-2 text-slate-400 hover:text-white transition-colors"
+              >
+                <span>← Back to Store Selection</span>
+              </button>
+              <h1 className="text-3xl font-bold text-white">All Stores Overview</h1>
+              <button
+                onClick={refreshData}
+                className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white transition-colors"
+              >
+                Refresh
+              </button>
+            </div>
+            
+            <div className="space-y-8">
+              {stores.map((store) => (
+                <div key={store.store_name} className="bg-slate-800 rounded-xl p-6">
+                  <h2 className="text-2xl font-bold text-white mb-4">{store.store_name}</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {store.tanks.map((tank) => (
+                      <div key={tank.tank_id} className="bg-slate-700 rounded-lg p-4">
+                        <h3 className="text-lg font-semibold text-white mb-2">{tank.tank_name}</h3>
+                        <div className="space-y-1 text-sm">
+                          <div className="text-slate-300">Volume: <span className="text-white">{tank.latest_log?.volume || 0} gal</span></div>
+                          <div className="text-slate-300">Capacity: <span className="text-white">{tank.capacity_percentage}%</span></div>
+                          <div className="text-slate-300">Run Rate: <span className="text-white">{tank.run_rate?.toFixed(2)} in/hr</span></div>
+                          <div className="text-slate-300">Height: <span className="text-white">{tank.latest_log?.height?.toFixed(1)} in</span></div>
+                          <div className={`text-sm font-medium ${
+                            tank.status === 'critical' ? 'text-red-400' :
+                            tank.status === 'warning' ? 'text-yellow-400' :
+                            'text-green-400'
+                          }`}>
+                            {tank.status?.toUpperCase() || 'NORMAL'}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Single store view (placeholder)
+  if (viewMode === 'single-store' && selectedStore) {
+    return (
+      <div className="App">
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-between mb-8">
+              <button
+                onClick={handleBack}
+                className="flex items-center space-x-2 text-slate-400 hover:text-white transition-colors"
+              >
+                <span>← Back to Store Selection</span>
+              </button>
+              <h1 className="text-3xl font-bold text-white">{selectedStore.store_name}</h1>
+              <button
+                onClick={refreshData}
+                className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white transition-colors"
+              >
+                Refresh
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {selectedStore.tanks.map((tank) => (
+                <div key={tank.tank_id} className="bg-slate-800 rounded-xl p-6">
+                  <h2 className="text-xl font-bold text-white mb-4">{tank.tank_name}</h2>
+                  <div className="space-y-2">
+                    <div className="text-slate-300">Volume: <span className="text-white text-lg">{tank.latest_log?.volume || 0} gal</span></div>
+                    <div className="text-slate-300">Capacity: <span className="text-white text-lg">{tank.capacity_percentage}%</span></div>
+                    <div className="text-slate-300">Max Capacity: <span className="text-white">{tank.profile?.max_capacity_gallons} gal</span></div>
+                    <div className="text-slate-300">Run Rate: <span className="text-white">{tank.run_rate?.toFixed(3)} in/hr</span></div>
+                    <div className="text-slate-300">Height: <span className="text-white">{tank.latest_log?.height?.toFixed(1)} in</span></div>
+                    <div className="text-slate-300">Hours to 10": <span className="text-white">{tank.hours_to_10_inches?.toFixed(1)} hrs</span></div>
+                    <div className={`text-lg font-bold ${
+                      tank.status === 'critical' ? 'text-red-400' :
+                      tank.status === 'warning' ? 'text-yellow-400' :
+                      'text-green-400'
+                    }`}>
+                      {tank.status?.toUpperCase() || 'NORMAL'}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
 }
 
 export default App;
