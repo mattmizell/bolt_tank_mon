@@ -249,6 +249,10 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
   const criticalHeight = tank.configuration?.critical_height_inches || tank.profile?.critical_height_inches || 10;
   const maxCapacity = tank.configuration?.max_capacity_gallons || tank.profile?.max_capacity_gallons || 10000;
   
+  // Calculate max fill ullage volume
+  const maxFillPercentage = tank.configuration?.max_fill_ullage_percentage || 90.0;
+  const maxFillVolume = maxCapacity * (maxFillPercentage / 100);
+  
   // Get 48-hour prediction from server analytics
   const predicted48hHeight = tank.analytics?.predicted_height_48h;
 
@@ -293,6 +297,20 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
         borderDash: [12, 6],
         yAxisID: 'y',
       }] : []),
+      // Max Fill Ullage Line
+      {
+        label: `Max Fill (${maxFillPercentage}%)`,
+        data: new Array(chartLogs.length).fill(maxFillVolume),
+        borderColor: 'rgb(147, 51, 234)', // Purple color
+        backgroundColor: 'rgba(147, 51, 234, 0.1)',
+        fill: false,
+        tension: 0,
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        borderWidth: 2,
+        borderDash: [8, 4],
+        yAxisID: 'y1', // Use volume axis
+      },
       // Critical Level Line at 10"
       {
         label: 'Critical Level (10")',
@@ -344,8 +362,18 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
         borderColor: 'rgb(59, 130, 246)',
         borderWidth: 1,
         filter: function(tooltipItem: any) {
-          // Don't show tooltip for the warning and critical level lines
-          return tooltipItem.datasetIndex !== 2 && tooltipItem.datasetIndex !== 3;
+          // Don't show tooltip for reference lines (48h prediction, max fill, critical level)
+          // Dataset indices: 0=height, 1=volume, then conditionally: 48h prediction, max fill, critical level
+          const index = tooltipItem.datasetIndex;
+          const hasPrediction = predicted48hHeight !== null && predicted48hHeight !== undefined && predicted48hHeight > 0;
+          
+          if (hasPrediction) {
+            // Indices: 0=height, 1=volume, 2=48h, 3=max fill, 4=critical
+            return index === 0 || index === 1;
+          } else {
+            // Indices: 0=height, 1=volume, 2=max fill, 3=critical
+            return index === 0 || index === 1;
+          }
         },
         callbacks: {
           afterBody: (context: any) => {
