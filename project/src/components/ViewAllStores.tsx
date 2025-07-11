@@ -24,6 +24,25 @@ export const ViewAllStores: React.FC<ViewAllStoresProps> = ({
   const [refreshing, setRefreshing] = useState(false);
   const [showCharts, setShowCharts] = useState(false);
 
+  // 🔍 DEBUG: Log what ViewAllStores receives
+  useEffect(() => {
+    console.log('🔍 VIEWALLSTORES COMPONENT DEBUG:');
+    console.log('🔍   Received stores.length:', stores.length);
+    console.log('🔍   Received stores:', stores);
+    console.log('🔍   loading:', loading);
+    
+    if (stores.length > 0) {
+      stores.forEach((store, index) => {
+        console.log(`🔍   ViewAll Store ${index + 1}: ${store.store_name} with ${store.tanks.length} tanks`);
+        store.tanks.forEach((tank, tankIndex) => {
+          console.log(`🔍     Tank ${tankIndex + 1}: ${tank.tank_name} (ID: ${tank.tank_id})`);
+          console.log(`🔍       latest_log:`, tank.latest_log);
+          console.log(`🔍       configuration:`, tank.configuration);
+        });
+      });
+    }
+  }, [stores, loading]);
+
   const handleRefresh = async () => {
     setRefreshing(true);
     await onRefresh();

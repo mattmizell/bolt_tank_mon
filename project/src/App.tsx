@@ -28,6 +28,25 @@ function App() {
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>('selector');
 
+  // 🔍 DEBUG: Log the data flow from useSmartCache to components
+  React.useEffect(() => {
+    console.log('🔍 APP.TSX DATA FLOW DEBUG:');
+    console.log('🔍   stores.length:', stores.length);
+    console.log('🔍   loading:', loading);
+    console.log('🔍   error:', error);
+    console.log('🔍   stores array:', stores);
+    
+    if (stores.length > 0) {
+      stores.forEach((store, index) => {
+        console.log(`🔍   Store ${index + 1}: ${store.store_name}`);
+        console.log(`🔍     tanks.length: ${store.tanks.length}`);
+        if (store.tanks.length > 0) {
+          console.log(`🔍     First tank:`, store.tanks[0]);
+        }
+      });
+    }
+  }, [stores, loading, error]);
+
   // Check if we're in read-only mode (via URL parameter)
   const urlParams = new URLSearchParams(window.location.search);
   const isReadOnlyMode = urlParams.get('readonly') === 'true';
