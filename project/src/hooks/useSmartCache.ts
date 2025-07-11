@@ -77,9 +77,14 @@ export const useSmartCache = () => {
             historicalLogs = [];
           }
 
-          // FIXED: Use ONLY server analytics - no fallback calculation!
+          // FIXED: Use server analytics directly!
           console.log(`📊 Using server analytics for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
-          console.log(`✅ Server analytics: run_rate=${analytics.run_rate}, hours_to_critical=${analytics.hours_to_critical}`);
+          console.log(`✅ Server run_rate: ${analytics.run_rate} in/hr`);
+          console.log(`✅ Server capacity: ${serverConfig.max_capacity_gallons} gal`);
+          console.log(`✅ Current volume: ${currentVolume} gal`);
+          
+          const capacityPercentage = (currentVolume / actualCapacity) * 100;
+          console.log(`✅ Calculated capacity percentage: ${capacityPercentage}%`);
           
           const metrics = {
             current_height_inches: currentHeight,
@@ -88,10 +93,10 @@ export const useSmartCache = () => {
             hours_to_10_inches: analytics.hours_to_critical,
             predicted_time_to_10in: analytics.predicted_empty,
             status: rawTank.current_status,
-            capacity_percentage: (currentVolume / actualCapacity) * 100
+            capacity_percentage: capacityPercentage
           };
           
-          console.log(`📊 Final metrics for tank ${rawTank.tank_id}:`, metrics);
+          console.log(`📊 Final metrics for tank ${rawTank.tank_id}:`, JSON.stringify(metrics, null, 2));
 
           processedTanks.push({
             tank_id: rawTank.tank_id,
