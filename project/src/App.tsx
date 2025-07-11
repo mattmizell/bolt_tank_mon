@@ -36,7 +36,18 @@ function App() {
           
           // Convert to Store format using the working API data
           const tanks = storeData.tanks.map((tank: any) => {
-            console.log(`🔧 Processing tank ${tank.tank_id} with run_rate: ${tank.analytics.run_rate}`);
+            console.log(`🔧 Processing tank ${tank.tank_id}:`, {
+              volume: tank.latest_reading?.volume,
+              max_capacity: tank.configuration?.max_capacity_gallons,
+              run_rate: tank.analytics?.run_rate,
+              status: tank.current_status
+            });
+            
+            const currentVolume = tank.latest_reading?.volume || 0;
+            const maxCapacity = tank.configuration?.max_capacity_gallons || 10000;
+            const capacityPercentage = maxCapacity > 0 ? Math.round((currentVolume / maxCapacity) * 100) : 0;
+            
+            console.log(`📊 Tank ${tank.tank_id} calculated: ${currentVolume}/${maxCapacity} = ${capacityPercentage}%`);
             
             return {
               tank_id: tank.tank_id,
@@ -59,7 +70,7 @@ function App() {
               run_rate: tank.analytics.run_rate,
               hours_to_10_inches: tank.analytics.hours_to_critical,
               status: tank.current_status,
-              capacity_percentage: Math.round((tank.latest_reading.volume / tank.configuration.max_capacity_gallons) * 100),
+              capacity_percentage: capacityPercentage,
               profile: {
                 store_name: storeData.store_name,
                 tank_id: tank.tank_id,
