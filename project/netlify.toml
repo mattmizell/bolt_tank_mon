@@ -3,8 +3,8 @@
   base = "project"
   # Build command for Vite React app
   command = "npm run build"
-  # Directory to publish (Vite builds to dist)
-  publish = "project/dist"
+  # Directory to publish (Vite builds to dist relative to base)
+  publish = "dist"
 
 [build.environment]
   # Use Node 18
