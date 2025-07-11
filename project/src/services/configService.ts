@@ -441,7 +441,8 @@ export class ConfigService {
    */
   static async fetchTankConfigurationsFromServer(): Promise<TankConfiguration[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/tank-config`, {
+      // Use admin endpoint to get all tank configurations including max_fill_ullage_percentage
+      const response = await fetch(`${API_BASE_URL}/admin/tanks`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
       });
@@ -450,22 +451,22 @@ export class ConfigService {
         throw new Error(`Server responded with ${response.status}`);
       }
       
-      const serverConfigs = await response.json();
+      const data = await response.json();
       const configurations: TankConfiguration[] = [];
       
-      // Convert server format to dashboard format
-      for (const storeName in serverConfigs) {
-        for (const tankId in serverConfigs[storeName]) {
-          const config = serverConfigs[storeName][tankId];
+      // The admin endpoint returns an array of tanks
+      if (data.tanks && Array.isArray(data.tanks)) {
+        for (const tank of data.tanks) {
           configurations.push({
-            store_name: config.store_name,
-            tank_id: config.tank_id,
-            tank_name: config.tank_name,
-            product_type: config.product,
-            max_capacity_gallons: config.max_capacity_gallons,
-            critical_height_inches: config.critical_height_inches,
-            warning_height_inches: config.warning_height_inches,
-            alerts_enabled: config.enabled
+            store_name: tank.store_name,
+            tank_id: tank.tank_id,
+            tank_name: tank.tank_name,
+            product_type: tank.product_type,
+            max_capacity_gallons: tank.max_capacity_gallons || 10000,
+            critical_height_inches: tank.critical_height_inches || 10,
+            warning_height_inches: tank.warning_height_inches || 20,
+            max_fill_ullage_percentage: tank.max_fill_ullage_percentage || 90,
+            alerts_enabled: tank.alerts_enabled !== false
           });
         }
       }
@@ -483,16 +484,19 @@ export class ConfigService {
    */
   static async pushTankConfigurationToServer(config: TankConfiguration): Promise<void> {
     try {
+      // Use the admin endpoint which supports all fields including max_fill_ullage_percentage
       const serverConfig = {
-        product: config.product_type,
+        tank_name: config.tank_name,
+        product_type: config.product_type,
         max_capacity_gallons: config.max_capacity_gallons,
-        custom_critical_height: config.critical_height_inches,
-        custom_warning_height: config.warning_height_inches,
-        enabled: config.alerts_enabled
+        critical_height_inches: config.critical_height_inches,
+        warning_height_inches: config.warning_height_inches,
+        max_fill_ullage_percentage: config.max_fill_ullage_percentage || 90,
+        alerts_enabled: config.alerts_enabled
       };
 
-      const response = await fetch(`${API_BASE_URL}/tank-config/${config.store_name}/${config.tank_id}`, {
-        method: 'POST',
+      const response = await fetch(`${API_BASE_URL}/admin/tanks/${config.store_name}/${config.tank_id}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(serverConfig)
       });

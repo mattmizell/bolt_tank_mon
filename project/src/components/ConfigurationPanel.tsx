@@ -406,6 +406,22 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
                                   max="100"
                                 />
                               </div>
+                              
+                              <div>
+                                <label className="block text-slate-300 text-sm mb-1">
+                                  Max Fill Ullage %
+                                  <span className="text-slate-400 ml-1 text-xs">• Safe fill limit</span>
+                                </label>
+                                <input
+                                  type="number"
+                                  value={config.max_fill_ullage_percentage || 90}
+                                  onChange={(e) => handleTankConfigUpdate(config.store_name, config.tank_id, 'max_fill_ullage_percentage', parseFloat(e.target.value))}
+                                  className="w-full bg-slate-500 text-white rounded px-3 py-2 text-sm"
+                                  min="50"
+                                  max="95"
+                                  step="0.5"
+                                />
+                              </div>
                             </div>
                             
                             <div className="mt-3 flex items-center justify-between">
