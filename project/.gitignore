@@ -86,7 +86,7 @@ jspm_packages/
 
 # Gatsby files
 .cache/
-public/
+# NOTE: public/ should NOT be ignored for Vite/React apps - it contains static assets
 
 # Storybook build outputs
 .out/
