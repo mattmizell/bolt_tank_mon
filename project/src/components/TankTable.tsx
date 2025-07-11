@@ -89,10 +89,18 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
     return 'text-green-400';
   };
 
-  // Calculate 90% ullage safely
-  const calculate90PercentUllage = (ullage: number | undefined): number => {
-    if (!ullage || isNaN(ullage)) return 0;
-    return ullage * 0.9;
+  // Calculate max fill ullage based on tank configuration
+  const calculateMaxFillUllage = (tank: Tank): number => {
+    const maxCapacity = tank.configuration?.max_capacity_gallons || tank.profile?.max_capacity_gallons || 10000;
+    const currentVolume = tank.latest_log?.tc_volume || 0;
+    const currentUllage = maxCapacity - currentVolume;
+    const maxFillPercentage = tank.configuration?.max_fill_ullage_percentage || 90.0;
+    return currentUllage * (maxFillPercentage / 100);
+  };
+
+  // Get max fill percentage for display
+  const getMaxFillPercentage = (tank: Tank): number => {
+    return tank.configuration?.max_fill_ullage_percentage || 90.0;
   };
 
   return (
@@ -106,6 +114,7 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">TC Volume</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Capacity Used</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">90% Ullage</th>
+              <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Max Fill Ullage</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Height</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Run Rate</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Hours to 10"</th>
@@ -147,11 +156,20 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
                 </td>
                 <td className="px-4 py-3 text-right">
                   <span className="text-slate-300 font-mono">
-                    {formatValue(calculate90PercentUllage(tank.latest_log?.ullage))}
+                    {formatValue(tank.latest_log?.ullage ? tank.latest_log.ullage * 0.9 : 0)}
                   </span>
                   <span className="text-slate-400 text-sm ml-1">gal</span>
                   <div className="text-xs text-slate-500 mt-1">
                     90% of {formatValue(tank.latest_log?.ullage)} gal
+                  </div>
+                </td>
+                <td className="px-4 py-3 text-right">
+                  <span className="text-slate-300 font-mono">
+                    {formatValue(calculateMaxFillUllage(tank))}
+                  </span>
+                  <span className="text-slate-400 text-sm ml-1">gal</span>
+                  <div className="text-xs text-slate-500 mt-1">
+                    {getMaxFillPercentage(tank)}% ullage
                   </div>
                 </td>
                 <td className="px-4 py-3 text-right">

@@ -1,12 +1,30 @@
-// Simple tank profile interface - no dimensions needed
-export interface TankProfile {
+// ===== CONFIGURATION DATA (Database-stored, Admin-managed) =====
+
+export interface StoreConfiguration {
+  store_name: string;
+  open_hour: number;
+  close_hour: number;
+  timezone: string;
+  admin_name?: string;
+  admin_phone?: string;
+  admin_email?: string;
+  alerts_enabled?: boolean;
+}
+
+export interface TankConfiguration {
   store_name: string;
   tank_id: number;
   tank_name: string;
+  product_type: string;
+  max_capacity_gallons: number;
   critical_height_inches: number;
   warning_height_inches: number;
-  max_capacity_gallons: number;
+  max_fill_ullage_percentage: number; // Configurable max fill ullage (default 90%)
+  alerts_enabled?: boolean;
+  alert_phone_number?: string; // Override for specific tank
 }
+
+// ===== MEASUREMENT DATA (Central Server) =====
 
 export interface TankLog {
   id?: number;
@@ -22,16 +40,6 @@ export interface TankLog {
   timestamp: string;
 }
 
-export interface TankConfiguration {
-  tank_id: number;
-  tank_name: string;
-  store_name: string;
-  product_type: string;
-  max_capacity_gallons: number;
-  critical_height_inches: number;
-  warning_height_inches: number;
-}
-
 export interface TankAnalytics {
   run_rate?: number;
   hours_to_critical?: number;
@@ -39,27 +47,34 @@ export interface TankAnalytics {
   predicted_height_48h?: number;
 }
 
+// ===== COMBINED INTERFACES =====
+
 export interface Tank {
   tank_id: number;
   tank_name: string;
   product: string;
+  // Measurement data from central server
   latest_log?: TankLog;
   logs?: TankLog[];
   run_rate?: number;
   hours_to_10_inches?: number;
   predicted_time?: string;
   status?: 'normal' | 'warning' | 'critical';
-  profile?: TankProfile;
-  configuration?: TankConfiguration; // Server-provided tank configuration
-  analytics?: TankAnalytics; // Server analytics
+  analytics?: TankAnalytics;
   capacity_percentage?: number;
+  // Configuration data from database
+  configuration?: TankConfiguration;
 }
 
 export interface Store {
   store_name: string;
   tanks: Tank[];
   last_updated?: string;
+  // Configuration data from database
+  configuration?: StoreConfiguration;
 }
+
+// ===== API & CHART INTERFACES =====
 
 export interface ChartDataPoint {
   timestamp: string;
@@ -73,33 +88,8 @@ export interface ApiResponse<T> {
   error?: string;
 }
 
-// Configuration interfaces with admin contact info
-export interface StoreHours {
-  store_name: string;
-  open_hour: number;
-  close_hour: number;
-  timezone: string;
-  // Admin contact information
-  admin_name?: string;
-  admin_phone?: string;
-  admin_email?: string;
-  alerts_enabled?: boolean;
-}
+// ===== ALERT SYSTEM =====
 
-export interface TankConfiguration {
-  store_name: string;
-  tank_id: number;
-  tank_name: string;
-  product_type: string;
-  critical_height_inches: number;
-  warning_height_inches: number;
-  max_capacity_gallons: number;
-  // Alert Configuration (kept for configuration purposes)
-  alerts_enabled?: boolean;
-  alert_phone_number?: string; // Override for specific tank
-}
-
-// Legacy interfaces for backward compatibility
 export interface AlertHistory {
   id: string;
   store_name: string;
@@ -120,12 +110,4 @@ export interface SMSConfig {
   from_number?: string;
   webhook_url?: string;
   test_mode: boolean;
-}
-
-export interface StoreContact {
-  store_name: string;
-  contact_name: string;
-  phone_number: string;
-  is_primary: boolean;
-  alerts_enabled: boolean;
 }
