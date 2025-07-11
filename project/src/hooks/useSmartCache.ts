@@ -22,6 +22,24 @@ export const useSmartCache = () => {
     isLiveData,
     cacheInfo
   });
+
+  // Filter stores based on visibility settings
+  const filterVisibleStores = useCallback((allStores: Store[]): Store[] => {
+    const visibleStoreNames = ConfigService.getVisibleStores();
+    console.log('🔍 Filtering stores by visibility:', { 
+      allStores: allStores.map(s => s.store_name),
+      visibleStoreNames 
+    });
+    
+    if (visibleStoreNames.length === 0) {
+      // If no visibility config exists, show all stores (backward compatibility)
+      return allStores;
+    }
+    
+    const filtered = allStores.filter(store => visibleStoreNames.includes(store.store_name));
+    console.log('✅ Visible stores after filtering:', filtered.map(s => s.store_name));
+    return filtered;
+  }, []);
   
   const refreshInProgress = useRef(false);
   const refreshInterval = useRef<NodeJS.Timeout | null>(null);
@@ -118,7 +136,8 @@ export const useSmartCache = () => {
       if (cachedStores.length > 0) {
         console.log(`⚡ SIMPLIFIED: Loading ${cachedStores.length} stores from cache (endpoint data only)`);
         const storeObjects = SmartCache.convertToStores(cachedStores);
-        setStores(storeObjects);
+        const visibleStores = filterVisibleStores(storeObjects);
+        setStores(visibleStores);
         setIsLiveData(true);
         console.log(`📊 SIMPLIFIED: Instant load complete - charts will fetch their own data`);
       }
@@ -161,8 +180,9 @@ export const useSmartCache = () => {
         // Save simplified cache
         SmartCache.saveToCache(cacheableStores);
         
-        // Update UI
-        setStores(processedStores);
+        // Update UI with filtered stores
+        const visibleStores = filterVisibleStores(processedStores);
+        setStores(visibleStores);
         setIsLiveData(true);
         
         // Auto-configure new stores
@@ -243,7 +263,8 @@ export const useSmartCache = () => {
         }));
         
         SmartCache.saveToCache(cacheableStores);
-        setStores(processedStores);
+        const visibleStores = filterVisibleStores(processedStores);
+        setStores(visibleStores);
         setCacheInfo(SmartCache.getCacheInfo());
         
         console.log('✅ SIMPLIFIED: Background refresh complete');

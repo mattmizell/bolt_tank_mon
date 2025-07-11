@@ -30,14 +30,28 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
     setTankConfigs(ConfigService.getTankConfigurations());
   }, []);
 
-  const handleStoreHoursUpdate = (storeName: string, field: string, value: any) => {
+  const handleStoreHoursUpdate = async (storeName: string, field: string, value: any) => {
     const updated = storeHours.map(hours => 
       hours.store_name === storeName 
         ? { ...hours, [field]: value }
         : hours
     );
     setStoreHours(updated);
+    
+    // Save locally first
     ConfigService.saveStoreHours(updated);
+    
+    // Find the updated store and sync to central server
+    const updatedStore = updated.find(hours => hours.store_name === storeName);
+    if (updatedStore) {
+      try {
+        await ConfigService.pushStoreConfigurationToServer(updatedStore);
+        console.log(`✅ Store configuration synced to central server`);
+      } catch (error) {
+        console.error('❌ Failed to sync store configuration:', error);
+        // Configuration is still saved locally
+      }
+    }
   };
 
   const handleTankConfigUpdate = async (storeName: string, tankId: number, field: string, value: any) => {

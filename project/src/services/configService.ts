@@ -570,4 +570,137 @@ export class ConfigService {
     
     return config;
   }
+
+  // ===== STORE VISIBILITY METHODS =====
+  // These methods control which stores appear in the dashboard
+
+  /**
+   * Get stores that should be visible in the dashboard (is_active = true)
+   */
+  static getVisibleStores(): string[] {
+    const allHours = this.getStoreHours();
+    return allHours
+      .filter(hours => hours.is_active !== false) // Default to visible if not set
+      .map(hours => hours.store_name);
+  }
+
+  /**
+   * Get stores that have alerts enabled
+   */
+  static getActiveStores(): string[] {
+    const allHours = this.getStoreHours();
+    return allHours
+      .filter(hours => hours.alerts_enabled !== false) // Default to enabled if not set
+      .map(hours => hours.store_name);
+  }
+
+  /**
+   * Check if a store should be visible in dashboard
+   */
+  static isStoreVisible(storeName: string): boolean {
+    const storeHours = this.getStoreHoursForStore(storeName);
+    return storeHours ? storeHours.is_active !== false : true; // Default to visible
+  }
+
+  /**
+   * Check if a store has alerts enabled
+   */
+  static isStoreAlertsEnabled(storeName: string): boolean {
+    const storeHours = this.getStoreHoursForStore(storeName);
+    return storeHours ? storeHours.alerts_enabled !== false : true; // Default to enabled
+  }
+
+  // ===== STORE CONFIGURATION SYNC WITH CENTRAL SERVER =====
+  // These methods sync store settings (hours, alerts) with the backend
+
+  /**
+   * Push store configuration to central server database
+   */
+  static async pushStoreConfigurationToServer(storeHours: StoreHours): Promise<void> {
+    try {
+      const serverConfig = {
+        open_hour: storeHours.open_hour,
+        close_hour: storeHours.close_hour,
+        timezone: storeHours.timezone,
+        admin_name: storeHours.admin_name || 'Store Manager',
+        admin_phone: storeHours.admin_phone || '+1234567890',
+        admin_email: storeHours.admin_email || `manager@${storeHours.store_name.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
+        alerts_enabled: storeHours.alerts_enabled !== false
+      };
+
+      const response = await fetch(`${API_BASE_URL}/admin/stores/${storeHours.store_name}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(serverConfig)
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Server responded with ${response.status}: ${errorText}`);
+      }
+      
+      console.log(`✅ Synced store configuration for ${storeHours.store_name} to central server`);
+    } catch (error) {
+      console.error(`❌ Failed to sync store configuration to server:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Enhanced updateStoreHours that syncs with central server
+   */
+  static async updateStoreHoursWithSync(
+    storeName: string, 
+    openHour: number, 
+    closeHour: number, 
+    timezone: string = 'America/Chicago',
+    adminName?: string,
+    adminPhone?: string,
+    adminEmail?: string,
+    alertsEnabled: boolean = true
+  ): Promise<void> {
+    try {
+      // Update local storage first (for fallback)
+      this.updateStoreHours(storeName, openHour, closeHour, timezone, adminName, adminPhone, adminEmail, alertsEnabled);
+      
+      // Get the updated config and sync to central server
+      const updatedConfig = this.getStoreHoursForStore(storeName);
+      if (updatedConfig) {
+        await this.pushStoreConfigurationToServer(updatedConfig);
+      }
+      
+      console.log(`✅ Store configuration updated locally and synced to central server`);
+    } catch (error) {
+      console.error('❌ Failed to sync store configuration. Local changes saved, server sync failed:', error);
+      // Local changes are still saved, server sync failed
+      throw error;
+    }
+  }
+
+  /**
+   * Enhanced updateStoreAdminContact that syncs with central server
+   */
+  static async updateStoreAdminContactWithSync(
+    storeName: string,
+    adminName: string,
+    adminPhone: string,
+    adminEmail?: string,
+    alertsEnabled: boolean = true
+  ): Promise<void> {
+    try {
+      // Update local storage first
+      this.updateStoreAdminContact(storeName, adminName, adminPhone, adminEmail, alertsEnabled);
+      
+      // Get the updated config and sync to central server
+      const updatedConfig = this.getStoreHoursForStore(storeName);
+      if (updatedConfig) {
+        await this.pushStoreConfigurationToServer(updatedConfig);
+      }
+      
+      console.log(`✅ Store admin contact updated locally and synced to central server`);
+    } catch (error) {
+      console.error('❌ Failed to sync store admin contact. Local changes saved, server sync failed:', error);
+      throw error;
+    }
+  }
 }
