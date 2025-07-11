@@ -8,23 +8,7 @@ interface TankTableProps {
 }
 
 export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
-  // 🔍 DEBUG: Log what TankTable receives
-  React.useEffect(() => {
-    console.log('🔍 TANKTABLE COMPONENT DEBUG:');
-    console.log('🔍   Received tanks.length:', tanks.length);
-    console.log('🔍   Received tanks:', tanks);
-    
-    if (tanks.length > 0) {
-      tanks.forEach((tank, index) => {
-        console.log(`🔍   Table Tank ${index + 1}:`);
-        console.log(`🔍     tank_id: ${tank.tank_id}`);
-        console.log(`🔍     tank_name: ${tank.tank_name}`);
-        console.log(`🔍     status: ${tank.status}`);
-        console.log(`🔍     latest_log:`, tank.latest_log);
-        console.log(`🔍     capacity_percentage: ${tank.capacity_percentage}`);
-      });
-    }
-  }, [tanks]);
+  // Grid debugging removed - working perfectly now!
 
   const getStatusIcon = (status: string | undefined) => {
     switch (status) {

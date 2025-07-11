@@ -26,9 +26,9 @@ export const useSmartCache = () => {
   const refreshInProgress = useRef(false);
   const refreshInterval = useRef<NodeJS.Timeout | null>(null);
 
-  // Process raw API data into full Store objects with historical data for charts
+  // SIMPLIFIED: Process raw API data into Store objects (NO historical data)
   const processRawApiData = useCallback(async (rawStores: any[]): Promise<Store[]> => {
-    console.log('🔄 Processing raw API data with full historical data for charts...');
+    console.log('🚀 SIMPLIFIED: Processing raw API data (NO historical data fetching)');
     const processedStores: Store[] = [];
 
     for (const rawStore of rawStores) {
@@ -36,111 +36,63 @@ export const useSmartCache = () => {
       const processedTanks = [];
 
       for (const rawTank of rawStore.tanks) {
-        try {
-          console.log(`🔍 Processing tank ${rawTank.tank_id} in ${rawStore.store_name}`);
-          console.log(`🔍 rawTank keys:`, Object.keys(rawTank));
-          console.log(`🔍 rawTank.analytics:`, rawTank.analytics);
-          console.log(`🔍 rawTank.configuration:`, rawTank.configuration);
-          console.log(`🔍 rawTank.latest_reading:`, rawTank.latest_reading);
-          
-          // FIXED: Use server analytics and configuration data directly!
-          if (!rawTank.analytics) {
-            console.error(`❌ No analytics data from server for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
-            throw new Error(`Missing server analytics for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
-          }
-          
-          if (!rawTank.configuration) {
-            console.error(`❌ No configuration data from server for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
-            throw new Error(`Missing server configuration for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
-          }
-          
-          const latestLog = rawTank.latest_log;
-          const latestReading = rawTank.latest_reading;
-          const analytics = rawTank.analytics;
-          const serverConfig = rawTank.configuration;
-          
-          console.log(`🔍 Using server analytics: run_rate=${analytics.run_rate}, hours_to_critical=${analytics.hours_to_critical}`);
-          console.log(`🔍 Using server config: max_capacity=${serverConfig.max_capacity_gallons}`);
-          
-          const currentHeight = Number(latestReading?.height || latestLog?.height) || 0;
-          const currentVolume = Number(latestReading?.volume || latestLog?.tc_volume) || 0;
-          const actualCapacity = serverConfig.max_capacity_gallons;
-          
-          // Get historical data for this tank (extended fetch for better calculations)
-          let historicalLogs: any[] = [];
-          try {
-            // Get 4 weeks of data for proper historical analysis
-            historicalLogs = await ApiService.getTankLogs(rawStore.store_name, rawTank.tank_id, 672); // 4 weeks = 28 days
-            console.log(`📊 Retrieved ${historicalLogs.length} logs for analytics calculation (4 weeks)`);
-          } catch (logError) {
-            console.warn(`⚠️ Could not fetch historical logs for ${rawStore.store_name} Tank ${rawTank.tank_id}:`, logError);
-            historicalLogs = [];
-          }
-
-          // FIXED: Use server analytics directly!
-          console.log(`📊 Using server analytics for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
-          console.log(`✅ Server run_rate: ${analytics.run_rate} in/hr`);
-          console.log(`✅ Server capacity: ${serverConfig.max_capacity_gallons} gal`);
-          console.log(`✅ Current volume: ${currentVolume} gal`);
-          
-          const capacityPercentage = (currentVolume / actualCapacity) * 100;
-          console.log(`✅ Calculated capacity percentage: ${capacityPercentage}%`);
-          
-          const metrics = {
-            current_height_inches: currentHeight,
-            current_volume_gallons: currentVolume,
-            run_rate_inches_per_hour: analytics.run_rate,
-            hours_to_10_inches: analytics.hours_to_critical,
-            predicted_time_to_10in: analytics.predicted_empty,
-            status: rawTank.current_status,
-            capacity_percentage: capacityPercentage
-          };
-          
-          console.log(`📊 Final metrics for tank ${rawTank.tank_id}:`, JSON.stringify(metrics, null, 2));
-
-          processedTanks.push({
-            tank_id: rawTank.tank_id,
-            tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
-            product: rawTank.product || rawTank.latest_log?.product || 'Unknown',
-            latest_log: rawTank.latest_log ? {
-              id: rawTank.latest_log.id || 0,
-              store_name: rawTank.latest_log.store_name || rawStore.store_name,
-              tank_id: rawTank.latest_log.tank_id || rawTank.tank_id,
-              product: rawTank.latest_log.product || 'Unknown',
-              volume: Number(rawTank.latest_log.volume) || 0,
-              tc_volume: Number(rawTank.latest_log.tc_volume) || 0,
-              ullage: Number(rawTank.latest_log.ullage) || 0,
-              height: Number(rawTank.latest_log.height) || 0,
-              water: Number(rawTank.latest_log.water) || 0,
-              temp: Number(rawTank.latest_log.temp) || 0,
-              timestamp: rawTank.latest_log.timestamp || new Date().toISOString(),
-            } : undefined,
-            logs: [], // Charts will load their own data independently
-            // Use simplified analytics results
-            run_rate: metrics.run_rate_inches_per_hour,
-            hours_to_10_inches: metrics.hours_to_10_inches,
-            predicted_time: metrics.predicted_time_to_10in,
-            status: metrics.status,
-            capacity_percentage: metrics.capacity_percentage,
-            // FIXED: Use server configuration data
-            profile: {
-              store_name: rawStore.store_name,
-              tank_id: rawTank.tank_id,
-              tank_name: serverConfig.tank_name,
-              max_capacity_gallons: serverConfig.max_capacity_gallons,
-              critical_height_inches: serverConfig.critical_height_inches,
-              warning_height_inches: serverConfig.warning_height_inches,
-            },
-            // Add server configuration and analytics to tank object
-            configuration: serverConfig,
-            analytics: analytics,
-          });
-        } catch (error) {
-          console.error(`❌ CRITICAL ERROR processing tank ${rawTank.tank_id} in ${rawStore.store_name}:`, error);
-          console.error(`❌ Raw tank data that failed:`, JSON.stringify(rawTank, null, 2));
-          // NO FALLBACK - LET ERROR BUBBLE UP
-          throw new Error(`Tank processing failed for ${rawStore.store_name} Tank ${rawTank.tank_id}: ${error.message}`);
+        console.log(`🔍 Processing tank ${rawTank.tank_id} in ${rawStore.store_name}`);
+        
+        // Validate server data exists
+        if (!rawTank.analytics) {
+          console.error(`❌ No analytics data from server for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
+          throw new Error(`Missing server analytics for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
         }
+        
+        if (!rawTank.configuration) {
+          console.error(`❌ No configuration data from server for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
+          throw new Error(`Missing server configuration for ${rawStore.store_name} Tank ${rawTank.tank_id}`);
+        }
+        
+        const analytics = rawTank.analytics;
+        const serverConfig = rawTank.configuration;
+        const latestReading = rawTank.latest_reading;
+        
+        console.log(`✅ Using server analytics: run_rate=${analytics.run_rate}, hours_to_critical=${analytics.hours_to_critical}`);
+        console.log(`✅ Using server config: max_capacity=${serverConfig.max_capacity_gallons}`);
+        
+        const currentVolume = Number(latestReading?.volume) || 0;
+        const capacityPercentage = (currentVolume / serverConfig.max_capacity_gallons) * 100;
+        
+        processedTanks.push({
+          tank_id: rawTank.tank_id,
+          tank_name: rawTank.tank_name || `Tank ${rawTank.tank_id}`,
+          product: rawTank.product || 'Unknown',
+          latest_log: latestReading ? {
+            id: 0,
+            store_name: rawStore.store_name,
+            tank_id: rawTank.tank_id,
+            product: rawTank.product || 'Unknown',
+            volume: Number(latestReading.volume) || 0,
+            tc_volume: Number(latestReading.volume) || 0,
+            ullage: Number(latestReading.ullage) || 0,
+            height: Number(latestReading.height) || 0,
+            water: Number(latestReading.water) || 0,
+            temp: Number(latestReading.temp) || 0,
+            timestamp: latestReading.timestamp || new Date().toISOString(),
+          } : undefined,
+          logs: [], // Charts load their own data
+          run_rate: analytics.run_rate,
+          hours_to_10_inches: analytics.hours_to_critical,
+          predicted_time: analytics.predicted_empty,
+          status: rawTank.current_status,
+          capacity_percentage: capacityPercentage,
+          profile: {
+            store_name: rawStore.store_name,
+            tank_id: rawTank.tank_id,
+            tank_name: serverConfig.tank_name,
+            max_capacity_gallons: serverConfig.max_capacity_gallons,
+            critical_height_inches: serverConfig.critical_height_inches,
+            warning_height_inches: serverConfig.warning_height_inches,
+          },
+          configuration: serverConfig,
+          analytics: analytics,
+        });
       }
 
       processedStores.push({
@@ -150,7 +102,7 @@ export const useSmartCache = () => {
       });
     }
 
-    console.log(`✅ Processed ${processedStores.length} stores with full 10-day historical data for charts`);
+    console.log(`✅ SIMPLIFIED: Processed ${processedStores.length} stores (NO historical data)`);
     return processedStores;
   }, []);
 
@@ -161,37 +113,32 @@ export const useSmartCache = () => {
       console.log('🚀 Clearing any previous errors');
       setError(null);
       
-      // Step 1: Load cached data instantly (if available) - DON'T process it, just convert it
+      // Step 1: Load cached data instantly (if available)
       const cachedStores = SmartCache.getCachedStores();
       if (cachedStores.length > 0) {
-        console.log(`⚡ Loading ${cachedStores.length} stores from cache with historical data...`);
+        console.log(`⚡ SIMPLIFIED: Loading ${cachedStores.length} stores from cache (endpoint data only)`);
         const storeObjects = SmartCache.convertToStores(cachedStores);
         setStores(storeObjects);
         setIsLiveData(true);
-        
-        // Log how many historical logs we have in cache
-        const totalLogs = storeObjects.reduce((sum, store) => 
-          sum + store.tanks.reduce((tankSum, tank) => tankSum + (tank.logs?.length || 0), 0), 0);
-        console.log(`📊 Instant load complete: ${totalLogs} historical logs available for charts`);
+        console.log(`📊 SIMPLIFIED: Instant load complete - charts will fetch their own data`);
       }
 
       // Step 2: Check what needs updating from server
       const staleStoreNames = SmartCache.getStoresNeedingUpdate(cachedStores);
       
       if (staleStoreNames.length > 0 || cachedStores.length === 0) {
-        console.log(`🔄 Fetching fresh data with 10-day historical logs for ${staleStoreNames.length || 'all'} stores...`);
-        console.log('⚠️ This may take 2-5 minutes as we fetch 10 days of historical data for charts, but it will be cached for instant future loads');
+        console.log(`🚀 SIMPLIFIED: Fetching fresh endpoint data (NO historical logs)`);
         
         // Initialize API service
         await ApiService.initialize();
         
-        // Fetch fresh data from server
+        // Fetch fresh data from server endpoints only
         const freshRawStores = await ApiService.getAllStoresData();
         
-        // Step 3: Process raw data with full historical data (this is where we get the 10 days of logs)
+        // Process raw data (no historical data)
         const processedStores = await processRawApiData(freshRawStores);
         
-        // Step 4: Convert processed stores back to cacheable format
+        // Convert to cacheable format (no historical logs)
         const cacheableStores = processedStores.map(store => ({
           store_name: store.store_name,
           tanks: store.tanks.map(tank => ({
@@ -199,7 +146,7 @@ export const useSmartCache = () => {
             tank_name: tank.tank_name,
             product: tank.product,
             latest_log: tank.latest_log,
-            logs: tank.logs, // Include the historical logs in cache
+            logs: [], // No historical logs in cache
             run_rate: tank.run_rate,
             hours_to_10_inches: tank.hours_to_10_inches,
             status: tank.status,
@@ -211,10 +158,10 @@ export const useSmartCache = () => {
           cache_timestamp: Date.now(),
         }));
         
-        // Step 5: Save to cache with historical data
+        // Save simplified cache
         SmartCache.saveToCache(cacheableStores);
         
-        // Step 6: Update UI
+        // Update UI
         setStores(processedStores);
         setIsLiveData(true);
         
@@ -228,8 +175,7 @@ export const useSmartCache = () => {
           setTimeout(() => setNewStoreDetected(null), 5000);
         }
         
-        console.log(`✅ Smart load complete with 10-day historical data: ${processedStores.length} stores`);
-        console.log(`🎉 Charts now have real 10-day historical data and will load instantly next time!`);
+        console.log(`✅ SIMPLIFIED: Load complete (${processedStores.length} stores, NO historical data)`);
       } else {
         console.log('✅ All cached data is fresh - no server fetch needed');
       }
@@ -250,14 +196,14 @@ export const useSmartCache = () => {
 
   // Refresh data (clear cache and fetch fresh)
   const refreshData = useCallback(async () => {
-    console.log('🔄 Manual refresh - clearing cache and fetching fresh data with 10-day historical logs');
+    console.log('🔄 SIMPLIFIED: Manual refresh - clearing cache and fetching fresh endpoint data');
     SmartCache.clearCache();
     setCacheInfo(SmartCache.getCacheInfo());
     setStores([]); // Clear current data to show loading
     await smartLoad();
   }, [smartLoad]);
 
-  // Background refresh every 30 seconds (but only update latest readings, not historical data)
+  // Background refresh every 30 seconds (simplified)
   const startBackgroundRefresh = useCallback(() => {
     if (refreshInterval.current) {
       clearInterval(refreshInterval.current);
@@ -268,23 +214,39 @@ export const useSmartCache = () => {
       
       refreshInProgress.current = true;
       try {
-        console.log('⏰ Background refresh (30s interval) - updating latest readings only');
+        console.log('⏰ SIMPLIFIED: Background refresh (30s interval) - endpoint data only');
         
-        // For background refresh, only update latest readings, not historical data
         await ApiService.initialize();
         const freshRawStores = await ApiService.getAllStoresData();
         
-        // Merge with existing cache to preserve historical data
-        const cachedStores = SmartCache.getCachedStores();
-        const mergedStores = SmartCache.mergeData(cachedStores, freshRawStores);
-        SmartCache.saveToCache(mergedStores);
+        // Process fresh data (no historical)
+        const processedStores = await processRawApiData(freshRawStores);
         
-        // Update UI with merged data
-        const storeObjects = SmartCache.convertToStores(mergedStores);
-        setStores(storeObjects);
+        // Update cache and UI
+        const cacheableStores = processedStores.map(store => ({
+          store_name: store.store_name,
+          tanks: store.tanks.map(tank => ({
+            tank_id: tank.tank_id,
+            tank_name: tank.tank_name,
+            product: tank.product,
+            latest_log: tank.latest_log,
+            logs: [], // No historical logs
+            run_rate: tank.run_rate,
+            hours_to_10_inches: tank.hours_to_10_inches,
+            status: tank.status,
+            capacity_percentage: tank.capacity_percentage,
+            predicted_time: tank.predicted_time,
+            last_reading_timestamp: tank.latest_log?.timestamp,
+          })),
+          last_updated: store.last_updated || new Date().toISOString(),
+          cache_timestamp: Date.now(),
+        }));
+        
+        SmartCache.saveToCache(cacheableStores);
+        setStores(processedStores);
         setCacheInfo(SmartCache.getCacheInfo());
         
-        console.log('✅ Background refresh complete - latest readings updated, historical data preserved');
+        console.log('✅ SIMPLIFIED: Background refresh complete');
       } catch (error) {
         console.warn('⚠️ Background refresh failed:', error);
       } finally {
@@ -292,12 +254,16 @@ export const useSmartCache = () => {
       }
     }, 30000); // 30 seconds
 
-    console.log('🔄 Background refresh started (every 30 seconds)');
-  }, []);
+    console.log('🔄 SIMPLIFIED: Background refresh started (every 30 seconds)');
+  }, [processRawApiData]);
 
   // Initial load
   useEffect(() => {
     console.log('🚀 useSmartCache useEffect TRIGGERED - starting initial load');
+    console.log('🔥 FORCE CLEARING CACHE TO FIX DATA ISSUE');
+    SmartCache.clearCache();
+    setCacheInfo(SmartCache.getCacheInfo());
+    
     setLoading(true);
     console.log('🚀 Calling smartLoad()...');
     smartLoad()

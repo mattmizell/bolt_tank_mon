@@ -49,7 +49,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
       setError(null);
       
       try {
-        console.log(`📊 Fetching FRESH chart data for ${tank.latest_log.store_name} Tank ${tank.tank_id} (no cache)`);
+        // console.log(`📊 Fetching FRESH chart data for ${tank.latest_log.store_name} Tank ${tank.tank_id} (no cache)`);
         
         let logs: any[] = [];
         
@@ -57,83 +57,105 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
         try {
           // Fetch 7 days of sampled data directly from the dashboard API with cache busting
           const cacheBuster = Date.now();
-          const response = await fetch(
-            `https://central-tank-server.onrender.com/dashboard/stores/${tank.latest_log.store_name}/tanks/${tank.tank_id}/sampled?hours=168&sampling_rate=4&_t=${cacheBuster}`
-          );
+          const url = `https://central-tank-server.onrender.com/dashboard/stores/${encodeURIComponent(tank.latest_log.store_name)}/tanks/${tank.tank_id}/sampled?hours=168&sampling_rate=4&_t=${cacheBuster}`;
+          console.log(`🔍 Fetching chart data from: ${url}`);
+          const response = await fetch(url);
           
           if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            const errorText = await response.text();
+            console.error(`❌ API Error ${response.status} for ${tank.latest_log.store_name} Tank ${tank.tank_id}:`, errorText);
+            throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
           }
           
-          const data = await response.json();
-          logs = data.logs || [];
-          console.log(`📈 Retrieved ${logs.length} fresh sampled points directly from API (7 days)`);
+          const responseText = await response.text();
+          console.log(`🔍 Raw API response for ${tank.latest_log.store_name} Tank ${tank.tank_id}:`, responseText);
+          
+          let data;
+          try {
+            data = JSON.parse(responseText);
+          } catch (parseError) {
+            console.error(`❌ JSON parse error for ${tank.latest_log.store_name} Tank ${tank.tank_id}:`, parseError);
+            throw new Error(`Invalid JSON response: ${responseText.substring(0, 200)}...`);
+          }
+          
+          // Handle both {logs: [...]} format and direct array format
+          if (Array.isArray(data)) {
+            logs = data; // Direct array format
+          } else {
+            logs = data.logs || []; // Wrapped format
+          }
+          
+          console.log(`📈 Retrieved ${logs.length} fresh sampled points from API for ${tank.latest_log.store_name} Tank ${tank.tank_id}`);
+          if (logs.length === 0) {
+            console.warn(`⚠️ No chart data found for ${tank.latest_log.store_name} Tank ${tank.tank_id}. Response:`, data);
+          }
         } catch (error) {
-          console.warn('Direct API fetch failed, trying ApiService fallback:', error);
+          console.warn(`Direct API fetch failed for ${tank.latest_log.store_name} Tank ${tank.tank_id}:`, error);
           
           try {
             // Fallback: Use ApiService but bypass any caching
             await ApiService.initialize();
             logs = await ApiService.getSampledTankData(tank.latest_log.store_name, tank.tank_id, 5, 'hourly');
-            console.log(`📈 Retrieved ${logs.length} sampled points from ApiService fallback`);
+            console.log(`📈 Retrieved ${logs.length} sampled points from ApiService fallback for ${tank.latest_log.store_name} Tank ${tank.tank_id}`);
           } catch (error) {
-            console.error('All API calls failed, no synthetic data will be used:', error);
+            console.error(`All API calls failed for ${tank.latest_log.store_name} Tank ${tank.tank_id}:`, error);
             throw new Error('Unable to fetch real chart data from any source');
           }
         }
         
         // Process and validate logs - handle both raw logs and sampled data formats
+        console.log(`🔍 Processing ${logs.length} raw logs for ${tank.latest_log.store_name} Tank ${tank.tank_id}`);
         const processedLogs = logs
-          .map(log => {
+          .map((log, index) => {
             try {
               // Handle sampled data format (from /sampled endpoint) vs raw log format
               const isSampledData = 'hour_timestamp' in log || (!log.id && log.timestamp && log.volume && log.height);
               
-              if (isSampledData) {
-                // Sampled data format: {timestamp, volume, height}
-                return {
-                  id: 0,
-                  store_name: tank.latest_log?.store_name || '',
-                  tank_id: tank.tank_id,
-                  product: tank.product || tank.tank_name || '',
-                  volume: Number(log.volume) || 0,
-                  tc_volume: Number(log.volume) || 0, // Use volume for sampled data
-                  ullage: 0, // Not available in sampled data
-                  height: Number(log.height) || 0,
-                  water: 0, // Not available in sampled data
-                  temp: 70, // Default temp for sampled data
-                  timestamp: log.timestamp || log.hour_timestamp || new Date().toISOString(),
-                };
-              } else {
-                // Raw log format: full log data
-                return {
-                  id: log.id || 0,
-                  store_name: log.store_name || tank.latest_log?.store_name || '',
-                  tank_id: log.tank_id || tank.tank_id,
-                  product: log.product || tank.product || tank.tank_name || '',
-                  volume: Number(log.volume) || 0,
-                  tc_volume: Number(log.tc_volume) || 0,
-                  ullage: Number(log.ullage) || 0,
-                  height: Number(log.height) || 0,
-                  water: Number(log.water) || 0,
-                  temp: Number(log.temp) || 70,
-                  timestamp: log.timestamp || log.recorded_at || new Date().toISOString(),
-                };
+              const processed = {
+                id: log.id || 0,
+                store_name: tank.latest_log?.store_name || '',
+                tank_id: tank.tank_id,
+                product: tank.product || tank.tank_name || '',
+                volume: Number(log.volume) || 0,
+                tc_volume: Number(log.tc_volume || log.volume) || 0, // Use tc_volume if available, else volume
+                ullage: Number(log.ullage) || 0,
+                height: Number(log.height) || 0,
+                water: Number(log.water) || 0,
+                temp: Number(log.temp) || 70,
+                timestamp: log.timestamp || log.hour_timestamp || log.recorded_at || new Date().toISOString(),
+              };
+              
+              // Debug first few entries
+              if (index < 3) {
+                console.log(`🔍 Processed log ${index}:`, processed);
               }
+              
+              return processed;
             } catch (error) {
-              console.warn('Error processing log entry:', error);
+              console.warn(`Error processing log entry ${index}:`, error, log);
               return null;
             }
           })
-          .filter((log): log is any => log !== null && (log.tc_volume > 0 || log.volume > 0) && log.height > 0)
+          .filter((log): log is any => {
+            if (!log) return false;
+            
+            // More lenient validation - allow height > 0 OR volume > 0
+            const isValid = log.height > 0 || log.volume > 0;
+            if (!isValid && logs.length < 10) {
+              console.warn(`🔍 Filtered out log (height: ${log.height}, volume: ${log.volume}):`, log);
+            }
+            return isValid;
+          })
           .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+        
+        console.log(`✅ Processed ${processedLogs.length}/${logs.length} valid logs for ${tank.latest_log.store_name} Tank ${tank.tank_id}`);
 
         if (processedLogs.length === 0) {
           throw new Error('No valid chart data available');
         }
 
         setChartLogs(processedLogs);
-        console.log(`✅ Chart data loaded: ${processedLogs.length} valid readings`);
+        console.log(`✅ Chart data loaded for ${tank.latest_log.store_name} Tank ${tank.tank_id}: ${processedLogs.length} valid readings`);
         
       } catch (error) {
         console.error(`❌ Failed to fetch chart data for Tank ${tank.tank_id}:`, error);
