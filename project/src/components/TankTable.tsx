@@ -39,6 +39,27 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
     return value.toFixed(decimals);
   };
 
+  const formatHoursTo10Inches = (hours: number | undefined): string => {
+    if (hours === undefined || hours === null || isNaN(hours)) return 'N/A';
+    
+    // Handle zero or negative (tank not consuming)
+    if (hours <= 0) return 'N/A';
+    
+    // For very large numbers, round to nearest 1000 and show appropriately
+    if (hours >= 10000) {
+      const rounded = Math.round(hours / 1000) * 1000;
+      return `~${(rounded / 8760).toFixed(1)} years`;
+    }
+    
+    // For more than 30 days, show in days
+    if (hours > 720) {
+      return `${Math.round(hours / 24)} days`;
+    }
+    
+    // Normal hours display
+    return hours.toFixed(1);
+  };
+
   // Enhanced run rate formatting to show proper precision
   const formatRunRate = (value: number | undefined): string => {
     if (value === undefined || value === null || isNaN(value)) return 'N/A';
@@ -164,7 +185,7 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
                       ? 'text-yellow-400'
                       : 'text-slate-300'
                   }`}>
-                    {formatValue(tank.hours_to_10_inches, 1)}
+                    {formatHoursTo10Inches(tank.hours_to_10_inches)}
                   </span>
                   <span className="text-slate-400 text-sm ml-1">hrs</span>
                 </td>
