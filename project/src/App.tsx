@@ -225,7 +225,7 @@ function App() {
                 <div className="bg-orange-900/20 border border-orange-500/30 rounded-lg p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-orange-400 text-sm font-medium">Low Fuel (&lt;25%)</p>
+                      <p className="text-orange-400 text-sm font-medium">Low Fuel ({'<'}25%)</p>
                       <p className="text-2xl font-bold text-orange-300">
                         {stores.reduce((count, store) => 
                           count + store.tanks.filter(tank => tank.capacity_percentage < 25).length, 0
