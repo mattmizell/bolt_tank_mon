@@ -1,0 +1,26 @@
+[build]
+  # Build from project subdirectory
+  base = "project"
+  # Build command for Vite React app
+  command = "npm run build"
+  # Directory to publish (Vite builds to dist)
+  publish = "project/dist"
+
+[build.environment]
+  # Use Node 18
+  NODE_VERSION = "18"
+
+# Headers for production
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# SPA redirect (for React Router if used)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
