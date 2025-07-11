@@ -127,3 +127,9 @@ temp/
 # Tank monitoring specific
 tank-sync-deploy/
 *.zip
+
+# Deployment documentation (contains sensitive tokens)
+DEPLOYMENT_COMMANDS.md
+GIT_SETUP_AND_DEPLOY.md
+QUICK_RENDER_DEPLOY.md
+RENDER_DEPLOYMENT_GUIDE.md
