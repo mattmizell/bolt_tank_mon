@@ -23,11 +23,31 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
   const [showDatabaseStatus, setShowDatabaseStatus] = useState(false);
   const [showReadOnlyLinks, setShowReadOnlyLinks] = useState(false);
   const [showDebugInfo, setShowDebugInfo] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Refresh data when panel opens
-    setStoreHours(ConfigService.getStoreHours());
-    setTankConfigs(ConfigService.getTankConfigurations());
+    // Fetch store configurations from central server database
+    const loadStoreConfigurations = async () => {
+      setLoading(true);
+      try {
+        const serverStoreHours = await ConfigService.getStoreHoursWithServerSync();
+        const serverTankConfigs = await ConfigService.syncTankConfigurationsFromServer();
+        
+        setStoreHours(serverStoreHours);
+        setTankConfigs(serverTankConfigs);
+        
+        console.log('✅ Loaded store configurations from central server database');
+      } catch (error) {
+        console.error('❌ Failed to load from server, using local data:', error);
+        // Fallback to local data
+        setStoreHours(ConfigService.getStoreHours());
+        setTankConfigs(ConfigService.getTankConfigurations());
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadStoreConfigurations();
   }, []);
 
   const handleStoreHoursUpdate = async (storeName: string, field: string, value: any) => {
@@ -187,7 +207,10 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
           {activeTab === 'stores' && (
             <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-white">Store Hours & Admin Contacts</h3>
+                <h3 className="text-lg font-semibold text-white">
+                  Store Hours & Admin Contacts
+                  {loading && <span className="ml-2 text-blue-400 text-sm">(Loading from database...)</span>}
+                </h3>
                 <div className="flex space-x-2">
                   <button
                     onClick={() => setShowReadOnlyLinks(!showReadOnlyLinks)}

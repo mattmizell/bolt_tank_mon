@@ -395,6 +395,32 @@ export class ConfigService {
     localStorage.removeItem(STORAGE_KEYS.TANK_CONFIGS);
   }
 
+  // Remove specific stores from frontend configuration
+  static removeTestStores(): void {
+    const testStoreNames = [
+      'Pleasant Hill',
+      'Pioneer Express Perry', 
+      'Gibbs Biggsville',
+      "Jethro's Pontoon Beach"
+    ];
+
+    // Remove from store hours
+    const storeHours = this.getStoreHours();
+    const filteredHours = storeHours.filter(hours => 
+      !testStoreNames.includes(hours.store_name)
+    );
+    this.saveStoreHours(filteredHours);
+
+    // Remove from tank configurations  
+    const tankConfigs = this.getTankConfigurations();
+    const filteredConfigs = tankConfigs.filter(config =>
+      !testStoreNames.includes(config.store_name)
+    );
+    this.saveTankConfigurations(filteredConfigs);
+
+    console.log('🧹 Removed test stores from frontend configuration:', testStoreNames);
+  }
+
   // Export/Import functionality (enhanced to include admin contacts)
   static exportConfiguration(): string {
     const config = {
@@ -612,6 +638,66 @@ export class ConfigService {
 
   // ===== STORE CONFIGURATION SYNC WITH CENTRAL SERVER =====
   // These methods sync store settings (hours, alerts) with the backend
+
+  /**
+   * Fetch store configurations from central server database
+   */
+  static async fetchStoreConfigurationsFromServer(): Promise<StoreHours[]> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/admin/stores`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Server responded with ${response.status}`);
+      }
+      
+      const data = await response.json();
+      const configurations: StoreHours[] = [];
+      
+      if (data.stores && Array.isArray(data.stores)) {
+        for (const store of data.stores) {
+          configurations.push({
+            store_name: store.store_name,
+            open_hour: store.open_hour || 5,
+            close_hour: store.close_hour || 23,
+            timezone: store.timezone || 'America/Chicago',
+            admin_name: store.admin_name || 'Store Manager',
+            admin_phone: store.admin_phone || '+1234567890',
+            admin_email: store.admin_email || `manager@${store.store_name.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
+            alerts_enabled: store.alerts_enabled !== false,
+            is_active: true // Stores from database are always visible
+          });
+        }
+      }
+      
+      console.log(`✅ Fetched ${configurations.length} store configurations from central server`);
+      return configurations;
+    } catch (error) {
+      console.error('❌ Failed to fetch store configurations from server:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get store configurations with server sync fallback
+   */
+  static async getStoreHoursWithServerSync(): Promise<StoreHours[]> {
+    try {
+      // Try to fetch from server first
+      const serverConfigs = await this.fetchStoreConfigurationsFromServer();
+      
+      // Update local storage with server data
+      this.saveStoreHours(serverConfigs);
+      
+      return serverConfigs;
+    } catch (error) {
+      console.warn('⚠️ Failed to sync from server, using local cache');
+      // Fall back to local storage if server is unavailable
+      return this.getStoreHours();
+    }
+  }
 
   /**
    * Push store configuration to central server database
