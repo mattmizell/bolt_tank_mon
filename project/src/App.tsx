@@ -24,17 +24,22 @@ const ComponentLoader = ({ message = "Loading..." }: { message?: string }) => (
 );
 
 function App() {
+  console.warn('🚨 APP.TSX COMPONENT LOADING/RELOADING');
+  
   const { stores, loading, error, isLiveData, refreshData, newStoreDetected, cacheInfo } = useSmartCache();
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>('selector');
 
   // 🔍 DEBUG: Log the data flow from useSmartCache to components
   React.useEffect(() => {
+    console.warn('🚨 APP.TSX DEBUG - FORCED WARNING LOG');
+    console.error('🚨 APP.TSX DEBUG - FORCED ERROR LOG');
     console.log('🔍 APP.TSX DATA FLOW DEBUG:');
     console.log('🔍   stores.length:', stores.length);
     console.log('🔍   loading:', loading);
     console.log('🔍   error:', error);
     console.log('🔍   stores array:', stores);
+    console.log('🔍   viewMode:', viewMode);
     
     if (stores.length > 0) {
       stores.forEach((store, index) => {
@@ -45,7 +50,7 @@ function App() {
         }
       });
     }
-  }, [stores, loading, error]);
+  }, [stores, loading, error, viewMode]);
 
   // Check if we're in read-only mode (via URL parameter)
   const urlParams = new URLSearchParams(window.location.search);
@@ -69,6 +74,8 @@ function App() {
   };
 
   const handleViewAll = () => {
+    console.warn('🚨 HANDLE VIEW ALL CLICKED - viewMode changing to all-stores');
+    console.log('🔍 Current stores when clicking View All:', stores);
     setViewMode('all-stores');
   };
 
