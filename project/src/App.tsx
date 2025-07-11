@@ -156,10 +156,8 @@ function App() {
         <StoreSelector
           stores={stores}
           onStoreSelect={handleStoreSelect}
-          onViewAllStores={handleViewAllStores}
-          onRefresh={refreshData}
+          onViewAll={handleViewAllStores}
           loading={false}
-          isLiveData={true}
         />
       </div>
     );
