@@ -6,22 +6,12 @@ import { calculateSimpleTankMetrics } from '../services/tankAnalytics';
 import { ConfigService } from '../services/configService';
 
 export const useSmartCache = () => {
-  console.log('🚀 useSmartCache HOOK INITIALIZING...');
-  
   const [stores, setStores] = useState<Store[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isLiveData, setIsLiveData] = useState(false);
   const [newStoreDetected, setNewStoreDetected] = useState<string | null>(null);
   const [cacheInfo, setCacheInfo] = useState(SmartCache.getCacheInfo());
-  
-  console.log('🚀 useSmartCache initial state:', {
-    storesLength: stores.length,
-    loading,
-    error,
-    isLiveData,
-    cacheInfo
-  });
 
   // Filter stores based on visibility settings
   const filterVisibleStores = useCallback((allStores: Store[]): Store[] => {
