@@ -143,6 +143,7 @@ function App() {
   };
 
   const handleViewAllStores = () => {
+    console.log('🚨 CLAUDE CODE: handleViewAllStores called - setting viewMode to all-stores');
     setViewMode('all-stores');
   };
 
@@ -165,6 +166,7 @@ function App() {
   }
 
   if (viewMode === 'all-stores') {
+    console.log('🚨 CLAUDE CODE: Rendering all-stores view with alerts grid');
     return (
       <div className="App">
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
