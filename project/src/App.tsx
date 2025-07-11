@@ -101,7 +101,6 @@ function App() {
   const refreshData = () => {
     setLoading(true);
     setError(null);
-    // Re-trigger the useEffect
     window.location.reload();
   };
   
@@ -136,7 +135,7 @@ function App() {
       </div>
     );
   }
-  
+
   const handleStoreSelect = (store: Store) => {
     setSelectedStore(store);
     setViewMode('single-store');
@@ -221,11 +220,11 @@ function App() {
                   </div>
                 </div>
                 
-                {/* Low Fuel Tanks (< 25%) */}
+                {/* Low Fuel Tanks */}
                 <div className="bg-orange-900/20 border border-orange-500/30 rounded-lg p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-orange-400 text-sm font-medium">Low Fuel ({'<'}25%)</p>
+                      <p className="text-orange-400 text-sm font-medium">Low Fuel ({"<"}25%)</p>
                       <p className="text-2xl font-bold text-orange-300">
                         {stores.reduce((count, store) => 
                           count + store.tanks.filter(tank => tank.capacity_percentage < 25).length, 0
@@ -352,7 +351,6 @@ function App() {
     );
   }
 
-  // Single store view (placeholder)
   if (viewMode === 'single-store' && selectedStore) {
     return (
       <div className="App">
@@ -374,158 +372,39 @@ function App() {
               </button>
             </div>
             
-            {/* Store Alert Summary */}
-            <div className="mb-6">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="bg-slate-700 rounded-lg p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-slate-400 text-sm">Total Tanks</p>
-                      <p className="text-xl font-bold text-white">{selectedStore.tanks.length}</p>
-                    </div>
-                    <div className="text-blue-400 text-xl">📊</div>
-                  </div>
-                </div>
-                
-                <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-red-400 text-sm">Critical</p>
-                      <p className="text-xl font-bold text-red-300">
-                        {selectedStore.tanks.filter(tank => tank.status === 'critical').length}
-                      </p>
-                    </div>
-                    <div className="text-red-400 text-xl">🚨</div>
-                  </div>
-                </div>
-                
-                <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-yellow-400 text-sm">Warning</p>
-                      <p className="text-xl font-bold text-yellow-300">
-                        {selectedStore.tanks.filter(tank => tank.status === 'warning').length}
-                      </p>
-                    </div>
-                    <div className="text-yellow-400 text-xl">⚠️</div>
-                  </div>
-                </div>
-                
-                <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-green-400 text-sm">Normal</p>
-                      <p className="text-xl font-bold text-green-300">
-                        {selectedStore.tanks.filter(tank => tank.status === 'normal' || !tank.status).length}
-                      </p>
-                    </div>
-                    <div className="text-green-400 text-xl">✅</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {selectedStore.tanks.map((tank) => {
-                const isLowFuel = tank.capacity_percentage < 25;
-                const isAlert = tank.status === 'critical' || tank.status === 'warning' || isLowFuel;
-                
-                return (
-                  <div key={tank.tank_id} className={`rounded-xl p-6 border-2 ${
-                    tank.status === 'critical' ? 'bg-red-900/20 border-red-500/50' :
-                    tank.status === 'warning' ? 'bg-yellow-900/20 border-yellow-500/50' :
-                    isLowFuel ? 'bg-orange-900/20 border-orange-500/50' :
-                    'bg-slate-800 border-slate-600'
-                  }`}>
-                    {/* Tank Header */}
-                    <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-xl font-bold text-white">{tank.tank_name}</h2>
-                      <div className={`text-2xl ${
-                        tank.status === 'critical' ? 'text-red-400' :
-                        tank.status === 'warning' ? 'text-yellow-400' :
-                        isLowFuel ? 'text-orange-400' :
-                        'text-green-400'
-                      }`}>
-                        {tank.status === 'critical' ? '🚨' :
-                         tank.status === 'warning' ? '⚠️' :
-                         isLowFuel ? '⛽' : '✅'}
-                      </div>
+              {selectedStore.tanks.map((tank) => (
+                <div key={tank.tank_id} className="bg-slate-800 rounded-xl p-6 border-2 border-slate-600">
+                  <h2 className="text-xl font-bold text-white mb-4">{tank.tank_name}</h2>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-300">Current Volume</span>
+                      <span className="text-white text-lg font-semibold">{tank.latest_log?.volume || 0} gal</span>
                     </div>
-                    
-                    {/* Status Badge */}
-                    <div className={`inline-block px-3 py-1 rounded-full text-sm font-medium mb-4 ${
-                      tank.status === 'critical' ? 'bg-red-500/20 text-red-300 border border-red-500/30' :
-                      tank.status === 'warning' ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30' :
-                      isLowFuel ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30' :
-                      'bg-green-500/20 text-green-300 border border-green-500/30'
-                    }`}>
-                      {tank.status === 'critical' ? 'CRITICAL ALERT' :
-                       tank.status === 'warning' ? 'WARNING' :
-                       isLowFuel ? 'LOW FUEL' : 'NORMAL'}
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-300">Capacity Used</span>
+                      <span className="text-white">{tank.capacity_percentage}%</span>
                     </div>
-                    
-                    {/* Tank Metrics */}
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center">
-                        <span className="text-slate-300">Current Volume</span>
-                        <span className="text-white text-lg font-semibold">{tank.latest_log?.volume || 0} gal</span>
-                      </div>
-                      
-                      <div className="flex justify-between items-center">
-                        <span className="text-slate-300">Capacity Used</span>
-                        <div className="flex items-center space-x-2">
-                          <span className={`text-lg font-semibold ${
-                            tank.capacity_percentage < 15 ? 'text-red-400' :
-                            tank.capacity_percentage < 30 ? 'text-yellow-400' :
-                            'text-white'
-                          }`}>{tank.capacity_percentage}%</span>
-                          <div className="w-16 h-2 bg-slate-600 rounded-full">
-                            <div 
-                              className={`h-2 rounded-full ${
-                                tank.capacity_percentage < 15 ? 'bg-red-500' :
-                                tank.capacity_percentage < 30 ? 'bg-yellow-500' :
-                                'bg-green-500'
-                              }`}
-                              style={{ width: `${Math.min(tank.capacity_percentage, 100)}%` }}
-                            ></div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex justify-between items-center">
-                        <span className="text-slate-300">Height</span>
-                        <span className="text-white">{tank.latest_log?.height?.toFixed(1)} in</span>
-                      </div>
-                      
-                      <div className="flex justify-between items-center">
-                        <span className="text-slate-300">Run Rate</span>
-                        <span className="text-white">{tank.run_rate?.toFixed(3)} in/hr</span>
-                      </div>
-                      
-                      {tank.hours_to_10_inches && tank.hours_to_10_inches < 168 && (
-                        <div className="flex justify-between items-center">
-                          <span className="text-slate-300">Time to 10"</span>
-                          <span className={`font-semibold ${
-                            tank.hours_to_10_inches < 24 ? 'text-red-400' :
-                            tank.hours_to_10_inches < 48 ? 'text-yellow-400' :
-                            'text-white'
-                          }`}>{tank.hours_to_10_inches.toFixed(1)} hrs</span>
-                        </div>
-                      )}
-                      
-                      <div className="flex justify-between items-center">
-                        <span className="text-slate-300">Max Capacity</span>
-                        <span className="text-slate-400">{tank.profile?.max_capacity_gallons?.toLocaleString()} gal</span>
-                      </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-300">Height</span>
+                      <span className="text-white">{tank.latest_log?.height?.toFixed(1)} in</span>
                     </div>
-                    
-                    {/* Tank Chart */}
-                    <div className="mt-6 pt-4 border-t border-slate-600">
-                      <TankChart tank={tank} />
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-300">Run Rate</span>
+                      <span className="text-white">{tank.run_rate?.toFixed(3)} in/hr</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-300">Max Capacity</span>
+                      <span className="text-slate-400">{tank.profile?.max_capacity_gallons?.toLocaleString()} gal</span>
                     </div>
                   </div>
-                );
-              })
+                  
+                  {/* Tank Chart */}
+                  <div className="mt-6 pt-4 border-t border-slate-600">
+                    <TankChart tank={tank} />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
