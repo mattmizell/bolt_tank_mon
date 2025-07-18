@@ -95,7 +95,7 @@ function App() {
         <div className="text-center max-w-md mx-auto px-6">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-400 mx-auto mb-6"></div>
           <h2 className="text-2xl font-bold text-white mb-4">
-            {cacheInfo.hasCache ? 'Loading Tank Data' : 'First Time Setup'}
+            {cacheInfo.hasCache ? 'Loading Tank Data' : 'Loading Data'}
           </h2>
           <p className="text-slate-300 text-lg mb-4">
             {cacheInfo.hasCache 

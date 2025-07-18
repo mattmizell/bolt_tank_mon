@@ -110,16 +110,6 @@ export const ViewAllStores: React.FC<ViewAllStoresProps> = ({
               </p>
             </div>
           </div>
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={handleRefresh}
-              disabled={refreshing}
-              className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 px-4 py-2 rounded-lg text-white transition-colors"
-            >
-              <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-              <span>Refresh All</span>
-            </button>
-          </div>
         </div>
 
         {/* Live Data Banner */}

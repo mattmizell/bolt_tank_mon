@@ -36,6 +36,9 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
   const [chartLogs, setChartLogs] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  
+  // Detect if user is on mobile device
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
   // Fetch fresh chart data directly from API (no caching)
   useEffect(() => {
@@ -355,6 +358,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
         },
       },
       tooltip: {
+        enabled: !isMobile, // Disable tooltips on mobile devices
         mode: 'index' as const,
         intersect: false,
         backgroundColor: 'rgba(30, 41, 59, 0.95)',
