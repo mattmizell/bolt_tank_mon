@@ -3,6 +3,7 @@ import { X, Settings, Download, Upload, RotateCcw, Save, Eye, EyeOff, Database, 
 import { Store } from '../types';
 import { ConfigService } from '../services/configService';
 import { DatabaseStatus } from './DatabaseStatus';
+import { AlertConfiguration } from './AlertConfiguration';
 
 interface ConfigurationPanelProps {
   onClose: () => void;
@@ -17,7 +18,7 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
   generateReadOnlyLink,
   copyToClipboard,
 }) => {
-  const [activeTab, setActiveTab] = useState<'stores' | 'tanks' | 'system'>('stores');
+  const [activeTab, setActiveTab] = useState<'stores' | 'tanks' | 'system' | 'alerts'>('stores');
   const [storeHours, setStoreHours] = useState(ConfigService.getStoreHours());
   const [tankConfigs, setTankConfigs] = useState(ConfigService.getTankConfigurations());
   const [showDatabaseStatus, setShowDatabaseStatus] = useState(false);
@@ -186,6 +187,7 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
           {[
             { id: 'stores', label: 'Store Settings', icon: Settings },
             { id: 'tanks', label: 'Tank Configuration', icon: Database },
+            { id: 'alerts', label: 'Email Alerts', icon: Settings },
             { id: 'system', label: 'System Tools', icon: Sparkles },
           ].map(({ id, label, icon: Icon }) => (
             <button
@@ -536,6 +538,8 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
               })}
             </div>
           )}
+
+          {activeTab === 'alerts' && <AlertConfiguration />}
 
           {activeTab === 'system' && (
             <div className="space-y-6">

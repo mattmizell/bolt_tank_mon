@@ -9,6 +9,7 @@ const CACHE_DURATION = 2 * 60 * 1000; // 2 minutes for API cache
 
 export class ApiService {
   private static initialized = false;
+  private static warmupInterval: number | null = null;
 
   // Initialize API service
   static async initialize(): Promise<void> {
@@ -16,7 +17,40 @@ export class ApiService {
       return; // Already initialized
     }
 
+    // Silently warm up the server on initialization
+    this.warmupServer();
+    
+    // Schedule periodic silent warmups every 5 minutes to prevent cold starts
+    this.warmupInterval = window.setInterval(() => {
+      this.warmupServer();
+    }, 5 * 60 * 1000);
+
     this.initialized = true;
+  }
+  
+  // Silently warm up the server to prevent cold starts
+  private static async warmupServer(): Promise<void> {
+    try {
+      const startTime = Date.now();
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      
+      const response = await fetch(`${API_BASE_URL}/health`, {
+        signal: controller.signal,
+        headers: { 'Accept': 'application/json' }
+      });
+      
+      clearTimeout(timeoutId);
+      
+      const elapsed = Date.now() - startTime;
+      const data = await response.json();
+      
+      // Log warmup success with timing
+      console.log(`🔥 Server warmup successful in ${elapsed}ms - Status: ${data.status}, DB: ${data.database}`);
+    } catch (error) {
+      // Log warmup failure (might indicate cold start)
+      console.log('❄️ Server warmup failed (server may be cold starting):', error);
+    }
   }
 
   private static async request<T>(endpoint: string, options?: RequestInit & { cacheKey?: string; cacheDuration?: number }): Promise<T> {
