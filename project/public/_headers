@@ -15,3 +15,7 @@
   
 /*.css
   Cache-Control: public, max-age=31536000, immutable
+
+# Preconnect to API server to reduce latency
+/*
+  Link: <https://central-tank-server.onrender.com>; rel=preconnect
