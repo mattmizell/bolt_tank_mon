@@ -1,0 +1,17 @@
+# Keep HTML warm in CDN cache for 24 hours
+/
+  Cache-Control: public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400
+  
+/index.html
+  Cache-Control: public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400
+
+# Cache static assets for 1 year
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Vite generates hashed filenames, safe to cache forever
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+  
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
