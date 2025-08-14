@@ -90,12 +90,17 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
   };
 
   // Calculate max fill ullage based on tank configuration
+  // FIXED: Calculate remaining ullage space when tank reaches max fill percentage
   const calculateMaxFillUllage = (tank: Tank): number => {
     const maxCapacity = tank.configuration?.max_capacity_gallons || tank.profile?.max_capacity_gallons || 10000;
     const currentVolume = tank.latest_log?.tc_volume || 0;
-    const currentUllage = maxCapacity - currentVolume;
     const maxFillPercentage = tank.configuration?.max_fill_ullage_percentage || 90.0;
-    return currentUllage * (maxFillPercentage / 100);
+    
+    // CORRECT: (capacity * percentage) - current_volume
+    const maxFillVolume = maxCapacity * (maxFillPercentage / 100);
+    const remainingUllageAtMaxFill = maxFillVolume - currentVolume;
+    
+    return Math.max(0, remainingUllageAtMaxFill);
   };
 
   // Get max fill percentage for display
