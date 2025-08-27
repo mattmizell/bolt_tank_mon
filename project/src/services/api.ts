@@ -153,16 +153,13 @@ export class ApiService {
         throw new Error('Invalid response from /dashboard/stores - not an array');
       }
       
-      // Filter to only visible stores before fetching detailed data
-      const visibleStoreNames = ConfigService.getVisibleStores();
-      const visibleStores = stores.filter(store => 
-        visibleStoreNames.length === 0 || visibleStoreNames.includes(store.store_name)
-      );
+      // Get all stores - no filtering for visibility
+      // All stores should be visible
       
-      // Get detailed data only for visible stores
+      // Get detailed data for all stores
       const detailedStores = [];
-      for (let i = 0; i < visibleStores.length; i++) {
-        const store = visibleStores[i];
+      for (let i = 0; i < stores.length; i++) {
+        const store = stores[i];
         const storeDetailUrl = `/dashboard/stores/${store.store_name}`;
         
         const storeData = await this.request(storeDetailUrl, {

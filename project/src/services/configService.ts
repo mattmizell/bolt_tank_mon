@@ -177,6 +177,7 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
 
 export class ConfigService {
   private static migrationCompleted = false;
+  private static cleanupCompleted = false;
 
   // Migration method to ensure Pleasant Hill is included
   static migrateConfiguration(): void {
@@ -238,10 +239,27 @@ export class ConfigService {
     }
   }
 
+  // Cleanup method to remove test stores and old data
+  static cleanupData(): void {
+    if (this.cleanupCompleted) {
+      return;
+    }
+    
+    try {
+      console.log('🧹 Running data cleanup...');
+      this.removeTestStores();
+      this.cleanupCompleted = true;
+      console.log('✅ Data cleanup completed');
+    } catch (error) {
+      console.error('Error during data cleanup:', error);
+    }
+  }
+
   // Store Hours Management (now includes admin contact info)
   static getStoreHours(): StoreHours[] {
-    // Run migration first
+    // Run migration and cleanup first
     this.migrateConfiguration();
+    this.cleanupData();
     
     try {
       const stored = localStorage.getItem(STORAGE_KEYS.STORE_HOURS);
@@ -254,6 +272,7 @@ export class ConfigService {
           admin_phone: hours.admin_phone || '+1234567890',
           admin_email: hours.admin_email || `manager@${hours.store_name.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
           alerts_enabled: hours.alerts_enabled !== false, // Default to true
+          is_active: true, // All stores are active/visible
         }));
       }
     } catch (error) {
@@ -524,7 +543,9 @@ export class ConfigService {
     const testStoreNames = [
       'Pioneer Express Perry', 
       'Gibbs Biggsville',
-      "Jethro's Pontoon Beach"
+      "Jethro's Pontoon Beach",
+      'Test Store',
+      'Demo Store'
     ];
 
     // Remove from store hours
@@ -724,13 +745,12 @@ export class ConfigService {
   // These methods control which stores appear in the dashboard
 
   /**
-   * Get stores that should be visible in the dashboard (is_active = true)
+   * Get all stores (all stores are now visible)
    */
   static getVisibleStores(): string[] {
     const allHours = this.getStoreHours();
-    return allHours
-      .filter(hours => hours.is_active !== false) // Default to visible if not set
-      .map(hours => hours.store_name);
+    // Return all stores - no filtering
+    return allHours.map(hours => hours.store_name);
   }
 
   /**
@@ -744,11 +764,10 @@ export class ConfigService {
   }
 
   /**
-   * Check if a store should be visible in dashboard
+   * Check if a store should be visible in dashboard (all stores are visible now)
    */
   static isStoreVisible(storeName: string): boolean {
-    const storeHours = this.getStoreHoursForStore(storeName);
-    return storeHours ? storeHours.is_active !== false : true; // Default to visible
+    return true; // All stores are visible
   }
 
   /**
