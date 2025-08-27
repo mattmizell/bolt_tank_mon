@@ -211,12 +211,12 @@ export class ConfigService {
           }
         }
         
-        // Add Gibbs Biggsville if it doesn't exist
-        const hasGibbsBiggsville = parsed.some((hours: StoreHours) => hours.store_name === 'Gibbs Biggsville');
+        // Add Gibbs-Biggsville if it doesn't exist (note the hyphen!)
+        const hasGibbsBiggsville = parsed.some((hours: StoreHours) => hours.store_name === 'Gibbs-Biggsville');
         if (!hasGibbsBiggsville) {
-          console.log('🔄 Adding Gibbs Biggsville to configuration');
+          console.log('🔄 Adding Gibbs-Biggsville to configuration');
           parsed.push({
-            store_name: 'Gibbs Biggsville',
+            store_name: 'Gibbs-Biggsville',
             open_hour: 5,
             close_hour: 23,
             timezone: 'America/Chicago',
@@ -229,7 +229,7 @@ export class ConfigService {
         }
         
         // Ensure key stores are always visible
-        const keyStores = ['Mascoutah', 'North City', 'Pleasant Hill', 'Gibbs Biggsville'];
+        const keyStores = ['Mascoutah', 'North City', 'Pleasant Hill', 'Gibbs-Biggsville'];
         keyStores.forEach(storeName => {
           const storeIndex = parsed.findIndex((h: StoreHours) => h.store_name === storeName);
           if (storeIndex >= 0) {
@@ -562,7 +562,8 @@ export class ConfigService {
       'Pioneer Express Perry', 
       "Jethro's Pontoon Beach",
       'Test Store',
-      'Demo Store'
+      'Demo Store',
+      'Gibbs Biggsville'  // Remove the old incorrect name if it exists
     ];
 
     // Remove from store hours
