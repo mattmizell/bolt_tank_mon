@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Store } from '../types';
-import { Building2, ChevronRight, Settings, Sparkles, ExternalLink, Copy, Database } from 'lucide-react';
+import { Building2, ChevronRight, Eye, Settings, Sparkles, ExternalLink, Copy, Database } from 'lucide-react';
 import { ConfigurationPanel } from './ConfigurationPanel';
 import { DatabaseStatus } from './DatabaseStatus';
 import { ConfigService } from '../services/configService';

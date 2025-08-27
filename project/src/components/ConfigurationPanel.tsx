@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Settings, Download, Upload, RotateCcw, Save, Database, ExternalLink, Copy, Sparkles, Eye } from 'lucide-react';
+import { X, Settings, Download, Upload, RotateCcw, Save, Eye, EyeOff, Database, ExternalLink, Copy, Sparkles } from 'lucide-react';
 import { Store } from '../types';
 import { ConfigService } from '../services/configService';
 import { DatabaseStatus } from './DatabaseStatus';
@@ -248,6 +248,19 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
                   <div key={hours.store_name} className="bg-slate-700 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-4">
                       <h4 className="text-white font-medium">{hours.store_name}</h4>
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => handleStoreHoursUpdate(hours.store_name, 'is_active', !hours.is_active)}
+                          className={`p-1 rounded transition-colors ${
+                            hours.is_active !== false
+                              ? 'text-green-400 hover:bg-green-900/30'
+                              : 'text-slate-500 hover:bg-slate-600'
+                          }`}
+                          title={hours.is_active !== false ? 'Store Visible' : 'Store Hidden'}
+                        >
+                          {hours.is_active !== false ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                        </button>
+                      </div>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -342,25 +355,17 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
                 </button>
               </div>
               
-              {storeHours.map((storeHour) => {
-                const storeConfigs = tankConfigs.filter(config => config.store_name === storeHour.store_name);
-                
-                // Find matching store from API data if available
-                const apiStore = stores.find(s => s.store_name === storeHour.store_name);
+              {stores.map((store) => {
+                const storeConfigs = tankConfigs.filter(config => config.store_name === store.store_name);
                 
                 return (
-                  <div key={storeHour.store_name} className="bg-slate-700 rounded-lg p-4">
-                    <h4 className="text-white font-medium mb-4">
-                      {storeHour.store_name}
-                      {!apiStore && (
-                        <span className="ml-2 text-xs text-yellow-400">(Not receiving data from API)</span>
-                      )}
-                    </h4>
+                  <div key={store.store_name} className="bg-slate-700 rounded-lg p-4">
+                    <h4 className="text-white font-medium mb-4">{store.store_name}</h4>
                     
                     <div className="space-y-4">
                       {storeConfigs.map((config) => {
                         // Check if this is a central server store (has live tank data)
-                        const relatedTank = apiStore?.tanks?.find(tank => tank.tank_id === config.tank_id);
+                        const relatedTank = store.tanks?.find(tank => tank.tank_id === config.tank_id);
                         const isFromCentralServer = relatedTank?.latest_log?.timestamp;
                         
                         return (

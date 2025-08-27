@@ -13,10 +13,22 @@ export const useSmartCache = () => {
   const [newStoreDetected, setNewStoreDetected] = useState<string | null>(null);
   const [cacheInfo, setCacheInfo] = useState(SmartCache.getCacheInfo());
 
-  // No filtering - all stores are visible
+  // Filter stores based on visibility settings
   const filterVisibleStores = useCallback((allStores: Store[]): Store[] => {
-    // Return all stores without filtering
-    return allStores;
+    const visibleStoreNames = ConfigService.getVisibleStores();
+    console.log('🔍 Filtering stores by visibility:', { 
+      allStores: allStores.map(s => s.store_name),
+      visibleStoreNames 
+    });
+    
+    if (visibleStoreNames.length === 0) {
+      // If no visibility config exists, show all stores (backward compatibility)
+      return allStores;
+    }
+    
+    const filtered = allStores.filter(store => visibleStoreNames.includes(store.store_name));
+    console.log('✅ Visible stores after filtering:', filtered.map(s => s.store_name));
+    return filtered;
   }, []);
   
   const refreshInProgress = useRef(false);
