@@ -355,17 +355,24 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
                 </button>
               </div>
               
-              {stores.map((store) => {
-                const storeConfigs = tankConfigs.filter(config => config.store_name === store.store_name);
+              {/* Show all stores from configuration, not just API stores */}
+              {storeHours.map((storeHour) => {
+                const storeConfigs = tankConfigs.filter(config => config.store_name === storeHour.store_name);
+                const apiStore = stores.find(s => s.store_name === storeHour.store_name);
                 
                 return (
-                  <div key={store.store_name} className="bg-slate-700 rounded-lg p-4">
-                    <h4 className="text-white font-medium mb-4">{store.store_name}</h4>
+                  <div key={storeHour.store_name} className="bg-slate-700 rounded-lg p-4">
+                    <h4 className="text-white font-medium mb-4">
+                      {storeHour.store_name}
+                      {!apiStore && (
+                        <span className="ml-2 text-xs text-yellow-400">(No API data)</span>
+                      )}
+                    </h4>
                     
                     <div className="space-y-4">
                       {storeConfigs.map((config) => {
                         // Check if this is a central server store (has live tank data)
-                        const relatedTank = store.tanks?.find(tank => tank.tank_id === config.tank_id);
+                        const relatedTank = apiStore?.tanks?.find(tank => tank.tank_id === config.tank_id);
                         const isFromCentralServer = relatedTank?.latest_log?.timestamp;
                         
                         return (

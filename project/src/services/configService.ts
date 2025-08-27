@@ -195,11 +195,30 @@ export class ConfigService {
           console.log('🔄 Migrating store hours to include Pleasant Hill');
           const pleasantHillConfig = DEFAULT_STORE_HOURS.find(h => h.store_name === 'Pleasant Hill');
           if (pleasantHillConfig) {
+            // Ensure Pleasant Hill is visible
+            pleasantHillConfig.is_active = true;
             parsed.push(pleasantHillConfig);
             localStorage.setItem(STORAGE_KEYS.STORE_HOURS, JSON.stringify(parsed));
-            console.log('✅ Pleasant Hill store hours added');
+            console.log('✅ Pleasant Hill store hours added with is_active=true');
+          }
+        } else {
+          // Ensure existing Pleasant Hill is visible
+          const phIndex = parsed.findIndex((h: StoreHours) => h.store_name === 'Pleasant Hill');
+          if (phIndex >= 0 && parsed[phIndex].is_active === false) {
+            parsed[phIndex].is_active = true;
+            localStorage.setItem(STORAGE_KEYS.STORE_HOURS, JSON.stringify(parsed));
+            console.log('✅ Pleasant Hill visibility enabled');
           }
         }
+        
+        // Ensure key stores are always visible
+        const keyStores = ['Mascoutah', 'North City', 'Pleasant Hill'];
+        keyStores.forEach(storeName => {
+          const storeIndex = parsed.findIndex((h: StoreHours) => h.store_name === storeName);
+          if (storeIndex >= 0) {
+            parsed[storeIndex].is_active = true;
+          }
+        });
         
         // Ensure all stores have is_active property
         const migratedHours = parsed.map((hours: StoreHours) => ({
