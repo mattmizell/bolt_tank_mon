@@ -275,12 +275,6 @@ export const useSmartCache = () => {
     SmartCache.clearCache();
     setCacheInfo(SmartCache.getCacheInfo());
     
-    // Ensure Gibbs Biggsville is in configuration
-    const currentHours = ConfigService.getStoreHours();
-    if (!currentHours.some(h => h.store_name === 'Gibbs Biggsville')) {
-      console.log('🔧 Force-adding Gibbs Biggsville to configuration');
-      ConfigService.updateStoreHours('Gibbs Biggsville', 5, 23, 'America/Chicago', 'Store Manager', '+1234567890', 'manager@gibbsbiggsville.betterdayenergy.com', true);
-    }
     
     setLoading(true);
     console.log('🚀 Calling smartLoad()...');
