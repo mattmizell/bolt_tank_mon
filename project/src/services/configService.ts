@@ -21,6 +21,7 @@ const DEFAULT_STORE_HOURS: StoreHours[] = [
     admin_phone: '+1234567890',
     admin_email: 'manager@mascoutah.betterdayenergy.com',
     alerts_enabled: true,
+    is_active: true,
   },
   {
     store_name: 'North City',
@@ -31,6 +32,7 @@ const DEFAULT_STORE_HOURS: StoreHours[] = [
     admin_phone: '+1234567891',
     admin_email: 'manager@northcity.betterdayenergy.com',
     alerts_enabled: true,
+    is_active: true,
   },
   {
     store_name: 'Pleasant Hill',
@@ -41,6 +43,7 @@ const DEFAULT_STORE_HOURS: StoreHours[] = [
     admin_phone: '+1234567892',
     admin_email: 'manager@pleasanthill.betterdayenergy.com',
     alerts_enabled: true,
+    is_active: true,
   },
 ];
 
@@ -173,8 +176,41 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
 ];
 
 export class ConfigService {
+  // Migration method to ensure Pleasant Hill is included
+  static migrateConfiguration(): void {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEYS.STORE_HOURS);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        const hasPleasantHill = parsed.some((hours: StoreHours) => hours.store_name === 'Pleasant Hill');
+        
+        if (!hasPleasantHill) {
+          console.log('🔄 Migrating configuration to include Pleasant Hill');
+          const pleasantHillConfig = DEFAULT_STORE_HOURS.find(h => h.store_name === 'Pleasant Hill');
+          if (pleasantHillConfig) {
+            parsed.push(pleasantHillConfig);
+            localStorage.setItem(STORAGE_KEYS.STORE_HOURS, JSON.stringify(parsed));
+            console.log('✅ Pleasant Hill added to configuration');
+          }
+        }
+        
+        // Ensure all stores have is_active property
+        const migratedHours = parsed.map((hours: StoreHours) => ({
+          ...hours,
+          is_active: hours.is_active !== false, // Default to true if not set
+        }));
+        localStorage.setItem(STORAGE_KEYS.STORE_HOURS, JSON.stringify(migratedHours));
+      }
+    } catch (error) {
+      console.error('Error during configuration migration:', error);
+    }
+  }
+
   // Store Hours Management (now includes admin contact info)
   static getStoreHours(): StoreHours[] {
+    // Run migration first
+    this.migrateConfiguration();
+    
     try {
       const stored = localStorage.getItem(STORAGE_KEYS.STORE_HOURS);
       if (stored) {

@@ -19,6 +19,19 @@ export interface StoreConfiguration {
   offline_alerts_enabled?: boolean;
 }
 
+// StoreHours interface for legacy compatibility and dashboard visibility
+export interface StoreHours {
+  store_name: string;
+  open_hour: number;
+  close_hour: number;
+  timezone: string;
+  admin_name?: string;
+  admin_phone?: string;
+  admin_email?: string;
+  alerts_enabled?: boolean;
+  is_active?: boolean; // Controls dashboard visibility
+}
+
 export interface StoreContact {
   id?: number;
   store_name: string;
