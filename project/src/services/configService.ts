@@ -179,18 +179,19 @@ export class ConfigService {
   // Migration method to ensure Pleasant Hill is included
   static migrateConfiguration(): void {
     try {
+      // Migrate store hours
       const stored = localStorage.getItem(STORAGE_KEYS.STORE_HOURS);
       if (stored) {
         const parsed = JSON.parse(stored);
         const hasPleasantHill = parsed.some((hours: StoreHours) => hours.store_name === 'Pleasant Hill');
         
         if (!hasPleasantHill) {
-          console.log('🔄 Migrating configuration to include Pleasant Hill');
+          console.log('🔄 Migrating store hours to include Pleasant Hill');
           const pleasantHillConfig = DEFAULT_STORE_HOURS.find(h => h.store_name === 'Pleasant Hill');
           if (pleasantHillConfig) {
             parsed.push(pleasantHillConfig);
             localStorage.setItem(STORAGE_KEYS.STORE_HOURS, JSON.stringify(parsed));
-            console.log('✅ Pleasant Hill added to configuration');
+            console.log('✅ Pleasant Hill store hours added');
           }
         }
         
@@ -200,6 +201,27 @@ export class ConfigService {
           is_active: hours.is_active !== false, // Default to true if not set
         }));
         localStorage.setItem(STORAGE_KEYS.STORE_HOURS, JSON.stringify(migratedHours));
+      }
+      
+      // Migrate tank configurations
+      const storedTanks = localStorage.getItem(STORAGE_KEYS.TANK_CONFIGS);
+      if (storedTanks) {
+        const parsed = JSON.parse(storedTanks);
+        const hasPleasantHillTanks = parsed.some((config: any) => config.store_name === 'Pleasant Hill');
+        
+        if (!hasPleasantHillTanks) {
+          console.log('🔄 Migrating tank configurations to include Pleasant Hill');
+          const pleasantHillTankConfigs = DEFAULT_TANK_CONFIGS.filter(c => c.store_name === 'Pleasant Hill');
+          if (pleasantHillTankConfigs.length > 0) {
+            parsed.push(...pleasantHillTankConfigs);
+            localStorage.setItem(STORAGE_KEYS.TANK_CONFIGS, JSON.stringify(parsed));
+            console.log(`✅ Added ${pleasantHillTankConfigs.length} Pleasant Hill tank configurations`);
+          }
+        }
+      } else {
+        // No tank configs exist, initialize with defaults
+        console.log('🔄 Initializing tank configurations with defaults including Pleasant Hill');
+        localStorage.setItem(STORAGE_KEYS.TANK_CONFIGS, JSON.stringify(DEFAULT_TANK_CONFIGS));
       }
     } catch (error) {
       console.error('Error during configuration migration:', error);
@@ -328,6 +350,9 @@ export class ConfigService {
 
   // Tank Configuration Management (uses manual capacity input)
   static getTankConfigurations(): TankConfiguration[] {
+    // Run migration first to ensure Pleasant Hill tanks are included
+    this.migrateConfiguration();
+    
     try {
       const stored = localStorage.getItem(STORAGE_KEYS.TANK_CONFIGS);
       if (stored) {
