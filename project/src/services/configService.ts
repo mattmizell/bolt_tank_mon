@@ -651,6 +651,7 @@ export class ConfigService {
             tank_name: tank.tank_name,
             product_type: tank.product_type,
             max_capacity_gallons: tank.max_capacity_gallons || 10000,
+            max_height_inches: tank.max_height_inches || 96,  // ADD THIS LINE!
             critical_height_inches: tank.critical_height_inches || 10,
             warning_height_inches: tank.warning_height_inches || 20,
             max_fill_ullage_percentage: tank.max_fill_ullage_percentage || 90,
