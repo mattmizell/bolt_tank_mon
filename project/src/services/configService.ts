@@ -32,6 +32,16 @@ const DEFAULT_STORE_HOURS: StoreHours[] = [
     admin_email: 'manager@northcity.betterdayenergy.com',
     alerts_enabled: true,
   },
+  {
+    store_name: 'Pleasant Hill',
+    open_hour: 5,
+    close_hour: 23,
+    timezone: 'America/Chicago',
+    admin_name: 'Store Manager',
+    admin_phone: '+1234567892',
+    admin_email: 'manager@pleasanthill.betterdayenergy.com',
+    alerts_enabled: true,
+  },
 ];
 
 // Default tank configurations - NO DIMENSIONS, only capacity and critical levels
@@ -120,6 +130,40 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     tank_id: 5,
     tank_name: 'K1',
     product_type: 'Kerosene',
+    max_capacity_gallons: 10000,
+    max_height_inches: 96,
+    critical_height_inches: 10,
+    warning_height_inches: 20,
+    alerts_enabled: true,
+  },
+  // Pleasant Hill tanks
+  {
+    store_name: 'Pleasant Hill',
+    tank_id: 1,
+    tank_name: 'UNLEADED',
+    product_type: 'Regular Unleaded',
+    max_capacity_gallons: 10000,
+    max_height_inches: 96,
+    critical_height_inches: 10,
+    warning_height_inches: 20,
+    alerts_enabled: true,
+  },
+  {
+    store_name: 'Pleasant Hill',
+    tank_id: 2,
+    tank_name: 'PREMIUM',
+    product_type: 'Premium Unleaded',
+    max_capacity_gallons: 10000,
+    max_height_inches: 96,
+    critical_height_inches: 10,
+    warning_height_inches: 20,
+    alerts_enabled: true,
+  },
+  {
+    store_name: 'Pleasant Hill',
+    tank_id: 3,
+    tank_name: 'DIESEL',
+    product_type: 'Diesel',
     max_capacity_gallons: 10000,
     max_height_inches: 96,
     critical_height_inches: 10,
@@ -407,7 +451,6 @@ export class ConfigService {
   // Remove specific stores from frontend configuration
   static removeTestStores(): void {
     const testStoreNames = [
-      'Pleasant Hill',
       'Pioneer Express Perry', 
       'Gibbs Biggsville',
       "Jethro's Pontoon Beach"
