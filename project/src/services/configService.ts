@@ -211,8 +211,25 @@ export class ConfigService {
           }
         }
         
+        // Add Gibbs Biggsville if it doesn't exist
+        const hasGibbsBiggsville = parsed.some((hours: StoreHours) => hours.store_name === 'Gibbs Biggsville');
+        if (!hasGibbsBiggsville) {
+          console.log('🔄 Adding Gibbs Biggsville to configuration');
+          parsed.push({
+            store_name: 'Gibbs Biggsville',
+            open_hour: 5,
+            close_hour: 23,
+            timezone: 'America/Chicago',
+            admin_name: 'Store Manager',
+            admin_phone: '+1234567890',
+            admin_email: 'manager@gibbsbiggsville.betterdayenergy.com',
+            alerts_enabled: true,
+            is_active: true
+          });
+        }
+        
         // Ensure key stores are always visible
-        const keyStores = ['Mascoutah', 'North City', 'Pleasant Hill'];
+        const keyStores = ['Mascoutah', 'North City', 'Pleasant Hill', 'Gibbs Biggsville'];
         keyStores.forEach(storeName => {
           const storeIndex = parsed.findIndex((h: StoreHours) => h.store_name === storeName);
           if (storeIndex >= 0) {
@@ -543,8 +560,9 @@ export class ConfigService {
   static removeTestStores(): void {
     const testStoreNames = [
       'Pioneer Express Perry', 
-      'Gibbs Biggsville',
-      "Jethro's Pontoon Beach"
+      "Jethro's Pontoon Beach",
+      'Test Store',
+      'Demo Store'
     ];
 
     // Remove from store hours
