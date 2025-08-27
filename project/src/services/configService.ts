@@ -176,8 +176,14 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
 ];
 
 export class ConfigService {
+  private static migrationCompleted = false;
+
   // Migration method to ensure Pleasant Hill is included
   static migrateConfiguration(): void {
+    // Only run migration once per session
+    if (this.migrationCompleted) {
+      return;
+    }
     try {
       // Migrate store hours
       const stored = localStorage.getItem(STORAGE_KEYS.STORE_HOURS);
@@ -223,8 +229,12 @@ export class ConfigService {
         console.log('🔄 Initializing tank configurations with defaults including Pleasant Hill');
         localStorage.setItem(STORAGE_KEYS.TANK_CONFIGS, JSON.stringify(DEFAULT_TANK_CONFIGS));
       }
+      
+      // Mark migration as completed
+      this.migrationCompleted = true;
     } catch (error) {
       console.error('Error during configuration migration:', error);
+      // Don't mark as completed if migration failed
     }
   }
 
@@ -350,7 +360,7 @@ export class ConfigService {
 
   // Tank Configuration Management (uses manual capacity input)
   static getTankConfigurations(): TankConfiguration[] {
-    // Run migration first to ensure Pleasant Hill tanks are included
+    // Run migration first to ensure Pleasant Hill tanks are included (protected by flag)
     this.migrateConfiguration();
     
     try {
