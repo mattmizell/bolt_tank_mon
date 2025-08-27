@@ -254,6 +254,7 @@ export class ConfigService {
           admin_phone: hours.admin_phone || '+1234567890',
           admin_email: hours.admin_email || `manager@${hours.store_name.toLowerCase().replace(/\s+/g, '')}.betterdayenergy.com`,
           alerts_enabled: hours.alerts_enabled !== false, // Default to true
+          is_active: hours.is_active !== false, // Default to true - preserve visibility setting
         }));
       }
     } catch (error) {
