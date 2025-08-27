@@ -34,10 +34,29 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
         const serverStoreHours = await ConfigService.getStoreHoursWithServerSync();
         const serverTankConfigs = await ConfigService.syncTankConfigurationsFromServer();
         
-        setStoreHours(serverStoreHours);
-        setTankConfigs(serverTankConfigs);
+        // Ensure all stores from the API are included
+        const apiStoreNames = stores.map(s => s.store_name);
+        const configStoreNames = serverStoreHours.map(h => h.store_name);
         
-        console.log('✅ Loaded store configurations from central server database');
+        // Auto-configure any stores that are in API but not in configuration
+        for (const apiStoreName of apiStoreNames) {
+          if (!configStoreNames.includes(apiStoreName)) {
+            console.log(`🔧 Auto-configuring missing store: ${apiStoreName}`);
+            const apiStore = stores.find(s => s.store_name === apiStoreName);
+            if (apiStore) {
+              ConfigService.autoConfigureNewStore(apiStoreName, apiStore.tanks.length, apiStore.tanks);
+            }
+          }
+        }
+        
+        // Reload configurations after auto-configuration
+        const finalStoreHours = ConfigService.getStoreHours();
+        const finalTankConfigs = ConfigService.getTankConfigurations();
+        
+        setStoreHours(finalStoreHours);
+        setTankConfigs(finalTankConfigs);
+        
+        console.log('✅ Loaded store configurations with auto-configuration for missing stores');
       } catch (error) {
         console.error('❌ Failed to load from server, using local data:', error);
         // Fallback to local data
@@ -49,7 +68,7 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
     };
 
     loadStoreConfigurations();
-  }, []);
+  }, [stores]);
 
   const handleStoreHoursUpdate = async (storeName: string, field: string, value: any) => {
     const updated = storeHours.map(hours => 
@@ -214,6 +233,25 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
                   {loading && <span className="ml-2 text-blue-400 text-sm">(Loading from database...)</span>}
                 </h3>
                 <div className="flex space-x-2">
+                  <button
+                    onClick={async () => {
+                      setLoading(true);
+                      // Force sync all stores from API
+                      for (const store of stores) {
+                        const exists = storeHours.some(h => h.store_name === store.store_name);
+                        if (!exists) {
+                          ConfigService.autoConfigureNewStore(store.store_name, store.tanks.length, store.tanks);
+                        }
+                      }
+                      setStoreHours(ConfigService.getStoreHours());
+                      setTankConfigs(ConfigService.getTankConfigurations());
+                      setLoading(false);
+                    }}
+                    className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded-lg text-white transition-colors text-sm"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                    <span>Sync All Stores</span>
+                  </button>
                   <button
                     onClick={() => setShowReadOnlyLinks(!showReadOnlyLinks)}
                     className="flex items-center space-x-2 bg-slate-700 hover:bg-slate-600 px-3 py-2 rounded-lg text-white transition-colors text-sm"
