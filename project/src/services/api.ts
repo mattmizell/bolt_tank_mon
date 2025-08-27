@@ -155,8 +155,12 @@ export class ApiService {
       
       // Filter to only visible stores before fetching detailed data
       const visibleStoreNames = ConfigService.getVisibleStores();
+      // Always include key stores even if not in config yet
+      const alwaysInclude = ['Mascoutah', 'North City', 'Pleasant Hill', 'Gibbs Biggsville'];
       const visibleStores = stores.filter(store => 
-        visibleStoreNames.length === 0 || visibleStoreNames.includes(store.store_name)
+        alwaysInclude.includes(store.store_name) ||
+        visibleStoreNames.length === 0 || 
+        visibleStoreNames.includes(store.store_name)
       );
       
       // Get detailed data only for visible stores
