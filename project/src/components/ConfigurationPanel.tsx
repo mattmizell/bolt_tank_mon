@@ -447,6 +447,20 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
                               
                               <div>
                                 <label className="block text-slate-300 text-sm mb-1">
+                                  Display Alias
+                                  <span className="text-slate-400 ml-1 text-xs">• Name shown in dashboard</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  value={config.display_alias || ''}
+                                  onChange={(e) => handleTankConfigUpdate(config.store_name, config.tank_id, 'display_alias', e.target.value)}
+                                  className="w-full bg-slate-500 text-white rounded px-3 py-2 text-sm"
+                                  placeholder="e.g. 87RFG, #2 ULSC"
+                                />
+                              </div>
+                              
+                              <div>
+                                <label className="block text-slate-300 text-sm mb-1">
                                   Tank Capacity (gallons)
                                   <span className="text-slate-400 ml-1 text-xs">• Actual tank volume</span>
                                 </label>

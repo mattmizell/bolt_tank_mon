@@ -48,6 +48,7 @@ export interface TankConfiguration {
   tank_id: number;
   tank_name: string;
   product_type: string;
+  display_alias?: string;  // Custom display name for dashboard
   max_capacity_gallons: number;
   max_height_inches: number; // Total tank height in inches (for chart axis)
   critical_height_inches: number;
