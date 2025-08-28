@@ -9,6 +9,7 @@ interface TankTableProps {
 
 export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
   // Grid debugging removed - working perfectly now!
+  // Force rebuild - display aliases should work
 
   const getStatusIcon = (status: string | undefined) => {
     switch (status) {
