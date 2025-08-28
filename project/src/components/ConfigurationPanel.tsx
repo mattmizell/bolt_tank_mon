@@ -379,9 +379,11 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
                 <button
                   onClick={async () => {
                     try {
+                      console.log('🔄 Starting sync from central server...');
                       const synced = await ConfigService.syncTankConfigurationsFromServer();
+                      console.log('🔍 Synced data:', synced.slice(0, 2)); // Show first 2 tanks
                       setTankConfigs(synced);
-                      console.log('✅ Synced tank configurations from central server');
+                      console.log('✅ Updated tankConfigs state with synced data');
                     } catch (error) {
                       console.error('❌ Failed to sync from central server:', error);
                     }
