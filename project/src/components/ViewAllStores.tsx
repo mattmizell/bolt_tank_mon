@@ -34,7 +34,7 @@ export const ViewAllStores: React.FC<ViewAllStoresProps> = ({
       stores.forEach((store, index) => {
         console.log(`🔍   ViewAll Store ${index + 1}: ${store.store_name} with ${store.tanks.length} tanks`);
         store.tanks.forEach((tank, tankIndex) => {
-          console.log(`🔍     Tank ${tankIndex + 1}: ${tank.tank_name} (ID: ${tank.tank_id})`);
+          console.log(`🔍     Tank ${tankIndex + 1}: ${tank.display_alias || tank.tank_name} (ID: ${tank.tank_id})`);
           console.log(`🔍       latest_log:`, tank.latest_log);
           console.log(`🔍       configuration:`, tank.configuration);
         });

@@ -93,6 +93,8 @@ export interface Tank {
   tank_id: number;
   tank_name: string;
   product: string;
+  display_alias?: string;  // New field for custom display name
+  ninety_percent_ullage?: number;  // New field for 90% ullage calculation
   // Measurement data from central server
   latest_log?: TankLog;
   logs?: TankLog[];

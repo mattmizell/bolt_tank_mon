@@ -177,7 +177,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
     return (
       <div className="bg-slate-800 rounded-xl p-6 text-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mx-auto mb-2"></div>
-        <p className="text-slate-400">Loading chart data for {tank.tank_name}...</p>
+        <p className="text-slate-400">Loading chart data for {tank.display_alias || tank.tank_name}...</p>
         <p className="text-slate-500 text-xs mt-1">Fetching historical readings...</p>
       </div>
     );
@@ -216,7 +216,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
           </div>
           <p className="font-medium">No Chart Data Available</p>
           <p className="text-sm text-slate-500 mt-1">
-            No historical data found for {tank.tank_name}
+            No historical data found for {tank.display_alias || tank.tank_name}
           </p>
         </div>
         <div className="bg-slate-700/50 rounded-lg p-3">
@@ -350,7 +350,9 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
       },
       title: {
         display: true,
-        text: `${tank.tank_name} - Historical Trend${readOnly ? ' (Read Only)' : ''}`,
+        text: `${tank.display_alias || tank.tank_name} - Historical Trend${readOnly ? ' (Read Only)' : ''}`,
+
+
         color: 'rgb(226, 232, 240)',
         font: {
           size: 16,

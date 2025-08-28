@@ -126,7 +126,7 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">TC Volume</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Capacity Used</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Available Ullage</th>
-              <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Max Fill Ullage</th>
+              <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">90% Ullage</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Current Height</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Run Rate</th>
               <th className="px-4 py-3 text-right text-sm font-semibold text-slate-200">Hours to 10"</th>
@@ -147,7 +147,7 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
                   </div>
                 </td>
                 <td className="px-4 py-3">
-                  <div className="font-medium text-white">{tank.tank_name}</div>
+                  <div className="font-medium text-white">{tank.display_alias || tank.tank_name}</div>
                   <div className="text-sm text-slate-400">
                     Tank {tank.tank_id} • {tank.configuration?.max_capacity_gallons?.toLocaleString() || tank.profile?.max_capacity_gallons?.toLocaleString() || 'N/A'} gal
                   </div>
@@ -177,11 +177,11 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
                 </td>
                 <td className="px-4 py-3 text-right">
                   <span className="text-slate-300 font-mono">
-                    {formatValue(calculateMaxFillUllage(tank))}
+                    {formatValue(tank.ninety_percent_ullage ?? calculateMaxFillUllage(tank))}
                   </span>
                   <span className="text-slate-400 text-sm ml-1">gal</span>
                   <div className="text-xs text-slate-500 mt-1">
-                    {getMaxFillPercentage(tank)}% ullage
+                    90% ullage
                   </div>
                 </td>
                 <td className="px-4 py-3 text-right">
