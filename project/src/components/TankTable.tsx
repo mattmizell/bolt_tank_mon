@@ -9,7 +9,19 @@ interface TankTableProps {
 
 export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
   // Grid debugging removed - working perfectly now!
-  // Force rebuild - display aliases should work
+  // CRITICAL: display_alias should override tank_name - v2
+  
+  // Debug: Log tank data to verify display_alias is received
+  React.useEffect(() => {
+    if (tanks.length > 0) {
+      console.log('🔍 TankTable received tanks:', tanks.map(t => ({
+        id: t.tank_id,
+        name: t.tank_name,
+        alias: t.display_alias,
+        ullage90: t.ninety_percent_ullage
+      })));
+    }
+  }, [tanks]);
 
   const getStatusIcon = (status: string | undefined) => {
     switch (status) {
