@@ -1,6 +1,5 @@
 import React from 'react';
 import { Tank } from '../types';
-import { getTankName } from '../services/api';
 import { AlertTriangle, AlertCircle, CheckCircle, Thermometer, Droplets, Gauge } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -160,7 +159,7 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
                   </div>
                 </td>
                 <td className="px-4 py-3">
-                  <div className="font-medium text-white">{tank.display_alias || getTankName(tank.store_name, tank.tank_id) || tank.tank_name}</div>
+                  <div className="font-medium text-white">{tank.display_alias || tank.tank_name}</div>
                 </td>
                 <td className="px-4 py-3 text-right">
                   <span className="text-white font-mono">
