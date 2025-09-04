@@ -405,6 +405,12 @@ export const STORE_TANK_NAMES: Record<string, Record<number, string>> = {
     4: "PREM",
     5: "K1"
   },
+  "Pioneer Express": {
+    1: "Regular Unleaded",
+    2: "Diesel",
+    3: "Regular Unleaded #2", 
+    4: "Biodiesel B20"
+  },
 };
 
 export const STORE_TANK_DIMENSIONS: Record<string, Record<number, [number, number]>> = {
@@ -419,6 +425,12 @@ export const STORE_TANK_DIMENSIONS: Record<string, Record<number, [number, numbe
     3: [96, 319.3],
     4: [96, 319.3],
     5: [96, 319.3],
+  },
+  "Pioneer Express": {
+    1: [96, 319.3],  // 8,000 gal Regular Unleaded
+    2: [64, 200.0],  // 4,000 gal Diesel
+    3: [64, 200.0],  // 4,000 gal Regular Unleaded #2
+    4: [64, 200.0],  // 4,000 gal Biodiesel B20
   },
 };
 
