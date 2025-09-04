@@ -162,7 +162,7 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
                 <td className="px-4 py-3">
                   <div className="font-medium text-white">{tank.display_alias || tank.tank_name}</div>
                   <div className="text-sm text-slate-400">
-                    Tank {tank.tank_id} • {tank.configuration?.max_capacity_gallons?.toLocaleString() || tank.profile?.max_capacity_gallons?.toLocaleString() || 'N/A'} gal
+                    Tank {tank.tank_id}
                   </div>
                 </td>
                 <td className="px-4 py-3 text-right">
