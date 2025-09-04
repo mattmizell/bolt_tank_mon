@@ -157,7 +157,7 @@ export class ApiService {
       const visibleStoreNames = ConfigService.getVisibleStores();
       
       // Always include key stores even if not in config yet (note: Gibbs-Biggsville has a hyphen!)
-      const alwaysInclude = ['Mascoutah', 'North City', 'Pleasant Hill', 'Gibbs-Biggsville'];
+      const alwaysInclude = ['Mascoutah', 'North City', 'Pleasant Hill', 'Gibbs-Biggsville', 'Pioneer Express'];
       const visibleStores = stores.filter(store => 
         alwaysInclude.includes(store.store_name) ||
         visibleStoreNames.length === 0 || 
