@@ -678,6 +678,7 @@ export class ConfigService {
       const serverConfig = {
         tank_name: config.tank_name,
         product_type: config.product_type,
+        display_alias: config.display_alias,
         max_capacity_gallons: config.max_capacity_gallons,
         critical_height_inches: config.critical_height_inches,
         warning_height_inches: config.warning_height_inches,
