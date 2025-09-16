@@ -45,6 +45,17 @@ const DEFAULT_STORE_HOURS: StoreHours[] = [
     alerts_enabled: true,
     is_active: true,
   },
+  {
+    store_name: '4 Seasons Mini Mart',
+    open_hour: 5,
+    close_hour: 23,
+    timezone: 'America/Chicago',
+    admin_name: 'Store Manager',
+    admin_phone: '+1234567893',
+    admin_email: 'manager@4seasons.betterdayenergy.com',
+    alerts_enabled: true,
+    is_active: true,
+  },
 ];
 
 // Default tank configurations - NO DIMENSIONS, only capacity and critical levels
@@ -173,6 +184,29 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     warning_height_inches: 20,
     alerts_enabled: true,
   },
+  // 4 Seasons Mini Mart tanks (Otodata monitors)
+  {
+    store_name: '4 Seasons Mini Mart',
+    tank_id: 1,
+    tank_name: 'Tank 1 - Regular',
+    product_type: '87e10 Conventional',
+    max_capacity_gallons: 12000,
+    max_height_inches: 20 * 12,  // 20 feet = 240 inches total height
+    critical_height_inches: 10,  // Standard 10 inch critical
+    warning_height_inches: 20,   // Standard 20 inch warning
+    alerts_enabled: true,
+  },
+  {
+    store_name: '4 Seasons Mini Mart',
+    tank_id: 2,
+    tank_name: 'Tank 2 - Premium',
+    product_type: '91 e0 premium',
+    max_capacity_gallons: 12000,
+    max_height_inches: 18.8 * 12,  // 18.8 feet = 225.6 inches total height
+    critical_height_inches: 10,    // Standard 10 inch critical
+    warning_height_inches: 20,     // Standard 20 inch warning
+    alerts_enabled: true,
+  },
 ];
 
 export class ConfigService {
@@ -228,8 +262,25 @@ export class ConfigService {
           });
         }
         
+        // Add 4 Seasons Mini Mart if it doesn't exist
+        const has4Seasons = parsed.some((hours: StoreHours) => hours.store_name === '4 Seasons Mini Mart');
+        if (!has4Seasons) {
+          console.log('🔄 Adding 4 Seasons Mini Mart to configuration');
+          parsed.push({
+            store_name: '4 Seasons Mini Mart',
+            open_hour: 5,
+            close_hour: 23,
+            timezone: 'America/Chicago',
+            admin_name: 'Store Manager',
+            admin_phone: '+1234567893',
+            admin_email: 'manager@4seasons.betterdayenergy.com',
+            alerts_enabled: true,
+            is_active: true
+          });
+        }
+
         // Ensure key stores are always visible
-        const keyStores = ['Mascoutah', 'North City', 'Pleasant Hill', 'Gibbs-Biggsville'];
+        const keyStores = ['Mascoutah', 'North City', 'Pleasant Hill', 'Gibbs-Biggsville', '4 Seasons Mini Mart'];
         keyStores.forEach(storeName => {
           const storeIndex = parsed.findIndex((h: StoreHours) => h.store_name === storeName);
           if (storeIndex >= 0) {
