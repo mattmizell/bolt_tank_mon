@@ -123,9 +123,22 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
 
   // Calculate available ullage - how much fuel can safely be added
   const calculateAvailableUllage = (tank: Tank): number => {
-    const currentUllage = tank.latest_log?.ullage || 0;
+    // Use the ninety_percent_ullage value from the backend if available
+    // This is already calculated correctly on the backend as: (capacity * fill%) - current_volume
+    if (tank.ninety_percent_ullage !== undefined && tank.ninety_percent_ullage !== null) {
+      return tank.ninety_percent_ullage;
+    }
+
+    // Fallback to correct local calculation if backend value not available
+    const maxCapacity = tank.configuration?.max_capacity_gallons || tank.profile?.max_capacity_gallons || 10000;
+    const currentVolume = tank.latest_log?.tc_volume || tank.latest_log?.volume || 0;
     const maxFillPercentage = tank.configuration?.max_fill_ullage_percentage || 90.0;
-    return currentUllage * (maxFillPercentage / 100);
+
+    // CORRECT formula: (capacity * percentage) - current_volume
+    const maxFillVolume = maxCapacity * (maxFillPercentage / 100);
+    const remainingUllageAtMaxFill = maxFillVolume - currentVolume;
+
+    return Math.max(0, remainingUllageAtMaxFill);
   };
 
   return (
@@ -181,7 +194,7 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
                   </span>
                   <span className="text-slate-400 text-sm ml-1">gal</span>
                   <div className="text-xs text-slate-500 mt-1">
-                    {getMaxFillPercentage(tank)}% of {formatValue(tank.latest_log?.ullage)} gal
+                    Safe fill at {getMaxFillPercentage(tank)}%
                   </div>
                 </td>
                 <td className="px-4 py-3 text-right">
