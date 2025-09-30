@@ -383,12 +383,25 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
           }
         },
         callbacks: {
+          title: (context: any) => {
+            const dataIndex = context[0]?.dataIndex;
+            if (dataIndex !== undefined && chartLogs[dataIndex]) {
+              const log = chartLogs[dataIndex];
+              try {
+                const date = new Date(log.timestamp);
+                return format(date, 'MM/dd/yyyy HH:mm');
+              } catch {
+                return 'Invalid Date';
+              }
+            }
+            return '';
+          },
           afterBody: (context: any) => {
             const dataIndex = context[0]?.dataIndex;
             if (dataIndex !== undefined && chartLogs[dataIndex]) {
               const log = chartLogs[dataIndex];
-              const capacityPct = tank.profile ? 
-                ((log.tc_volume / tank.profile.max_capacity_gallons) * 100).toFixed(1) : 
+              const capacityPct = tank.profile ?
+                ((log.tc_volume / tank.profile.max_capacity_gallons) * 100).toFixed(1) :
                 'N/A';
               return [
                 `Temperature: ${log.temp?.toFixed(1)}°F`,
