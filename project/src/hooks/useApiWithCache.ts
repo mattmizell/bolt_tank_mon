@@ -113,7 +113,7 @@ export const useApiWithCache = () => {
             product: rawTank.latest_log?.product || 'Unknown',
             latest_log: rawTank.latest_log,
             logs: [],
-            run_rate: 0.1, // Default inches per hour
+            run_rate: 1.0, // Default gallons per hour
             hours_to_10_inches: 0,
             status: 'normal' as const,
             profile: {

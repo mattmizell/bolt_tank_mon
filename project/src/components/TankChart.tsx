@@ -525,7 +525,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
           {tank.run_rate && tank.run_rate > 0 && (
             <div className="flex justify-between">
               <span>Run Rate:</span>
-              <span className="text-green-400">{tank.run_rate.toFixed(2)} in/hr</span>
+              <span className="text-green-400">{tank.run_rate.toFixed(2)} gal/hr</span>
             </div>
           )}
         </div>

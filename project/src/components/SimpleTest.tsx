@@ -41,7 +41,7 @@ export const SimpleTest: React.FC = () => {
       {tank && (
         <div className="space-y-2">
           <div><strong>Tank Name:</strong> {tank.tank_name}</div>
-          <div><strong>Run Rate:</strong> {tank.analytics?.run_rate} in/hr</div>
+          <div><strong>Run Rate:</strong> {tank.analytics?.run_rate} gal/hr</div>
           <div><strong>Max Capacity:</strong> {tank.configuration?.max_capacity_gallons} gal</div>
           <div><strong>Current Volume:</strong> {tank.latest_reading?.volume} gal</div>
           <div><strong>Status:</strong> {tank.current_status}</div>
