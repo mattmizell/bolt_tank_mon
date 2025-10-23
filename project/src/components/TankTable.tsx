@@ -102,6 +102,21 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
     return 'text-green-400';
   };
 
+  const getTimestampColor = (timestamp: string | undefined): string => {
+    if (!timestamp) return 'text-slate-400';
+    try {
+      const lastUpdate = new Date(timestamp);
+      const now = new Date();
+      const hoursAgo = (now.getTime() - lastUpdate.getTime()) / (1000 * 60 * 60);
+
+      if (hoursAgo >= 48) return 'text-red-400 font-semibold'; // Red if 48+ hours
+      if (hoursAgo >= 24) return 'text-yellow-400 font-semibold'; // Yellow if 24+ hours
+      return 'text-slate-400'; // Normal if fresh
+    } catch {
+      return 'text-slate-400';
+    }
+  };
+
   // Calculate max fill ullage based on tank configuration
   // FIXED: Calculate remaining ullage space when tank reaches max fill percentage
   const calculateMaxFillUllage = (tank: Tank): number => {
@@ -246,8 +261,8 @@ export const TankTable: React.FC<TankTableProps> = ({ tanks }) => {
                   </div>
                 </td>
                 <td className="px-4 py-3">
-                  <span className="text-slate-400 text-sm">
-                    {tank.latest_log?.timestamp 
+                  <span className={`text-sm ${getTimestampColor(tank.latest_log?.timestamp)}`}>
+                    {tank.latest_log?.timestamp
                       ? format(new Date(tank.latest_log.timestamp), 'MM/dd hh:mm a')
                       : 'N/A'
                     }
