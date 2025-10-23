@@ -13,6 +13,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import { Tank } from '../types';
 import { format } from 'date-fns';
+import { formatHoursTo10Inches } from '../utils/formatters';
 import { ApiService } from '../services/api';
 
 ChartJS.register(
@@ -537,7 +538,7 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
           {tank.hours_to_10_inches && tank.hours_to_10_inches > 0 && (
             <div className="flex justify-between">
               <span>Hours to 10":</span>
-              <span className="text-orange-400">{tank.hours_to_10_inches.toFixed(1)} hrs</span>
+              <span className="text-orange-400">{formatHoursTo10Inches(tank.hours_to_10_inches)}</span>
             </div>
           )}
         </div>
