@@ -292,8 +292,8 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
       ...(predicted48hHeight !== null && predicted48hHeight !== undefined && predicted48hHeight > 0 ? [{
         label: '48h Prediction',
         data: new Array(chartLogs.length).fill(predicted48hHeight),
-        borderColor: 'rgb(251, 146, 60)', // Orange color
-        backgroundColor: 'rgba(251, 146, 60, 0.1)',
+        borderColor: 'rgb(147, 51, 234)', // Purple color (matches order modal)
+        backgroundColor: 'rgba(147, 51, 234, 0.1)',
         fill: false,
         tension: 0,
         pointRadius: 0,
@@ -306,8 +306,8 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
       {
         label: `Max Fill (${maxFillPercentage}%)`,
         data: new Array(chartLogs.length).fill(maxFillVolume),
-        borderColor: 'rgb(147, 51, 234)', // Purple color
-        backgroundColor: 'rgba(147, 51, 234, 0.1)',
+        borderColor: 'rgb(236, 72, 153)', // Pink/Magenta color (distinct from purple 48h line)
+        backgroundColor: 'rgba(236, 72, 153, 0.1)',
         fill: false,
         tension: 0,
         pointRadius: 0,
@@ -320,8 +320,8 @@ export const TankChart: React.FC<TankChartProps> = ({ tank, readOnly = false }) 
       {
         label: 'Critical Level (10")',
         data: new Array(chartLogs.length).fill(criticalHeight),
-        borderColor: 'rgb(239, 68, 68)',
-        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+        borderColor: 'rgb(220, 38, 38)', // Darker red (matches order modal)
+        backgroundColor: 'rgba(220, 38, 38, 0.1)',
         fill: false,
         tension: 0,
         pointRadius: 0,
