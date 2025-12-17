@@ -156,8 +156,10 @@ export class ApiService {
       // Filter to only visible stores before fetching detailed data
       const visibleStoreNames = ConfigService.getVisibleStores();
       
-      // Always include key stores even if not in config yet (note: Gibbs-Biggsville has a hyphen!)
-      const alwaysInclude = ['Mascoutah', 'North City', 'Pleasant Hill', 'Gibbs-Biggsville', 'Pioneer Express'];
+      // Always include key stores even if not in config yet
+      // Veeder Reader sites: Mascoutah, North City, Pleasant Hill, Gibbs-Biggsville, Pioneer Express
+      // OtoData sites: 4 Seasons Mini Mart, Cedar Junction
+      const alwaysInclude = ['Mascoutah', 'North City', 'Pleasant Hill', 'Gibbs-Biggsville', 'Pioneer Express', '4 Seasons Mini Mart', 'Cedar Junction'];
       const visibleStores = stores.filter(store => 
         alwaysInclude.includes(store.store_name) ||
         visibleStoreNames.length === 0 || 
