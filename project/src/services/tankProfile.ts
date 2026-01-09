@@ -10,34 +10,54 @@ export interface TankProfile {
   warning_height_inches: number;
 }
 
-// Fallback tank dimensions and names
+// Fallback tank dimensions and names - use Lighthouse standard names
 export const STORE_TANK_NAMES: Record<string, Record<number, string>> = {
-  "Mascoutah": {
+  "Speedi Check": {
+    1: "UNLEADED",
+    2: "PREMIUM",
+    3: "BIODIESEL"
+  },
+  "PH Petroleum": {
     1: "UNLEADED",
     2: "PREMIUM",
     3: "DIESEL"
   },
-  "North City": {
-    1: "UNL T1",
-    2: "UNL T2",
-    3: "UNL T3",
-    4: "PREM",
-    5: "K1"
+  "Pioneer Express": {
+    1: "UNLEADED",
+    2: "PREMIUM",
+    3: "BIODIESEL",
+    4: "DIESEL"
+  },
+  "Gibb's Sinclair": {
+    1: "UNLEADED",
+    2: "MIDGRADE",
+    3: "PREMIUM",
+    4: "DIESEL"
   },
 };
 
 export const STORE_TANK_DIMENSIONS: Record<string, Record<number, [number, number]>> = {
-  "Mascoutah": {
+  "Speedi Check": {
     1: [96, 319.3],
     2: [96, 319.3],
     3: [96, 319.3],
   },
-  "North City": {
+  "PH Petroleum": {
+    1: [96, 319.3],
+    2: [96, 319.3],
+    3: [96, 319.3],
+  },
+  "Pioneer Express": {
     1: [96, 319.3],
     2: [96, 319.3],
     3: [96, 319.3],
     4: [96, 319.3],
-    5: [96, 319.3],
+  },
+  "Gibb's Sinclair": {
+    1: [96, 319.3],
+    2: [96, 319.3],
+    3: [96, 319.3],
+    4: [96, 319.3],
   },
 };
 

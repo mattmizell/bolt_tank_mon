@@ -9,7 +9,7 @@ export const SimpleTest: React.FC = () => {
     const fetchData = async () => {
       try {
         console.log('Making direct API call...');
-        const response = await fetch('https://central-tank-server.onrender.com/dashboard/stores/Mascoutah');
+        const response = await fetch('https://central-tank-server.onrender.com/dashboard/stores/Speedi%20Check');
         
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -36,7 +36,7 @@ export const SimpleTest: React.FC = () => {
 
   return (
     <div className="bg-slate-800 p-6 rounded text-white">
-      <h2 className="text-xl mb-4">Raw API Test - Mascoutah Store</h2>
+      <h2 className="text-xl mb-4">Raw API Test - Speedi Check Store</h2>
       
       {tank && (
         <div className="space-y-2">

@@ -11,61 +11,85 @@ const STORAGE_KEYS = {
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://central-tank-server.onrender.com';
 
 // Default store hours with admin contact information
+// Store names MUST match Lighthouse customer names exactly
 const DEFAULT_STORE_HOURS: StoreHours[] = [
   {
-    store_name: 'Mascoutah',
+    store_name: 'Speedi Check',
     open_hour: 5,
     close_hour: 23,
     timezone: 'America/Chicago',
     admin_name: 'Store Manager',
     admin_phone: '+1234567890',
-    admin_email: 'manager@mascoutah.betterdayenergy.com',
+    admin_email: 'manager@speedicheck.betterdayenergy.com',
     alerts_enabled: true,
     is_active: true,
   },
   {
-    store_name: 'North City',
+    store_name: 'PH Petroleum',
     open_hour: 5,
     close_hour: 23,
     timezone: 'America/Chicago',
     admin_name: 'Store Manager',
     admin_phone: '+1234567891',
-    admin_email: 'manager@northcity.betterdayenergy.com',
+    admin_email: 'manager@phpetroleum.betterdayenergy.com',
     alerts_enabled: true,
     is_active: true,
   },
   {
-    store_name: 'Pleasant Hill',
+    store_name: '4 Seasons Mini Mart LLC',
     open_hour: 5,
     close_hour: 23,
     timezone: 'America/Chicago',
     admin_name: 'Store Manager',
     admin_phone: '+1234567892',
-    admin_email: 'manager@pleasanthill.betterdayenergy.com',
+    admin_email: 'manager@4seasons.betterdayenergy.com',
     alerts_enabled: true,
     is_active: true,
   },
   {
-    store_name: '4 Seasons Mini Mart',
+    store_name: 'Pioneer Express',
     open_hour: 5,
     close_hour: 23,
     timezone: 'America/Chicago',
     admin_name: 'Store Manager',
     admin_phone: '+1234567893',
-    admin_email: 'manager@4seasons.betterdayenergy.com',
+    admin_email: 'manager@pioneerexpress.betterdayenergy.com',
+    alerts_enabled: true,
+    is_active: true,
+  },
+  {
+    store_name: "Gibb's Sinclair",
+    open_hour: 5,
+    close_hour: 23,
+    timezone: 'America/Chicago',
+    admin_name: 'Store Manager',
+    admin_phone: '+1234567894',
+    admin_email: 'manager@gibbssinclair.betterdayenergy.com',
+    alerts_enabled: true,
+    is_active: true,
+  },
+  {
+    store_name: 'Cedar Junction',
+    open_hour: 5,
+    close_hour: 23,
+    timezone: 'America/Chicago',
+    admin_name: 'Store Manager',
+    admin_phone: '+1234567895',
+    admin_email: 'manager@cedarjunction.betterdayenergy.com',
     alerts_enabled: true,
     is_active: true,
   },
 ];
 
 // Default tank configurations - NO DIMENSIONS, only capacity and critical levels
+// Store names and product types MUST match Lighthouse exactly
 const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
-  // Mascoutah tanks
+  // Speedi Check tanks (was Mascoutah)
   {
-    store_name: 'Mascoutah',
+    store_name: 'Speedi Check',
     tank_id: 1,
     tank_name: 'UNLEADED',
-    product_type: 'Regular Unleaded',
+    product_type: '87 Reformulated',
     max_capacity_gallons: 10000,
     max_height_inches: 96,
     critical_height_inches: 10,
@@ -73,10 +97,10 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     alerts_enabled: true,
   },
   {
-    store_name: 'Mascoutah',
+    store_name: 'Speedi Check',
     tank_id: 2,
     tank_name: 'PREMIUM',
-    product_type: 'Premium Unleaded',
+    product_type: '93 Reformulated',
     max_capacity_gallons: 10000,
     max_height_inches: 96,
     critical_height_inches: 10,
@@ -84,22 +108,56 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     alerts_enabled: true,
   },
   {
-    store_name: 'Mascoutah',
+    store_name: 'Speedi Check',
+    tank_id: 3,
+    tank_name: 'BIODIESEL',
+    product_type: 'B11',
+    max_capacity_gallons: 10000,
+    max_height_inches: 96,
+    critical_height_inches: 10,
+    warning_height_inches: 20,
+    alerts_enabled: true,
+  },
+  // PH Petroleum tanks (was Pleasant Hill)
+  {
+    store_name: 'PH Petroleum',
+    tank_id: 1,
+    tank_name: 'UNLEADED',
+    product_type: 'Conv 87E10',
+    max_capacity_gallons: 10000,
+    max_height_inches: 96,
+    critical_height_inches: 10,
+    warning_height_inches: 20,
+    alerts_enabled: true,
+  },
+  {
+    store_name: 'PH Petroleum',
+    tank_id: 2,
+    tank_name: 'PREMIUM',
+    product_type: 'Conv 91E10',
+    max_capacity_gallons: 10000,
+    max_height_inches: 96,
+    critical_height_inches: 10,
+    warning_height_inches: 20,
+    alerts_enabled: true,
+  },
+  {
+    store_name: 'PH Petroleum',
     tank_id: 3,
     tank_name: 'DIESEL',
-    product_type: 'Diesel',
+    product_type: '#2 ULS',
     max_capacity_gallons: 10000,
     max_height_inches: 96,
     critical_height_inches: 10,
     warning_height_inches: 20,
     alerts_enabled: true,
   },
-  // North City tanks
+  // Pioneer Express tanks
   {
-    store_name: 'North City',
+    store_name: 'Pioneer Express',
     tank_id: 1,
-    tank_name: 'UNL T1',
-    product_type: 'Regular Unleaded',
+    tank_name: 'UNLEADED',
+    product_type: 'Conv 87E10',
     max_capacity_gallons: 10000,
     max_height_inches: 96,
     critical_height_inches: 10,
@@ -107,10 +165,10 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     alerts_enabled: true,
   },
   {
-    store_name: 'North City',
+    store_name: 'Pioneer Express',
     tank_id: 2,
-    tank_name: 'UNL T2',
-    product_type: 'Regular Unleaded',
+    tank_name: 'PREMIUM',
+    product_type: 'Conv 91E10',
     max_capacity_gallons: 10000,
     max_height_inches: 96,
     critical_height_inches: 10,
@@ -118,10 +176,10 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     alerts_enabled: true,
   },
   {
-    store_name: 'North City',
+    store_name: 'Pioneer Express',
     tank_id: 3,
-    tank_name: 'UNL T3',
-    product_type: 'Regular Unleaded',
+    tank_name: 'BIODIESEL',
+    product_type: 'B11',
     max_capacity_gallons: 10000,
     max_height_inches: 96,
     critical_height_inches: 10,
@@ -129,33 +187,22 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     alerts_enabled: true,
   },
   {
-    store_name: 'North City',
+    store_name: 'Pioneer Express',
     tank_id: 4,
-    tank_name: 'PREM',
-    product_type: 'Premium Unleaded',
+    tank_name: 'DIESEL',
+    product_type: '#2 ULS',
     max_capacity_gallons: 10000,
     max_height_inches: 96,
     critical_height_inches: 10,
     warning_height_inches: 20,
     alerts_enabled: true,
   },
+  // Gibb's Sinclair tanks (was Gibbs-Biggsville)
   {
-    store_name: 'North City',
-    tank_id: 5,
-    tank_name: 'K1',
-    product_type: 'Kerosene',
-    max_capacity_gallons: 10000,
-    max_height_inches: 96,
-    critical_height_inches: 10,
-    warning_height_inches: 20,
-    alerts_enabled: true,
-  },
-  // Pleasant Hill tanks
-  {
-    store_name: 'Pleasant Hill',
+    store_name: "Gibb's Sinclair",
     tank_id: 1,
     tank_name: 'UNLEADED',
-    product_type: 'Regular Unleaded',
+    product_type: 'Conv 87E10',
     max_capacity_gallons: 10000,
     max_height_inches: 96,
     critical_height_inches: 10,
@@ -163,10 +210,10 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     alerts_enabled: true,
   },
   {
-    store_name: 'Pleasant Hill',
+    store_name: "Gibb's Sinclair",
     tank_id: 2,
-    tank_name: 'PREMIUM',
-    product_type: 'Premium Unleaded',
+    tank_name: 'MIDGRADE',
+    product_type: 'Conv 89E10',
     max_capacity_gallons: 10000,
     max_height_inches: 96,
     critical_height_inches: 10,
@@ -174,37 +221,93 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     alerts_enabled: true,
   },
   {
-    store_name: 'Pleasant Hill',
+    store_name: "Gibb's Sinclair",
     tank_id: 3,
-    tank_name: 'DIESEL',
-    product_type: 'Diesel',
+    tank_name: 'PREMIUM',
+    product_type: 'Conv 91E10',
     max_capacity_gallons: 10000,
     max_height_inches: 96,
     critical_height_inches: 10,
     warning_height_inches: 20,
     alerts_enabled: true,
   },
-  // 4 Seasons Mini Mart tanks (Otodata monitors)
   {
-    store_name: '4 Seasons Mini Mart',
+    store_name: "Gibb's Sinclair",
+    tank_id: 4,
+    tank_name: 'DIESEL',
+    product_type: '#2 ULS',
+    max_capacity_gallons: 10000,
+    max_height_inches: 96,
+    critical_height_inches: 10,
+    warning_height_inches: 20,
+    alerts_enabled: true,
+  },
+  // 4 Seasons Mini Mart LLC tanks (Otodata monitors)
+  {
+    store_name: '4 Seasons Mini Mart LLC',
     tank_id: 1,
     tank_name: 'Tank 1 - Regular',
-    product_type: '87e10 Conventional',
-    max_capacity_gallons: 12000,
-    max_height_inches: 20 * 12,  // 20 feet = 240 inches total height
-    critical_height_inches: 10,  // Standard 10 inch critical
-    warning_height_inches: 20,   // Standard 20 inch warning
+    product_type: 'Conv 87E10',
+    max_capacity_gallons: 12730,
+    max_height_inches: 240,
+    critical_height_inches: 10,
+    warning_height_inches: 20,
     alerts_enabled: true,
   },
   {
-    store_name: '4 Seasons Mini Mart',
+    store_name: '4 Seasons Mini Mart LLC',
     tank_id: 2,
     tank_name: 'Tank 2 - Premium',
-    product_type: '91 e0 premium',
-    max_capacity_gallons: 12000,
-    max_height_inches: 18.8 * 12,  // 18.8 feet = 225.6 inches total height
-    critical_height_inches: 10,    // Standard 10 inch critical
-    warning_height_inches: 20,     // Standard 20 inch warning
+    product_type: '91 Premium',
+    max_capacity_gallons: 12730,
+    max_height_inches: 226,
+    critical_height_inches: 10,
+    warning_height_inches: 20,
+    alerts_enabled: true,
+  },
+  // Cedar Junction tanks (Otodata monitors)
+  {
+    store_name: 'Cedar Junction',
+    tank_id: 1,
+    tank_name: 'DIESEL',
+    product_type: '#2 ULS',
+    max_capacity_gallons: 6000,
+    max_height_inches: 223,
+    critical_height_inches: 10,
+    warning_height_inches: 20,
+    alerts_enabled: true,
+  },
+  {
+    store_name: 'Cedar Junction',
+    tank_id: 2,
+    tank_name: 'DYED DIESEL',
+    product_type: 'Dyed #2',
+    max_capacity_gallons: 6000,
+    max_height_inches: 223,
+    critical_height_inches: 10,
+    warning_height_inches: 20,
+    alerts_enabled: true,
+  },
+  {
+    store_name: 'Cedar Junction',
+    tank_id: 3,
+    tank_name: 'UNLEADED',
+    product_type: 'Conv 87E10',
+    max_capacity_gallons: 8000,
+    max_height_inches: 202,
+    critical_height_inches: 10,
+    warning_height_inches: 20,
+    alerts_enabled: true,
+  },
+  {
+    store_name: 'Cedar Junction',
+    tank_id: 4,
+    tank_name: 'PREMIUM',
+    product_type: '91 Premium',
+    max_capacity_gallons: 8000,
+    max_height_inches: 202,
+    critical_height_inches: 10,
+    warning_height_inches: 20,
     alerts_enabled: true,
   },
 ];
@@ -212,111 +315,102 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
 export class ConfigService {
   private static migrationCompleted = false;
 
-  // Migration method to ensure Pleasant Hill is included
+  // Migration method to ensure all stores use correct Lighthouse names
   static migrateConfiguration(): void {
     // Only run migration once per session
     if (this.migrationCompleted) {
       return;
     }
     try {
-      // Migrate store hours
+      // Migrate store hours - rename old store names to new Lighthouse standard names
       const stored = localStorage.getItem(STORAGE_KEYS.STORE_HOURS);
       if (stored) {
-        const parsed = JSON.parse(stored);
-        const hasPleasantHill = parsed.some((hours: StoreHours) => hours.store_name === 'Pleasant Hill');
-        
-        if (!hasPleasantHill) {
-          console.log('🔄 Migrating store hours to include Pleasant Hill');
-          const pleasantHillConfig = DEFAULT_STORE_HOURS.find(h => h.store_name === 'Pleasant Hill');
-          if (pleasantHillConfig) {
-            // Ensure Pleasant Hill is visible
-            pleasantHillConfig.is_active = true;
-            parsed.push(pleasantHillConfig);
-            localStorage.setItem(STORAGE_KEYS.STORE_HOURS, JSON.stringify(parsed));
-            console.log('✅ Pleasant Hill store hours added with is_active=true');
-          }
-        } else {
-          // Ensure existing Pleasant Hill is visible
-          const phIndex = parsed.findIndex((h: StoreHours) => h.store_name === 'Pleasant Hill');
-          if (phIndex >= 0 && parsed[phIndex].is_active === false) {
-            parsed[phIndex].is_active = true;
-            localStorage.setItem(STORAGE_KEYS.STORE_HOURS, JSON.stringify(parsed));
-            console.log('✅ Pleasant Hill visibility enabled');
-          }
-        }
-        
-        // Add Gibbs-Biggsville if it doesn't exist (note the hyphen!)
-        const hasGibbsBiggsville = parsed.some((hours: StoreHours) => hours.store_name === 'Gibbs-Biggsville');
-        if (!hasGibbsBiggsville) {
-          console.log('🔄 Adding Gibbs-Biggsville to configuration');
-          parsed.push({
-            store_name: 'Gibbs-Biggsville',
-            open_hour: 5,
-            close_hour: 23,
-            timezone: 'America/Chicago',
-            admin_name: 'Store Manager',
-            admin_phone: '+1234567890',
-            admin_email: 'manager@gibbsbiggsville.betterdayenergy.com',
-            alerts_enabled: true,
-            is_active: true
-          });
-        }
-        
-        // Add 4 Seasons Mini Mart if it doesn't exist
-        const has4Seasons = parsed.some((hours: StoreHours) => hours.store_name === '4 Seasons Mini Mart');
-        if (!has4Seasons) {
-          console.log('🔄 Adding 4 Seasons Mini Mart to configuration');
-          parsed.push({
-            store_name: '4 Seasons Mini Mart',
-            open_hour: 5,
-            close_hour: 23,
-            timezone: 'America/Chicago',
-            admin_name: 'Store Manager',
-            admin_phone: '+1234567893',
-            admin_email: 'manager@4seasons.betterdayenergy.com',
-            alerts_enabled: true,
-            is_active: true
-          });
-        }
+        let parsed = JSON.parse(stored);
 
-        // Ensure key stores are always visible
-        const keyStores = ['Mascoutah', 'North City', 'Pleasant Hill', 'Gibbs-Biggsville', '4 Seasons Mini Mart'];
+        // Rename old store names to new Lighthouse standard names
+        const renameMap: Record<string, string> = {
+          'Mascoutah': 'Speedi Check',
+          'Pleasant Hill': 'PH Petroleum',
+          '4 Seasons Mini Mart': '4 Seasons Mini Mart LLC',
+          'Gibbs-Biggsville': "Gibb's Sinclair",
+          'Gibbs Biggsville': "Gibb's Sinclair",
+          'North City': null as any, // Remove North City - no longer monitored
+        };
+
+        // Apply renames
+        parsed = parsed.map((hours: StoreHours) => {
+          const newName = renameMap[hours.store_name];
+          if (newName === null) {
+            return null; // Mark for removal
+          }
+          if (newName) {
+            console.log(`🔄 Renaming store: ${hours.store_name} → ${newName}`);
+            return { ...hours, store_name: newName };
+          }
+          return hours;
+        }).filter(Boolean); // Remove nulls
+
+        // Ensure key stores are present and visible
+        const keyStores = ['Speedi Check', 'PH Petroleum', '4 Seasons Mini Mart LLC', 'Pioneer Express', "Gibb's Sinclair", 'Cedar Junction'];
         keyStores.forEach(storeName => {
-          const storeIndex = parsed.findIndex((h: StoreHours) => h.store_name === storeName);
-          if (storeIndex >= 0) {
-            parsed[storeIndex].is_active = true;
+          const exists = parsed.some((h: StoreHours) => h.store_name === storeName);
+          if (!exists) {
+            console.log(`🔄 Adding missing store: ${storeName}`);
+            const defaultConfig = DEFAULT_STORE_HOURS.find(h => h.store_name === storeName);
+            if (defaultConfig) {
+              parsed.push({ ...defaultConfig, is_active: true });
+            }
           }
         });
-        
-        // Ensure all stores have is_active property
+
+        // Ensure all stores have is_active property and key stores are visible
         const migratedHours = parsed.map((hours: StoreHours) => ({
           ...hours,
-          is_active: hours.is_active !== false, // Default to true if not set
+          is_active: keyStores.includes(hours.store_name) ? true : hours.is_active !== false,
         }));
         localStorage.setItem(STORAGE_KEYS.STORE_HOURS, JSON.stringify(migratedHours));
       }
-      
-      // Migrate tank configurations
+
+      // Migrate tank configurations - rename old store/product names
       const storedTanks = localStorage.getItem(STORAGE_KEYS.TANK_CONFIGS);
       if (storedTanks) {
-        const parsed = JSON.parse(storedTanks);
-        const hasPleasantHillTanks = parsed.some((config: any) => config.store_name === 'Pleasant Hill');
-        
-        if (!hasPleasantHillTanks) {
-          console.log('🔄 Migrating tank configurations to include Pleasant Hill');
-          const pleasantHillTankConfigs = DEFAULT_TANK_CONFIGS.filter(c => c.store_name === 'Pleasant Hill');
-          if (pleasantHillTankConfigs.length > 0) {
-            parsed.push(...pleasantHillTankConfigs);
-            localStorage.setItem(STORAGE_KEYS.TANK_CONFIGS, JSON.stringify(parsed));
-            console.log(`✅ Added ${pleasantHillTankConfigs.length} Pleasant Hill tank configurations`);
+        let parsed = JSON.parse(storedTanks);
+
+        // Rename stores
+        const storeRenameMap: Record<string, string> = {
+          'Mascoutah': 'Speedi Check',
+          'Pleasant Hill': 'PH Petroleum',
+          '4 Seasons Mini Mart': '4 Seasons Mini Mart LLC',
+          'Gibbs-Biggsville': "Gibb's Sinclair",
+        };
+
+        // Rename product types to Lighthouse standards
+        const productRenameMap: Record<string, string> = {
+          'Regular Unleaded': 'Conv 87E10',
+          'Premium Unleaded': 'Conv 91E10',
+          'Diesel': '#2 ULS',
+          '87e10 Conventional': 'Conv 87E10',
+          '91 e0 premium': '91 Premium',
+        };
+
+        parsed = parsed.map((config: TankConfiguration) => {
+          const newStoreName = storeRenameMap[config.store_name] || config.store_name;
+          const newProductType = productRenameMap[config.product_type] || config.product_type;
+
+          if (newStoreName !== config.store_name || newProductType !== config.product_type) {
+            console.log(`🔄 Updating tank: ${config.store_name}/${config.product_type} → ${newStoreName}/${newProductType}`);
           }
-        }
+
+          return { ...config, store_name: newStoreName, product_type: newProductType };
+        }).filter((config: TankConfiguration) => config.store_name !== 'North City'); // Remove North City tanks
+
+        localStorage.setItem(STORAGE_KEYS.TANK_CONFIGS, JSON.stringify(parsed));
       } else {
         // No tank configs exist, initialize with defaults
-        console.log('🔄 Initializing tank configurations with defaults including Pleasant Hill');
+        console.log('🔄 Initializing tank configurations with defaults');
         localStorage.setItem(STORAGE_KEYS.TANK_CONFIGS, JSON.stringify(DEFAULT_TANK_CONFIGS));
       }
-      
+
       // Mark migration as completed
       this.migrationCompleted = true;
     } catch (error) {
@@ -448,7 +542,7 @@ export class ConfigService {
 
   // Tank Configuration Management (uses manual capacity input)
   static getTankConfigurations(): TankConfiguration[] {
-    // Run migration first to ensure Pleasant Hill tanks are included (protected by flag)
+    // Run migration first to ensure all tanks are included (protected by flag)
     this.migrateConfiguration();
     
     try {
@@ -517,8 +611,8 @@ export class ConfigService {
   static autoConfigureNewStore(storeName: string, tankCount: number, tankData?: any[]): void {
     console.log(`🔧 Auto-configuring new store: ${storeName} with ${tankCount} tanks`);
     
-    // Use Mascoutah as the template for new stores
-    const templateHours = this.getStoreHoursForStore('Mascoutah') || DEFAULT_STORE_HOURS[0];
+    // Use Speedi Check as the template for new stores
+    const templateHours = this.getStoreHoursForStore('Speedi Check') || DEFAULT_STORE_HOURS[0];
 
     // Add store hours with admin contact
     this.updateStoreHours(
@@ -610,11 +704,16 @@ export class ConfigService {
   // Remove specific stores from frontend configuration
   static removeTestStores(): void {
     const testStoreNames = [
-      'Pioneer Express Perry', 
+      'Pioneer Express Perry',
       "Jethro's Pontoon Beach",
       'Test Store',
       'Demo Store',
-      'Gibbs Biggsville'  // Remove the old incorrect name if it exists
+      'Gibbs Biggsville',      // Old incorrect name
+      'Gibbs-Biggsville',      // Old incorrect name with hyphen
+      'Mascoutah',             // Old name - now Speedi Check
+      'Pleasant Hill',         // Old name - now PH Petroleum
+      '4 Seasons Mini Mart',   // Old name without LLC
+      'North City',            // No longer monitored
     ];
 
     // Remove from store hours

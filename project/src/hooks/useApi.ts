@@ -317,15 +317,15 @@ const autoConfigureNewStore = (storeName: string, tanks: any[]) => {
   
   const existingHours = ConfigService.getStoreHoursForStore(storeName);
   if (!existingHours) {
-    const mascoutahHours = ConfigService.getStoreHoursForStore('Mascoutah');
-    const defaultHours = mascoutahHours || {
-      store_name: 'Mascoutah',
+    const speediCheckHours = ConfigService.getStoreHoursForStore('Speedi Check');
+    const defaultHours = speediCheckHours || {
+      store_name: 'Speedi Check',
       open_hour: 5,
       close_hour: 23,
       timezone: 'America/Chicago',
       admin_name: 'Store Manager',
       admin_phone: '+1234567890',
-      admin_email: 'manager@mascoutah.betterdayenergy.com',
+      admin_email: 'manager@speedicheck.betterdayenergy.com',
       alerts_enabled: true,
     };
     

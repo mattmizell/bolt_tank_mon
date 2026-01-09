@@ -58,63 +58,52 @@ const getTankStatus = (height: number, hoursTo10: number): 'normal' | 'warning' 
   return 'normal';
 };
 
+// Mock stores use Lighthouse standard names
 export const mockStores: Store[] = [
   {
-    store_name: 'Mascoutah',
+    store_name: 'Speedi Check',
     tanks: [
       {
         tank_id: 1,
         tank_name: 'UNLEADED',
-        product: 'Regular Unleaded',
+        product: '87 Reformulated',
         logs: generateTankLogs(6500),
       },
       {
         tank_id: 2,
         tank_name: 'PREMIUM',
-        product: 'Premium Unleaded',
+        product: '93 Reformulated',
         logs: generateTankLogs(4200),
       },
       {
         tank_id: 3,
-        tank_name: 'DIESEL',
-        product: 'Diesel',
+        tank_name: 'BIODIESEL',
+        product: 'B11',
         logs: generateTankLogs(7200),
       },
     ],
     last_updated: new Date().toISOString(),
   },
   {
-    store_name: 'North City',
+    store_name: 'PH Petroleum',
     tanks: [
       {
         tank_id: 1,
-        tank_name: 'UNL T1',
-        product: 'Regular Unleaded',
+        tank_name: 'UNLEADED',
+        product: 'Conv 87E10',
         logs: generateTankLogs(5800),
       },
       {
         tank_id: 2,
-        tank_name: 'UNL T2',
-        product: 'Regular Unleaded',
+        tank_name: 'PREMIUM',
+        product: 'Conv 91E10',
         logs: generateTankLogs(3900),
       },
       {
         tank_id: 3,
-        tank_name: 'UNL T3',
-        product: 'Regular Unleaded',
+        tank_name: 'DIESEL',
+        product: '#2 ULS',
         logs: generateTankLogs(6100),
-      },
-      {
-        tank_id: 4,
-        tank_name: 'PREM',
-        product: 'Premium Unleaded',
-        logs: generateTankLogs(4500),
-      },
-      {
-        tank_id: 5,
-        tank_name: 'K1',
-        product: 'Kerosene',
-        logs: generateTankLogs(2800),
       },
     ],
     last_updated: new Date().toISOString(),
