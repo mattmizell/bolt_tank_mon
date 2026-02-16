@@ -79,6 +79,17 @@ const DEFAULT_STORE_HOURS: StoreHours[] = [
     alerts_enabled: true,
     is_active: true,
   },
+  {
+    store_name: 'Gully Hannibal',
+    open_hour: 0,
+    close_hour: 24,
+    timezone: 'America/Chicago',
+    admin_name: 'Gully Transportation',
+    admin_phone: '+12172240770',
+    admin_email: 'manager@gullyhannibal.betterdayenergy.com',
+    alerts_enabled: true,
+    is_active: true,
+  },
 ];
 
 // Default tank configurations - NO DIMENSIONS, only capacity and critical levels
@@ -310,6 +321,18 @@ const DEFAULT_TANK_CONFIGS: TankConfiguration[] = [
     warning_height_inches: 20,
     alerts_enabled: true,
   },
+  // Gully Hannibal tanks (Otodata monitor)
+  {
+    store_name: 'Gully Hannibal',
+    tank_id: 1,
+    tank_name: 'DIESEL',
+    product_type: '#2 ULS',
+    max_capacity_gallons: 13648,
+    max_height_inches: 120,
+    critical_height_inches: 10,
+    warning_height_inches: 20,
+    alerts_enabled: true,
+  },
 ];
 
 export class ConfigService {
@@ -351,7 +374,7 @@ export class ConfigService {
         }).filter(Boolean); // Remove nulls
 
         // Ensure key stores are present and visible
-        const keyStores = ['Speedi Check', 'PH Petroleum', '4 Seasons Mini Mart LLC', 'Pioneer Express', "Gibb's Sinclair", 'Cedar Junction'];
+        const keyStores = ['Speedi Check', 'PH Petroleum', '4 Seasons Mini Mart LLC', 'Pioneer Express', "Gibb's Sinclair", 'Cedar Junction', 'Gully Hannibal'];
         keyStores.forEach(storeName => {
           const exists = parsed.some((h: StoreHours) => h.store_name === storeName);
           if (!exists) {

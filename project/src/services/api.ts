@@ -427,6 +427,9 @@ export const STORE_TANK_NAMES: Record<string, Record<number, string>> = {
     3: "UNLEADED",
     4: "PREMIUM"
   },
+  "Gully Hannibal": {
+    1: "DIESEL"
+  },
 };
 
 export const STORE_TANK_DIMENSIONS: Record<string, Record<number, [number, number]>> = {
