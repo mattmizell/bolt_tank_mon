@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Store } from '../types';
-import { Eye, Activity, AlertTriangle, Wifi, WifiOff, Building2 } from 'lucide-react';
+import { Eye, Activity, AlertTriangle, Wifi, WifiOff, Building2, Shield } from 'lucide-react';
+import { ComplianceReport } from './ComplianceReport';
+import { ApiService } from '../services/api';
 import { TankTable } from './TankTable';
 import { TankChart } from './TankChart';
 import { format } from 'date-fns';
@@ -10,11 +12,22 @@ interface ReadOnlyStoreReportProps {
   isLiveData?: boolean;
 }
 
-export const ReadOnlyStoreReport: React.FC<ReadOnlyStoreReportProps> = ({ 
-  store, 
-  isLiveData = false 
+export const ReadOnlyStoreReport: React.FC<ReadOnlyStoreReportProps> = ({
+  store,
+  isLiveData = false
 }) => {
   const [showCharts, setShowCharts] = useState(true);
+  const [hasCompliance, setHasCompliance] = useState<boolean | null>(null);
+
+  React.useEffect(() => {
+    ApiService.getStoreCompliance(store.store_name)
+      .then((data) => {
+        setHasCompliance(data && data.tanks && data.tanks.length > 0);
+      })
+      .catch(() => {
+        setHasCompliance(false);
+      });
+  }, [store.store_name]);
 
   const criticalTanks = store.tanks.filter(tank => tank.status === 'critical').length;
   const warningTanks = store.tanks.filter(tank => tank.status === 'warning').length;
@@ -185,6 +198,29 @@ export const ReadOnlyStoreReport: React.FC<ReadOnlyStoreReportProps> = ({
               </span>
             </div>
           </div>
+        </div>
+
+        {/* Compliance Section */}
+        <div className="mt-8">
+          {hasCompliance === true ? (
+            <>
+              <h2 className="text-xl font-semibold text-white mb-4 flex items-center space-x-2">
+                <Shield className="w-5 h-5 text-green-400" />
+                <span>Environmental Compliance</span>
+              </h2>
+              <ComplianceReport storeName={store.store_name} />
+            </>
+          ) : hasCompliance === false ? (
+            <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+              <div className="flex items-center space-x-3 mb-3">
+                <Shield className="w-6 h-6 text-green-400" />
+                <h3 className="text-lg font-semibold text-white">Environmental Compliance Reporting</h3>
+              </div>
+              <p className="text-slate-400">
+                Available as add-on service. Contact BDE to get started.
+              </p>
+            </div>
+          ) : null}
         </div>
 
         {/* Legend */}

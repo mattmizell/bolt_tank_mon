@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Store } from '../types';
-import { ArrowLeft, RefreshCw, Download, Filter, Activity, AlertTriangle, Wifi, WifiOff, ExternalLink } from 'lucide-react';
+import { ArrowLeft, RefreshCw, Download, Filter, Activity, AlertTriangle, Wifi, WifiOff, ExternalLink, Shield } from 'lucide-react';
 import { TankTable } from './TankTable';
 import { TankChart } from './TankChart';
+import { ComplianceReport } from './ComplianceReport';
 import { format } from 'date-fns';
+
+type StoreTab = 'tanks' | 'compliance';
 
 interface StoreReportProps {
   store: Store;
@@ -14,6 +17,7 @@ interface StoreReportProps {
 export const StoreReport: React.FC<StoreReportProps> = ({ store, onBack, isLiveData = false }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [showCharts, setShowCharts] = useState(true);
+  const [activeTab, setActiveTab] = useState<StoreTab>('tanks');
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -110,115 +114,151 @@ export const StoreReport: React.FC<StoreReportProps> = ({ store, onBack, isLiveD
           </div>
         )}
 
-        {/* Status Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-slate-400 text-sm">Total Tanks</p>
-                <p className="text-2xl font-bold text-white">{store.tanks.length}</p>
-              </div>
-              <Activity className="w-8 h-8 text-blue-400" />
-            </div>
-          </div>
-          
-          <div className="bg-slate-800 rounded-xl p-6 border border-red-500/30">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-slate-400 text-sm">Critical Alerts</p>
-                <p className="text-2xl font-bold text-red-400">{criticalTanks}</p>
-              </div>
-              <AlertTriangle className="w-8 h-8 text-red-400" />
-            </div>
-          </div>
-
-          <div className="bg-slate-800 rounded-xl p-6 border border-yellow-500/30">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-slate-400 text-sm">Warnings</p>
-                <p className="text-2xl font-bold text-yellow-400">{warningTanks}</p>
-              </div>
-              <AlertTriangle className="w-8 h-8 text-yellow-400" />
-            </div>
-          </div>
-        </div>
-
-        {/* Tank Data Table */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-white">Tank Status</h2>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 text-sm text-slate-400">
-                <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                <span>Normal</span>
-              </div>
-              <div className="flex items-center space-x-2 text-sm text-slate-400">
-                <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                <span>Warning</span>
-              </div>
-              <div className="flex items-center space-x-2 text-sm text-slate-400">
-                <div className="w-3 h-3 bg-red-400 rounded-full"></div>
-                <span>Critical</span>
-              </div>
-            </div>
-          </div>
-          <TankTable tanks={store.tanks} />
-        </div>
-
-        {/* Charts Toggle */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-white">Volume Trends (Live Data)</h2>
+        {/* Tab Navigation */}
+        <div className="flex space-x-2 mb-6">
           <button
-            onClick={() => setShowCharts(!showCharts)}
-            className="text-blue-400 hover:text-blue-300 transition-colors"
+            onClick={() => setActiveTab('tanks')}
+            className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+              activeTab === 'tanks'
+                ? 'bg-blue-600 text-white'
+                : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white'
+            }`}
           >
-            {showCharts ? 'Hide Charts' : 'Show Charts'}
+            <Activity className="w-4 h-4" />
+            <span>Tanks</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('compliance')}
+            className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+              activeTab === 'compliance'
+                ? 'bg-green-600 text-white'
+                : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white'
+            }`}
+          >
+            <Shield className="w-4 h-4" />
+            <span>Compliance</span>
           </button>
         </div>
 
-        {/* Tank Charts */}
-        {showCharts && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {store.tanks.map((tank) => (
-              <TankChart key={tank.tank_id} tank={tank} />
-            ))}
-          </div>
+        {/* Tanks Tab */}
+        {activeTab === 'tanks' && (
+          <>
+            {/* Status Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-slate-400 text-sm">Total Tanks</p>
+                    <p className="text-2xl font-bold text-white">{store.tanks.length}</p>
+                  </div>
+                  <Activity className="w-8 h-8 text-blue-400" />
+                </div>
+              </div>
+
+              <div className="bg-slate-800 rounded-xl p-6 border border-red-500/30">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-slate-400 text-sm">Critical Alerts</p>
+                    <p className="text-2xl font-bold text-red-400">{criticalTanks}</p>
+                  </div>
+                  <AlertTriangle className="w-8 h-8 text-red-400" />
+                </div>
+              </div>
+
+              <div className="bg-slate-800 rounded-xl p-6 border border-yellow-500/30">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-slate-400 text-sm">Warnings</p>
+                    <p className="text-2xl font-bold text-yellow-400">{warningTanks}</p>
+                  </div>
+                  <AlertTriangle className="w-8 h-8 text-yellow-400" />
+                </div>
+              </div>
+            </div>
+
+            {/* Tank Data Table */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold text-white">Tank Status</h2>
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2 text-sm text-slate-400">
+                    <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                    <span>Normal</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-sm text-slate-400">
+                    <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                    <span>Warning</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-sm text-slate-400">
+                    <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+                    <span>Critical</span>
+                  </div>
+                </div>
+              </div>
+              <TankTable tanks={store.tanks} />
+            </div>
+
+            {/* Charts Toggle */}
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold text-white">Volume Trends (Live Data)</h2>
+              <button
+                onClick={() => setShowCharts(!showCharts)}
+                className="text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                {showCharts ? 'Hide Charts' : 'Show Charts'}
+              </button>
+            </div>
+
+            {/* Tank Charts */}
+            {showCharts && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {store.tanks.map((tank) => (
+                  <TankChart key={tank.tank_id} tank={tank} />
+                ))}
+              </div>
+            )}
+
+            {/* Legend */}
+            <div className="mt-12 bg-slate-800 rounded-xl p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">Legend</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+                <div>
+                  <strong className="text-white">TC Volume:</strong>
+                  <span className="text-slate-300 ml-2">Temperature-compensated fuel volume (gallons)</span>
+                </div>
+                <div>
+                  <strong className="text-white">Capacity Used:</strong>
+                  <span className="text-slate-300 ml-2">Percentage of tank's maximum capacity currently used</span>
+                </div>
+                <div>
+                  <strong className="text-white">90% Ullage:</strong>
+                  <span className="text-slate-300 ml-2">90% of empty space in tank (conservative planning)</span>
+                </div>
+                <div>
+                  <strong className="text-white">Height:</strong>
+                  <span className="text-slate-300 ml-2">Current product height (inches)</span>
+                </div>
+                <div>
+                  <strong className="text-white">Run Rate:</strong>
+                  <span className="text-slate-300 ml-2">Consumption rate during business hours (gal/hr)</span>
+                </div>
+                <div>
+                  <strong className="text-white">Hours to 10":</strong>
+                  <span className="text-slate-300 ml-2">Estimated hours until fuel drops to 10 inches</span>
+                </div>
+                <div>
+                  <strong className="text-white">Predicted Time:</strong>
+                  <span className="text-slate-300 ml-2">Estimated timestamp for reaching 10 inches</span>
+                </div>
+              </div>
+            </div>
+          </>
         )}
 
-        {/* Legend */}
-        <div className="mt-12 bg-slate-800 rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Legend</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
-            <div>
-              <strong className="text-white">TC Volume:</strong>
-              <span className="text-slate-300 ml-2">Temperature-compensated fuel volume (gallons)</span>
-            </div>
-            <div>
-              <strong className="text-white">Capacity Used:</strong>
-              <span className="text-slate-300 ml-2">Percentage of tank's maximum capacity currently used</span>
-            </div>
-            <div>
-              <strong className="text-white">90% Ullage:</strong>
-              <span className="text-slate-300 ml-2">90% of empty space in tank (conservative planning)</span>
-            </div>
-            <div>
-              <strong className="text-white">Height:</strong>
-              <span className="text-slate-300 ml-2">Current product height (inches)</span>
-            </div>
-            <div>
-              <strong className="text-white">Run Rate:</strong>
-              <span className="text-slate-300 ml-2">Consumption rate during business hours (gal/hr)</span>
-            </div>
-            <div>
-              <strong className="text-white">Hours to 10":</strong>
-              <span className="text-slate-300 ml-2">Estimated hours until fuel drops to 10 inches</span>
-            </div>
-            <div>
-              <strong className="text-white">Predicted Time:</strong>
-              <span className="text-slate-300 ml-2">Estimated timestamp for reaching 10 inches</span>
-            </div>
-          </div>
-        </div>
+        {/* Compliance Tab */}
+        {activeTab === 'compliance' && (
+          <ComplianceReport storeName={store.store_name} />
+        )}
       </div>
     </div>
   );

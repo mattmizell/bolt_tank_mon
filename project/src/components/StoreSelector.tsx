@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Store } from '../types';
-import { Building2, ChevronRight, Eye, Settings, Sparkles, ExternalLink, Copy, Database } from 'lucide-react';
+import { Building2, ChevronRight, Eye, Settings, Sparkles, ExternalLink, Copy, Database, Shield } from 'lucide-react';
 import { ConfigurationPanel } from './ConfigurationPanel';
 import { DatabaseStatus } from './DatabaseStatus';
 import { ConfigService } from '../services/configService';
@@ -10,14 +10,16 @@ interface StoreSelectorProps {
   stores: Store[];
   onStoreSelect: (store: Store) => void;
   onViewAll: () => void;
+  onViewCompliance?: () => void;
   loading?: boolean;
   newStoreDetected?: string | null;
 }
 
-export const StoreSelector: React.FC<StoreSelectorProps> = ({ 
-  stores, 
-  onStoreSelect, 
+export const StoreSelector: React.FC<StoreSelectorProps> = ({
+  stores,
+  onStoreSelect,
   onViewAll,
+  onViewCompliance,
   loading = false,
   newStoreDetected = null,
 }) => {
@@ -158,6 +160,29 @@ export const StoreSelector: React.FC<StoreSelectorProps> = ({
               </div>
             </button>
           </div>
+
+          {/* Environmental Compliance Button */}
+          {onViewCompliance && (
+            <div className="mb-6">
+              <button
+                onClick={onViewCompliance}
+                className="w-full group bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 border border-green-500 rounded-xl p-4 lg:p-6 transition-all duration-200 hover:shadow-lg hover:shadow-green-500/20"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="text-left">
+                    <h3 className="text-lg lg:text-xl font-semibold text-white flex items-center space-x-2">
+                      <Shield className="w-5 lg:w-6 h-5 lg:h-6" />
+                      <span>Environmental Compliance</span>
+                    </h3>
+                    <p className="text-green-100 mt-1 text-sm lg:text-base">
+                      CSLD/SLD monitoring and compliance status across all stores
+                    </p>
+                  </div>
+                  <ChevronRight className="w-5 lg:w-6 h-5 lg:h-6 text-green-200 group-hover:text-white transition-colors flex-shrink-0" />
+                </div>
+              </button>
+            </div>
+          )}
 
           <div className="text-center mb-4">
             <span className="text-slate-400 text-sm">Or select individual stores:</span>

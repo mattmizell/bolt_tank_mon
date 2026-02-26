@@ -1,5 +1,6 @@
 // Enhanced API service for Central Tank Server
 import { ConfigService } from './configService';
+import { FleetCompliance, StoreCompliance } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://central-tank-server.onrender.com';
 
@@ -357,6 +358,22 @@ export class ApiService {
       totalSize: Math.round(totalSize / 1024), // KB
       dataSource: 'Central Tank Server',
     };
+  }
+
+  // Compliance: Fleet-wide summary
+  static async getFleetCompliance(): Promise<FleetCompliance> {
+    return this.request<FleetCompliance>('/dashboard/compliance/fleet', {
+      cacheKey: 'compliance-fleet',
+      cacheDuration: 5 * 60 * 1000,
+    });
+  }
+
+  // Compliance: Per-store detail
+  static async getStoreCompliance(storeName: string): Promise<StoreCompliance> {
+    return this.request<StoreCompliance>(`/dashboard/compliance/stores/${encodeURIComponent(storeName)}`, {
+      cacheKey: `compliance-${storeName}`,
+      cacheDuration: 5 * 60 * 1000,
+    });
   }
 
   // OPTIMIZED: Get sampled tank data for charts - much faster than raw logs

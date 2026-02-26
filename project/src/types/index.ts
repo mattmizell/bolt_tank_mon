@@ -154,3 +154,61 @@ export interface SMSConfig {
   webhook_url?: string;
   test_mode: boolean;
 }
+
+// ===== COMPLIANCE TYPES =====
+
+export interface CSLDMonthResult {
+  month: string;
+  report_type?: string;
+  result?: string;
+  date?: string;
+  duration?: number;
+  volume?: number;
+}
+
+export interface TankCSLDStatus {
+  tank_id: number;
+  product: string;
+  current_result: string;
+  consecutive_passes: number;
+  month_chain: CSLDMonthResult[];
+}
+
+export interface SLDTestResult {
+  tank_id: number;
+  test_type: string;
+  test_result: string;
+  test_rate?: number;
+  duration_hours?: number;
+  volume?: number;
+  test_date: string;
+}
+
+export interface ComplianceAlarm {
+  tank_id: number;
+  alarm_type: string;
+  alarm_timestamp: string;
+}
+
+export interface StoreCompliance {
+  store_name: string;
+  last_collected: string;
+  overall_status: string;
+  tanks: TankCSLDStatus[];
+  sld_tests: SLDTestResult[];
+  alarms: ComplianceAlarm[];
+  alarm_count_30d: number;
+}
+
+export interface FleetCompliance {
+  stores: {
+    store_name: string;
+    overall_status: string;
+    tank_count: number;
+    compliant_tanks: number;
+    alarm_count_30d: number;
+    last_collected: string;
+    min_consecutive_passes?: number;
+  }[];
+  total_stores?: number;
+}

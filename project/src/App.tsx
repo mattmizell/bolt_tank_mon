@@ -7,8 +7,9 @@ import { useSmartCache } from './hooks/useSmartCache';
 const StoreReport = React.lazy(() => import('./components/StoreReport').then(module => ({ default: module.StoreReport })));
 const ViewAllStores = React.lazy(() => import('./components/ViewAllStores').then(module => ({ default: module.ViewAllStores })));
 const ReadOnlyStoreReport = React.lazy(() => import('./components/ReadOnlyStoreReport').then(module => ({ default: module.ReadOnlyStoreReport })));
+const ComplianceFleetView = React.lazy(() => import('./components/ComplianceFleetView').then(module => ({ default: module.ComplianceFleetView })));
 
-type ViewMode = 'selector' | 'single-store' | 'all-stores' | 'readonly-store';
+type ViewMode = 'selector' | 'single-store' | 'all-stores' | 'readonly-store' | 'compliance-fleet';
 
 // Loading component with progress indication
 const ComponentLoader = ({ message = "Loading..." }: { message?: string }) => (
@@ -51,6 +52,18 @@ function App() {
 
   const handleViewAll = () => {
     setViewMode('all-stores');
+  };
+
+  const handleViewCompliance = () => {
+    setViewMode('compliance-fleet');
+  };
+
+  const handleComplianceStoreSelect = (storeName: string) => {
+    const store = stores.find(s => s.store_name === storeName);
+    if (store) {
+      setSelectedStore(store);
+      setViewMode('single-store');
+    }
   };
 
   const handleBack = () => {
@@ -151,10 +164,11 @@ function App() {
       )}
 
       {viewMode === 'selector' && !isReadOnlyMode && (
-        <StoreSelector 
-          stores={stores} 
+        <StoreSelector
+          stores={stores}
           onStoreSelect={handleStoreSelect}
           onViewAll={handleViewAll}
+          onViewCompliance={handleViewCompliance}
           loading={loading}
           newStoreDetected={newStoreDetected}
           cacheInfo={cacheInfo}
@@ -185,9 +199,18 @@ function App() {
 
       {viewMode === 'readonly-store' && selectedStore && (
         <Suspense fallback={<ComponentLoader message="Loading read-only report..." />}>
-          <ReadOnlyStoreReport 
+          <ReadOnlyStoreReport
             store={selectedStore}
             isLiveData={isLiveData}
+          />
+        </Suspense>
+      )}
+
+      {viewMode === 'compliance-fleet' && (
+        <Suspense fallback={<ComponentLoader message="Loading compliance report..." />}>
+          <ComplianceFleetView
+            onBack={handleBack}
+            onStoreSelect={handleComplianceStoreSelect}
           />
         </Suspense>
       )}
