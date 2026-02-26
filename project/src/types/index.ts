@@ -170,7 +170,11 @@ export interface TankCSLDStatus {
   tank_id: number;
   product: string;
   current_result: string;
+  result_name?: string;
+  result_status?: string;
   consecutive_passes: number;
+  chain_length?: number;
+  last_test_date?: string;
   month_chain: CSLDMonthResult[];
 }
 
@@ -187,6 +191,9 @@ export interface SLDTestResult {
 export interface ComplianceAlarm {
   tank_id: number;
   alarm_type: string;
+  alarm_name?: string;
+  severity?: string;
+  recommended_action?: string;
   alarm_timestamp: string;
 }
 
